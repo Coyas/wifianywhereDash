@@ -16,6 +16,7 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
+// testes de rotas e cruds
 Route.on('/').render('home').as('home')
 
 Route.get('/posts', 'PostController.index')
@@ -36,12 +37,20 @@ Route.delete('/posts/:id', 'PostController.destroy')
 
 Route.get('/auth/register', 'Auth/RegisterController.showform')
 
+Route.post('/auth/register', 'Auth/RegisterController.register')
+
+// confirmacao de email
+Route.get('register/confirm/:token', 'Auth/RegisterController.confirmEmail')
+
+// login
 Route.get('/auth/login', 'Auth/LoginController.showformlogin')
 
 Route.post('/auth/login', 'Auth/LoginController.login')
 
-Route.post('/auth/register', 'Auth/RegisterController.register')
-
-Route.get('register/confirm/:token', 'Auth/RegisterController.confirmEmail')
-
+// logout
 Route.get('logout', 'Auth/AuthenticatedController.logout')
+
+// reset passwor by email
+Route.get('password/reset', 'Auth/PasswordResetController.showLinkRequestForm')
+
+Route.post('password/email', 'Auth/PasswordResetController.sendResetLinkEmail')

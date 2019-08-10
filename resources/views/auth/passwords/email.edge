@@ -1,0 +1,19 @@
+@layout('layout.main')
+
+@section('content')
+
+  @include('includes.notification')
+  <h1>Reset Password</h1>
+  <form action="/password/email" method="POST">
+    {{ csrfField() }}
+  
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" name="email" class="form-control {{hasErrorFor('email') ? 'alert-danger' : ''}}" value="{{ old('email', '')}}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      {{ elIf('<small id="emailHelp" class="form-text  text-danger">$self</small>', getErrorFor('email'), hasErrorFor('email'))}}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">send password reset link</button>
+  </form>
+
+@endsection
