@@ -17,7 +17,7 @@
 const Route = use('Route')
 
 // testes de rotas e cruds
-Route.on('/').render('home').as('home')
+Route.on('/').render('home').as('home').middleware(['auth'])
 
 Route.get('/posts', 'PostController.index')
 
@@ -35,7 +35,7 @@ Route.delete('/posts/:id', 'PostController.destroy')
 
 // rotas de autenticacao e signup
 
-Route.get('/auth/register', 'Auth/RegisterController.showform')
+Route.get('/auth/register', 'Auth/RegisterController.showform').middleware(['authendicated'])
 
 Route.post('/auth/register', 'Auth/RegisterController.register')
 
@@ -43,7 +43,7 @@ Route.post('/auth/register', 'Auth/RegisterController.register')
 Route.get('register/confirm/:token', 'Auth/RegisterController.confirmEmail')
 
 // login
-Route.get('/auth/login', 'Auth/LoginController.showformlogin')
+Route.get('/auth/login', 'Auth/LoginController.showformlogin').middleware(['authendicated'])
 
 Route.post('/auth/login', 'Auth/LoginController.login')
 
