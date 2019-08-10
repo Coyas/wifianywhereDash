@@ -1,0 +1,66 @@
+'use strict'
+
+// imports
+const { validateAll } = use('Validator')
+const User = use('App/Models/User')
+const randomString = require('random-string')
+const Mail = use('Mail')
+
+class RegisterController {
+    async showform({ view }){
+        return view.render('auth.register')
+    }
+
+    async register({request, session, response}){
+        console.log('Validating users forms...')
+        // validate form 
+        const validation = await validateAll(request.all(), {
+            username: 'required|unique:users,username',
+            email: 'required|email|unique:users,email',
+            password: 'required'
+        })
+
+        if(validation.fails()){
+            session.withErrors(validation.messages()).flashExcept(['password'])
+
+            return response.redirect('back')
+        }
+        // create user
+        console.log('creating user...')
+        console.log('username:')
+        console.log(request.input('username'))
+        console.log('email:')
+        console.log(request.input('email'))
+        console.log('password:')
+        console.log(request.input('password'))
+
+        const user = await User.create({
+            username: request.input('username'),
+            email: request.input('email'),
+            password: request.input('password'),
+            confirmation_token: randomString({length: 40})
+        })
+
+        //send confirmation email
+        console.log('sending email...')
+        await Mail.send('auth.emails.confirm_email', user.toJSON(), message => {
+            message.to(user.email)
+            .from('hello@terra.com')
+            .subject('Please confirm your email address')
+        })
+
+        //display success message
+        console.log('flashing messages...')
+        session.flash({
+            notification:{
+                type: 'success',
+                message: 'registration successfull! a email has bem sent to your email address'
+            }
+        })
+
+        return response.redirect('back')
+
+    }
+}
+
+module.exports = RegisterController

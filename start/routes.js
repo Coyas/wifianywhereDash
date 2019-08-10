@@ -31,3 +31,9 @@ Route.post('/posts', 'PostController.store')
 Route.put('/posts/:id', 'PostController.update')
 
 Route.delete('/posts/:id', 'PostController.destroy')
+
+// rotas de autenticacao e signup
+
+Route.get('/auth/register', 'Auth/RegisterController.showform')
+
+Route.post('/auth/register', 'Auth/RegisterController.register')

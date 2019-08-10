@@ -8,7 +8,14 @@
             <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="/posts">Posts</a>
             <a class="nav-item nav-link" href="/posts/add">Add Posts</a>
-            <a class="nav-item nav-link" href="/login">Login</a>
+            
+            @loggedIn
+              <a class="nav-item nav-link" href="#">{{auth.user.username}}</a>  
+              <a class="nav-item nav-link" href="/auth/login">Logout</a>  
+            @else
+              <a class="nav-item nav-link" href="/auth/login">Login</a>  
+              <a class="nav-item nav-link" href="/auth/register">Registrar</a>  
+            @endloggedIn
             
         </div>
     </div>
