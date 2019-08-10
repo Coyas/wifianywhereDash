@@ -81,7 +81,7 @@ class RegisterController {
             }
         })
 
-        return response.redirect('/login')
+        return response.redirect('/auth/login')
     }
 }
 

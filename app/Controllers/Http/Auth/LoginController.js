@@ -20,8 +20,9 @@ class LoginController {
 
         // verify password
         if(user){
+            console.log('verificar password: ')
             const passwordVerified = await Hash.verify(password, user.password)
-
+            console.log(passwordVerified)
             if(passwordVerified){
                 // login user
                 await auth.remember(!!remember).login(user)
