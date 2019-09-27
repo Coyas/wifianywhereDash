@@ -17,21 +17,9 @@
 const Route = use('Route')
 
 // testes de rotas e cruds
-Route.on('/').render('home').as('home').middleware(['auth'])
-
-Route.get('/posts', 'PostController.index')
-
-Route.get('/posts/add', 'PostController.add')
-
-Route.get('/posts/edit/:id', 'PostController.edit')
-
-Route.get('/posts/:id', 'PostController.details')
-
-Route.post('/posts', 'PostController.store')
-
-Route.put('/posts/:id', 'PostController.update')
-
-Route.delete('/posts/:id', 'PostController.destroy')
+// Route.on('/').render('home').as('home').middleware(['auth'])
+// rotas das paginas sem controle de autenticacao
+Route.get('/', 'HomeController.index').middleware(['auth'])
 
 // rotas de autenticacao e signup
 
@@ -59,3 +47,21 @@ Route.post('password/email', 'Auth/PasswordResetController.sendResetLinkEmail')
 Route.get('password/reset/:token', 'Auth/PasswordResetController.showResetForm')
 
 Route.post('password/reset', 'Auth/PasswordResetController.reset')
+
+
+/**
+ *  Error handler pages
+ * 
+ * 404 - page not found
+ * 500 - internal server error
+ */
+// 404 pages
+Route.any('*', async ({ view, response}) => {
+      
+    // return view.render('main')
+    return response.status(404).send('404 page')
+    // if(response.status(404)){
+    //   return view.render('404')
+    // }
+  
+  })

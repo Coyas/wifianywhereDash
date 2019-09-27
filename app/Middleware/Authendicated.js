@@ -17,8 +17,7 @@ class Authendicated {
     } catch (error) {
       // call next to advance the request
       await next()  
-    }
-    
+    }    
   }
 }
 

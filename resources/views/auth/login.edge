@@ -1,27 +1,39 @@
-@layout('layout.main')
+@layout('layouts.main')
 
 @section('content')
 
-  @include('includes.notification')
-  <form action="/auth/login" method="POST">
-    {{ csrfField() }}
-     
-    <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email" name="email" class="form-control {{hasErrorFor('email') ? 'alert-danger' : ''}}" value="{{ old('email', '')}}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-      {{ elIf('<small id="emailHelp" class="form-text  text-danger">$self</small>', getErrorFor('email'), hasErrorFor('email'))}}
+  <section id="secu" class="container-fluid">
+    <div class="row">
+      <div class="col-md-12"></div>
     </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input name="password" type="password" class="form-control {{hasErrorFor('password') ? 'alert-danger' : ''}}" id="exampleInputPassword1" placeholder="Password">
-      {{ elIf('<small id="emailHelp" class="form-text  text-danger">$self</small>', getErrorFor('password'), hasErrorFor('password'))}}
+  </section>
+
+  <section class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        @include('includes.notification')
+          <form action="/auth/login" method="POST">
+            {{ csrfField() }}
+            
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" name="email" class="form-control {{hasErrorFor('email') ? 'alert-danger' : ''}}" value="{{ old('email', '')}}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+              {{ elIf('<small id="emailHelp" class="form-text  text-danger">$self</small>', getErrorFor('email'), hasErrorFor('email'))}}
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input name="password" type="password" class="form-control {{hasErrorFor('password') ? 'alert-danger' : ''}}" id="exampleInputPassword1" placeholder="Password">
+              {{ elIf('<small id="emailHelp" class="form-text  text-danger">$self</small>', getErrorFor('password'), hasErrorFor('password'))}}
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1" name="remember">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <p class="text-center"><a href="/password/reset">Forgot password</a></p>
+          </form>
+      </div>
     </div>
-    <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1" name="remember">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-    <p class="text-center"><a href="/password/reset">Forgot password</a></p>
-  </form>
+  </section>
 
 @endsection
