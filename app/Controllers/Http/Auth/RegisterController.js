@@ -20,7 +20,7 @@ class RegisterController {
             password: 'required'
         })
 
-        if(validation.fails()){
+        if(validation.fails()){ 
             session.withErrors(validation.messages()).flashExcept(['password'])
 
             return response.redirect('back')

@@ -25,7 +25,7 @@ Route.get('/', 'HomeController.index')//.middleware(['auth'])
 
 Route.get('/auth/register', 'Auth/RegisterController.showform').middleware(['authendicated'])
 
-Route.post('/auth/register', 'Auth/RegisterController.register')
+Route.post('/auth/register', 'Auth/RegisterController.register') 
 
 // confirmacao de email
 Route.get('register/confirm/:token', 'Auth/RegisterController.confirmEmail')
