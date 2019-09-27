@@ -19,7 +19,7 @@ const Route = use('Route')
 // testes de rotas e cruds
 // Route.on('/').render('home').as('home').middleware(['auth'])
 // rotas das paginas sem controle de autenticacao
-Route.get('/', 'HomeController.index').middleware(['auth'])
+Route.get('/', 'HomeController.index')//.middleware(['auth'])
 
 // rotas de autenticacao e signup
 
