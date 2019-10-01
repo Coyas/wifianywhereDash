@@ -2,7 +2,9 @@
 
 class HomeController {
     index({ view }) {
-        return view.render('home.welcome')
+        return view.render('home.welcome', {
+            Lugar: 'Dashboard'
+        })
     }
     
     

@@ -22,6 +22,10 @@ const Route = use('Route')
 Route.get('/', 'HomeController.index').middleware(['auth'])
 Route.get('/clientes', 'ClienteController.clientes').middleware(['auth'])
 
+// rotas para usuarios
+Route.get('/user/:id', 'UserController.index').middleware(['auth'])
+Route.put('/user/:id', 'UserController.editar').middleware(['auth'])
+
 // rotas de autenticacao e signup
 
 Route.get('/auth/register', 'Auth/RegisterController.showform').middleware(['authendicated'])
