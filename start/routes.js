@@ -20,11 +20,13 @@ const Route = use('Route')
 // Route.on('/').render('home').as('home').middleware(['auth'])
 // rotas das paginas sem controle de autenticacao
 Route.get('/', 'HomeController.index').middleware(['auth'])
-Route.get('/clientes', 'ClienteController.clientes').middleware(['auth'])
+Route.get('/clientes', 'ClienteController.lista').middleware(['auth'])
+Route.get('/clientes/info', 'ClienteController.info').middleware(['auth'])
 
 // rotas para usuarios
 Route.get('/user/:id', 'UserController.index').middleware(['auth'])
 Route.put('/user/:id', 'UserController.editar').middleware(['auth'])
+Route.get('/user/logs/:id', 'UserController.logs').middleware(['auth'])
 
 // rotas de autenticacao e signup
 

@@ -43,6 +43,13 @@ class UserController {
 
         response.send('atualizado com sucesso')
     }
+
+    async logs({view, params}){
+
+        return view.render('user/logs', {
+            Lugar: 'Atividades'
+        })
+    }
 }
 
 module.exports = UserController
