@@ -8,6 +8,8 @@ const Mail = use('Mail')
 
 class RegisterController {
     async showform({ view }){
+        // const a = await User.all()
+        // console.log(a.toJSON())
         return view.render('auth.register')
     }
 
@@ -27,12 +29,12 @@ class RegisterController {
         }
         // create user
         console.log('creating user...')
-        console.log('username:')
-        console.log(request.input('username'))
-        console.log('email:')
-        console.log(request.input('email'))
-        console.log('password:')
-        console.log(request.input('password'))
+        // console.log('username:')
+        // console.log(request.input('username'))
+        // console.log('email:')
+        // console.log(request.input('email'))
+        // console.log('password:')
+        // console.log(request.input('password'))
 
         const user = await User.create({
             username: request.input('username'),
@@ -54,11 +56,11 @@ class RegisterController {
         session.flash({
             notification:{
                 type: 'success',
-                message: 'registration successfull! a email has bem sent to your email address'
+                message: 'Registrado com sucesso! Verifique o seu email para ativar sua conta'
             }
         })
 
-        return response.redirect('back')
+        return response.redirect('/auth/login')
 
     }
 

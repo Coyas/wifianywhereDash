@@ -13,7 +13,7 @@ class Authendicated {
     try {
       await auth.check()
 
-      return response.route('home')
+      return response.redirect('/')
     } catch (error) {
       // call next to advance the request
       await next()  
