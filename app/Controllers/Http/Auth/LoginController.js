@@ -3,6 +3,7 @@
 const User = use('App/Models/User')
 const Hash = use('Hash')
 
+
 class LoginController {
     showformlogin({ view }){
         return view.render('auth.login')

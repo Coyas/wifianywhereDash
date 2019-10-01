@@ -6,6 +6,7 @@ const PasswordReset = use('App/Models/PasswordReset')
 const RandomString = require('random-string')
 const Mail = use('Mail')
 const Hash = use('Hash')
+const Env = use('Env')
 
 class PasswordResetController {
 
@@ -43,14 +44,14 @@ class PasswordResetController {
 
             await Mail.send('auth.emails.password_reset', mailData, message => {
                 message.to(user.email)
-                .from('hello@edad.qsd')
+                .from(Env.get('MAIL_USERNAME'))
                 .subject('password reset link')
             })
 
             session.flash({
                 notification: {
                     type: 'success',
-                    message: 'A password reset link as been sent to your email address'
+                    message: 'O password reset link foi enviado para o seu email'
                 }
             })
 
@@ -60,7 +61,7 @@ class PasswordResetController {
             session.flash({
                 notification: {
                     type: 'danger',
-                    message: 'sorry there is no user with this email address'
+                    message: 'Desculpe nao tem um utilizador com este email'
                 }
             })
         } 
@@ -100,7 +101,7 @@ class PasswordResetController {
                 session.flash({
                     notification: {
                         type: 'danger',
-                        message: 'This password reset token does not exist'
+                        message: 'Este password token nao existe'
                     }
                 })
 
@@ -120,7 +121,7 @@ class PasswordResetController {
             session.flash({
                 notification: {
                     type: 'success',
-                    message: 'your password has been reset'
+                    message: 'O seu password foi resetado'
                 }
             })
 
@@ -130,7 +131,7 @@ class PasswordResetController {
             session.flash({
                 notification: {
                     type: 'danger',
-                    message: 'Sorry, there is no user with this email address'
+                    message: 'Desculpe ja tem um utilizador usando este email'
                 }
             })
 

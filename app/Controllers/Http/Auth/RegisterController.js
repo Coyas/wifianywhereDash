@@ -5,6 +5,7 @@ const { validateAll } = use('Validator')
 const User = use('App/Models/User')
 const randomString = require('random-string')
 const Mail = use('Mail')
+const Env = use('Env')
 
 class RegisterController {
     async showform({ view }){
@@ -47,7 +48,7 @@ class RegisterController {
         console.log('sending email...')
         await Mail.send('auth.emails.confirm_email', user.toJSON(), message => {
             message.to(user.email)
-            .from('hello@terra.com')
+            .from(Env.get('MAIL_USERNAME'))
             .subject('Please confirm your email address')
         })
 
