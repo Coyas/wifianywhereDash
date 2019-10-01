@@ -16,7 +16,10 @@ class LoginController {
         const user = await User.query()
         .where('email', email)
         .where('is_active', true)
+        .where('access', '>', 1)// todos com acesso maior q 1 podem entrar no backoffice
         .first()
+
+        console.log(user)
 
         // verify password
         if(user){
