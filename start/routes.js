@@ -16,29 +16,42 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-// testes de rotas e cruds
-// Route.on('/').render('home').as('home').middleware(['auth'])
-// rotas das paginas sem controle de autenticacao
-Route.get('/', 'HomeController.index').middleware(['auth'])
-Route.get('/clientes', 'ClienteController.lista').middleware(['auth'])
-Route.get('/clientes/info', 'ClienteController.info').middleware(['auth'])
+Route.group(() => {
 
-// rotas para usuarios
-Route.get('/user/:id', 'UserController.index').middleware(['auth'])
-Route.put('/user/:id', 'UserController.editar').middleware(['auth'])
-Route.get('/user/logs/:id', 'UserController.logs').middleware(['auth'])
+  Route.get('/', 'HomeController.index')
 
-// rotas de autenticacao e signup
+  // rota para clinetes
+  Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes
+  Route.get('/clientes/info', 'ClienteController.info')//ver o perfil do cliente
+  
+  // rotas para reservas
+  Route.get('/reservas', 'ReservaController.lista')//listar todas as reservas
+  Route.get('/reservas/:id', 'ReservaController.listar')//listar uma reserva especifica
+  Route.get('/reservas/info/:id', 'ReservaController.info')//ver os detalhes de uma reserva especifica
 
-Route.get('/auth/register', 'Auth/RegisterController.showform').middleware(['authendicated'])
+  
+  // rotas para usuarios
+  Route.get('/user/:id', 'UserController.index')
+  Route.put('/user/:id', 'UserController.editar')
+  Route.get('/user/logs/:id', 'UserController.logs')
+
+}).middleware(['auth'])
+
+Route.group(() => {
+  // rotas de autenticacao e signup
+
+  Route.get('/auth/register', 'Auth/RegisterController.showform')
+  // login
+  Route.get('/auth/login', 'Auth/LoginController.showformlogin')
+
+}).middleware(['authendicated'])
+
+
 
 Route.post('/auth/register', 'Auth/RegisterController.register') 
 
 // confirmacao de email
 Route.get('register/confirm/:token', 'Auth/RegisterController.confirmEmail')
-
-// login
-Route.get('/auth/login', 'Auth/LoginController.showformlogin').middleware(['authendicated'])
 
 Route.post('/auth/login', 'Auth/LoginController.login')
 

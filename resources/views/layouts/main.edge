@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
      <!-- Favicon -->
-    <link href="./assets/img/brand/favicon.ico" rel="icon" >
+    <link href="/assets/img/brand/favicon.ico" rel="icon" >
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <!-- Icons -->
     <link href="/assets/js/plugins/nucleo/css/nucleo.css" rel="stylesheet" />
     <link href="/assets/js/plugins/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    {{ style('https://cdn.datatables.net/v/dt/dt-1.10.18/r-2.2.2/datatables.min.css')}}
+    {{ style('/assets/css/wifi/site.css')}}
     <!-- CSS Files -->
     <link href="/assets/css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
     
@@ -107,6 +109,9 @@
   <script src="/assets/js/plugins/chart.js/dist/Chart.extension.js"></script>
   <!--   Argon JS   -->
   <script src="/assets/js/argon-dashboard.min.js?v=1.1.0"></script>
+
+  {{ script('//cdn.datatables.net/v/dt/dt-1.10.18/r-2.2.2/datatables.min.js') }}
+  {{ script('/site.js') }}
   <!--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>-->
   <!--  <script>
     window.TrackJS &&
