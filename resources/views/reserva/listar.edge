@@ -101,7 +101,20 @@
       <div class="col">
         <div class="card shadow">
           <div class="card-header border-0">
-            <h3 class="mb-0">:: {{User.firstName}} {{User.lastName}} ::</h3>
+            <h3 class="mb-0">
+              
+              <div class="media align-items-center">
+                  <a href="/clientes/info/{{dados.userID}}" class="avatar rounded-circle mr-3">
+                    @if(dados.avatar)
+                    <img alt="user" src="{{dados.avatar}}">                            
+                    @else
+                    <img alt="user" src="/assets/img/brand/user.svg">                            
+                    @endif
+                  </a>
+                  <div class="media-body">
+                    <span class="mb-0 text-sm">{{User.firstName}} {{User.lastName}}</span>
+                  </div>
+                </div></h3>
           </div>
           <div class="table-responsive">
             <table class="table align-items-center table-flush">
@@ -120,18 +133,7 @@
                 @each(dados in Table)
                 <tr>
                     <th scope="row">
-                      <div class="media align-items-center">
-                        <a href="" class="avatar rounded-circle mr-3">
-                          @if(dados.avatar)
-                          <img alt="user" src="{{dados.avatar}}">                            
-                          @else
-                          <img alt="user" src="/assets/img/brand/user.svg">                            
-                          @endif
-                        </a>
-                        <div class="media-body">
-                          <span class="mb-0 text-sm">{{dados.plano}}</span>
-                        </div>
-                      </div>
+                        {{dados.plano}}
                     </th>
                     <td>
                       {{dados.pickupdate}}

@@ -1,6 +1,7 @@
 'use strict'
 const User = use('App/Models/User')
 const Book = use('App/Models/Booking')
+const Pay = use('App/Models/Payment')
 class ClienteController {
     async lista({ view }) {
         const user = await User.all()
@@ -58,9 +59,40 @@ class ClienteController {
         })
     }
 
-    info({view}){
+    async info({view, params}){
+        const users = await User.find(params.id)
+        const user = users.toJSON()
+
+        const books = await Book
+            .query()
+            .where('user_id', user.id)
+            .fetch()
+        const book = books.toJSON()
+        console.log(book)
+
+
+        const dados = {
+            cliente: user.firstName+' '+user.lastName,
+            reservas: book.length,
+            recargas: "0",
+            firstName: user.firstName,
+            lastName: user.lastName,
+            city: user.city,
+            country: user.country,
+            email: user.email,
+            avatar: user.avatar,
+            username: user.username,
+            ativo: user.ativo,
+            street_address: user.street_address,
+            biling_address: user.biling_address,
+            zip_code: user.zip_code,
+            phone: user.phone,
+            sobreme: user.sobreme
+        }
+
         return view.render('cliente.info', {
-            Lugar: 'Info de Clientes'
+            Lugar: `Cliente Username:  ${dados.username}`,
+            User: dados
         })
     }
 }

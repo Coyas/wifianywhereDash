@@ -20,9 +20,9 @@ Route.group(() => {
 
   Route.get('/', 'HomeController.index')
 
-  // rota para clinetes
+  // rota para clientes
   Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes
-  Route.get('/clientes/info', 'ClienteController.info')//ver o perfil do cliente
+  Route.get('/clientes/info/:id', 'ClienteController.info')//ver o perfil do cliente
   
   // rotas para reservas
   Route.get('/reservas', 'ReservaController.lista')//listar todas as reservas

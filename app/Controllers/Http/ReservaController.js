@@ -80,7 +80,8 @@ class ReservaController {
                     showup: books[a].showup,
                     plano: plano.nome,
                     pickuplocation: picklocation.nome,
-                    returnlocation: returnlocation.nome
+                    returnlocation: returnlocation.nome,
+                    userID: books[a].user_id
                 } 
         }
 
