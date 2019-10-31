@@ -35,7 +35,6 @@ class UsuarioController {
     }
 
     async isactive({params}){
-        
         return "is active"
     }
 }
