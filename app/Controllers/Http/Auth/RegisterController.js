@@ -20,7 +20,9 @@ class RegisterController {
         const validation = await validateAll(request.all(), {
             username: 'required|unique:users,username',
             email: 'required|email|unique:users,email',
-            password: 'required'
+            firstName: 'required',
+            lastName: 'required',
+            access: 'required'
         })
 
         if(validation.fails()){ 
@@ -35,19 +37,31 @@ class RegisterController {
         // console.log('email:')
         // console.log(request.input('email'))
         // console.log('password:')
-        // console.log(request.input('password'))
+        console.log(request.input('access'))
+
+        const password = randomString({length: 10})
 
         const user = await User.create({
             username: request.input('username'),
+            firstName: request.input('firstName'),
+            firstName: request.input('lastName'),
             email: request.input('email'),
-            password: request.input('password'),
+            access: request.input('access'),
+            password: password,
             confirmation_token: randomString({length: 40})
         })
+        const swap = user.toJSON()
+        const dados = {
+            email: swap.email,
+            username: swap.username,
+            pass: password,
+            confirmation_token: swap.confirmation_token
+        }
 
         //send confirmation email
         console.log('sending email...')
-        await Mail.send('auth.emails.confirm_email', user.toJSON(), message => {
-            message.to(user.email)
+        await Mail.send('auth.emails.confirm_email', dados, message => {
+            message.to(dados.email)
             .from(Env.get('MAIL_USERNAME'))
             .subject('Please confirm your email address')
         })
@@ -80,7 +94,7 @@ class RegisterController {
         session.flash({
             notification: {
                 type: 'success',
-                message: 'Seu email foi confimao com sucesso'
+                message: 'Seu email foi confimado com sucesso'
             }
         })
 

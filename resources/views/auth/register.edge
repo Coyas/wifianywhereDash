@@ -1,6 +1,23 @@
-@layout('layouts.login')
+@layout('layouts.main')
 
 @section('content')
+<!-- Header -->
+<div id="idiot" class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url(/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+  <!-- Mask -->
+  <span class="mask bg-gradient-default opacity-8"></span>
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row">
+      <div class="col-lg-7 col-md-10">
+        <h1 class="display-2 text-white">{{cliente}}</h1>
+        <p class="text-white mt-0 mb-5">Aqui podes ver o progresso do utilizador feitas na plataforma</p>
+        <a href="/usuarios" class="btn btn-info"><< voltar</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Page content -->
+{{--  <div class="container-fluid mt--7">  --}}
  <!-- Page content -->
  
  <div class="container mt--8 pb-5">
@@ -8,7 +25,7 @@
     <div class="row justify-content-center">
       <div class="col-lg-6 col-md-8">
         <div class="card bg-secondary shadow border-0">
-          <div class="card-header bg-transparent pb-5">
+          <!--<div class="card-header bg-transparent pb-5">
             <div class="text-muted text-center mt-2 mb-4"><small>Sign up with</small></div>
             <div class="text-center">
               <a href="#" class="btn btn-neutral btn-icon mr-4">
@@ -20,10 +37,10 @@
                 <span class="btn-inner--text">Google</span>
               </a>
             </div>
-          </div>
+          </div>-->
           <div class="card-body px-lg-5 py-lg-5">
             <div class="text-center text-muted mb-4">
-              <small>Or sign up with credentials</small>
+              <small>Registre um utilizador</small>
             </div>
             <form role="form" action="/auth/register" method="POST">
               {{ csrfField() }}
@@ -32,7 +49,23 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                   </div>
-                  <input class="form-control {{hasErrorFor('username') ? 'is-invalid' : ''}}" name="username" placeholder="Name" type="text">
+                  <input class="form-control {{hasErrorFor('username') ? 'is-invalid' : ''}}" name="username" placeholder="Username" type="text">
+                </div>
+              </div>
+              <div class="form-group {{hasErrorFor('firstName') ? 'has-danger' : ''}}">
+                <div class="input-group input-group-alternative mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="ni ni-single-02"></i></span>
+                  </div>
+                  <input class="form-control {{hasErrorFor('firstName') ? 'is-invalid' : ''}}" name="firstName" placeholder="firstName" type="text">
+                </div>
+              </div>
+              <div class="form-group {{hasErrorFor('lastName') ? 'has-danger' : ''}}">
+                <div class="input-group input-group-alternative mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="ni ni-single-02"></i></span>
+                  </div>
+                  <input class="form-control {{hasErrorFor('lastName') ? 'is-invalid' : ''}}" name="lastName" placeholder="lastName" type="text">
                 </div>
               </div>
               <div class="form-group">
@@ -44,13 +77,21 @@
                 </div>
               </div>
               <div class="form-group">
+                <div class="input-group input-group-alternative mb-3">
+                  <select class="form-control" name="access" id="">
+                    <option value="2">Gestor</option>
+                    <option value="3">Administrador</option>
+                  </select>
+                </div>
+              </div>
+              <!--<div class="form-group">
                 <div class="input-group input-group-alternative">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                   </div>
                   <input class="form-control {{hasErrorFor('password') ? 'alert-danger' : ''}}" name="password" placeholder="Password" type="password">
                 </div>
-              </div>
+              </div>-->
               <div class="text-muted font-italic"><small>password strength: <span class="text-success font-weight-700">strong</span></small></div>
               <div class="row my-4">
                 <div class="col-12">

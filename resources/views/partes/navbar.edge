@@ -39,7 +39,7 @@
             </a>
             <a href="./examples/profile.html" class="dropdown-item">
               <i class="ni ni-settings-gear-65"></i>
-              <span>Settings</span>
+              <span>Mudar senha</span>
             </a>
             <a href="/user/logs/{{auth.user.id}}" class="dropdown-item">
               <i class="ni ni-calendar-grid-58"></i>
@@ -110,8 +110,13 @@
         <!-- Navigation -->
         <ul class="navbar-nav mb-md-3">
             @if(auth.user.access > 2)
+            <li class="nav-item">
+              <a class="nav-link" href="/usuarios" >
+                <i class="ni ni-single-02 "></i> Utilizadores
+              </a>
+            </li>
               <li class="nav-item">
-                <a class="nav-link" href="" target="_blank">
+                <a class="nav-link" href="" >
                   <i class="ni ni-settings text-red"></i> Website
                 </a>
               </li>
@@ -132,7 +137,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="http://wifi.innovatmedialab.com">
+            <a class="nav-link" href="http://wifi.innovatmedialab.com" target="_blank">
               <i class="ni ni-ui-04"></i> Ir para site
             </a>
           </li>

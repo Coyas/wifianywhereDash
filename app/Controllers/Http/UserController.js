@@ -50,6 +50,8 @@ class UserController {
             Lugar: 'Atividades'
         })
     }
+
+    
 }
 
 module.exports = UserController

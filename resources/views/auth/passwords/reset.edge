@@ -1,34 +1,48 @@
-@layout('layouts.main')
+@layout('layouts.login')
 
 @section('content')
 
-  @include('includes.notification')
-  <h1>Reset Password</h1>
-  <form action="/password/reset" method="POST">
-    {{ csrfField() }}
-
-    <input type="hidden" name="token" value="{{ token }}">
-
-    <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" name="email" class="form-control {{hasErrorFor('email') ? 'alert-danger' : ''}}" value="{{ old('email', '')}}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-        {{ elIf('<small id="emailHelp" class="form-text  text-danger">$self</small>', getErrorFor('email'), hasErrorFor('email'))}}
-      </div>
-    
-  
-    <div class="form-group">
-      <label for="exampleInputEmail1">Password</label>
-      <input type="password" name="password" class="form-control {{hasErrorFor('password') ? 'alert-danger' : ''}}" value="{{ old('password', '')}}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="enter your password">
-      {{ elIf('<small id="emailHelp" class="form-text  text-danger">$self</small>', getErrorFor('password'), hasErrorFor('password'))}}
-    </div>
-
-    <div class="form-group">
-        <label for="exampleInputEmail1">confirmar password</label>
-        <input type="password" name="password_confirmation" class="form-control {{hasErrorFor('password_confirmation') ? 'alert-danger' : ''}}" value="{{ old('password_confirmation', '')}}" id="exampleInputpassword_confirmation1" aria-describedby="password_confirmationHelp" placeholder="Enter password_confirmation">
-        {{ elIf('<small id="password_confirmationHelp" class="form-text  text-danger">$self</small>', getErrorFor('password_confirmation'), hasErrorFor('password_confirmation'))}}
-      </div>
-    
-    <button type="submit" class="btn btn-primary">Reset Password</button>
-  </form>
-
+        <!-- Page content -->
+        <div class="container mt--8 pb-5">
+          <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+              <div class="card bg-secondary shadow border-0">
+             
+                <div class="card-body px-lg-5 py-lg-5">
+                  <div class="text-center text-muted mb-4">
+                    <small>Reset Password</small>
+                  </div>
+                  <form action="/password/reset" method="POST">
+                    {{ csrfField() }}
+                
+                    <input type="hidden" name="token" value="{{ token }}">
+                
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" name="email" class="form-control {{hasErrorFor('email') ? 'alert-danger' : ''}}" value="{{ old('email', '')}}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        {{ elIf('<small id="emailHelp" class="form-text  text-danger">$self</small>', getErrorFor('email'), hasErrorFor('email'))}}
+                      </div>
+                    
+                  
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Password</label>
+                      <input type="password" name="password" class="form-control {{hasErrorFor('password') ? 'alert-danger' : ''}}" value="{{ old('password', '')}}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="enter your password">
+                      {{ elIf('<small id="emailHelp" class="form-text  text-danger">$self</small>', getErrorFor('password'), hasErrorFor('password'))}}
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">confirmar password</label>
+                        <input type="password" name="password_confirmation" class="form-control {{hasErrorFor('password_confirmation') ? 'alert-danger' : ''}}" value="{{ old('password_confirmation', '')}}" id="exampleInputpassword_confirmation1" aria-describedby="password_confirmationHelp" placeholder="Enter password_confirmation">
+                        {{ elIf('<small id="password_confirmationHelp" class="form-text  text-danger">$self</small>', getErrorFor('password_confirmation'), hasErrorFor('password_confirmation'))}}
+                      </div>
+                    
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Reset Password</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 @endsection

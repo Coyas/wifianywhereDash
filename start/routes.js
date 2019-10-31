@@ -35,38 +35,42 @@ Route.group(() => {
   Route.put('/user/:id', 'UserController.editar')
   Route.get('/user/logs/:id', 'UserController.logs')
 
+   // rotas de  signup
+  Route.get('/auth/register', 'Auth/RegisterController.showform')
+
+  Route.post('/auth/register', 'Auth/RegisterController.register') 
+
+  Route.get('/usuarios', 'UsuarioController.index')
+
+
+  // logout
+  Route.get('logout', 'Auth/AuthenticatedController.logout')
+
+  Route.get('/usuarios/isactive', 'UsuarioController.isactive') 
+
 }).middleware(['auth'])
 
-Route.group(() => {
-  // rotas de autenticacao e signup
-
-  Route.get('/auth/register', 'Auth/RegisterController.showform')
+Route.group(() => { 
   // login
   Route.get('/auth/login', 'Auth/LoginController.showformlogin')
 
 }).middleware(['authendicated'])
 
+  // reset password by email
+  Route.get('password/reset', 'Auth/PasswordResetController.showLinkRequestForm')
 
+  Route.post('password/email', 'Auth/PasswordResetController.sendResetLinkEmail')
 
-Route.post('/auth/register', 'Auth/RegisterController.register') 
+  // reset password token
+  Route.get('password/reset/:token', 'Auth/PasswordResetController.showResetForm')
+
+  Route.post('password/reset', 'Auth/PasswordResetController.reset')
 
 // confirmacao de email
 Route.get('register/confirm/:token', 'Auth/RegisterController.confirmEmail')
 
 Route.post('/auth/login', 'Auth/LoginController.login')
 
-// logout
-Route.get('logout', 'Auth/AuthenticatedController.logout')
-
-// reset passwor by email
-Route.get('password/reset', 'Auth/PasswordResetController.showLinkRequestForm')
-
-Route.post('password/email', 'Auth/PasswordResetController.sendResetLinkEmail')
-
-// reset password token
-Route.get('password/reset/:token', 'Auth/PasswordResetController.showResetForm')
-
-Route.post('password/reset', 'Auth/PasswordResetController.reset')
 
 
 /**
