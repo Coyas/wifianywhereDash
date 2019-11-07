@@ -7,4 +7,18 @@
   margin: 0 auto;
 }
 
+#infore .card-body {
+  margin-left: 2%;
+}
+
+#reservainfo div label {
+  color: #32325d;
+}
+#reservainfo div p {
+  margin-left: 2%;
+}
+#reservainfo img {
+  width: 100%;
+}
+
 /*# sourceMappingURL=site.css.map */

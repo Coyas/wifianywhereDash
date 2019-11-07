@@ -7,4 +7,24 @@
 #calendar {
     max-width: 900px;
     margin: 0 auto;
-  }
+}
+
+#infore {
+    .card-body {
+        margin-left: 2%;
+    }
+}
+
+#reservainfo {
+    div {
+        label {
+            color: #32325d;
+        }
+        p {
+            margin-left: 2%;
+        }
+    }
+    img {
+        width: 100%;
+    }
+}

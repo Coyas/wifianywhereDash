@@ -1,5 +1,90 @@
 @layout('layouts.main')
 
 @section('content')
-ola mundo info
+<!-- Header -->
+<div id="idiot" class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url(/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+  <!-- Mask -->
+  <span class="mask bg-gradient-default opacity-8"></span>
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row">
+      <div class="col-lg-7 col-md-10">
+        @if(dados.showup && dados.devolver)
+          <a class="btn btn-secondary">Finalizado</a>
+        @elseif(dados.showup && !dados.devolver)
+          <a href="" class="btn btn-warning">Devolver</a>
+        @elseif(!dados.showup && !dados.devolver)
+          <a href="" class="btn btn-primary">Por pegar</a>
+        @else
+          <a href="mailto:adidas.coyas@gmail.com">
+            <i class="bg-warning"></i> Contate-nos...
+          </a>
+        @endif 
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div id="infore" class="card shadow">
+          <div class="card-header border-0">
+            <h3 class="mb-0">Reserva: {{dados.id}}</h3>
+          </div>
+
+          <div id="reservainfo" class="card-body">
+            <div class="row">
+              <div class="col-md-4">
+                <div>
+                  <label for="">Nome</label>
+                  <p>{{dados.nome}}</p>
+                </div>
+                <div>
+                  <label for="">Pick-up Date</label>
+                  <p>{{dados.pickupDate}}</p>
+                </div>
+                <div>
+                  <label for="">Drop-off Date</label>
+                  <p>{{dados.returnDate}}</p>
+                </div>
+                <div>
+                  <label for="">Chosen Plan</label>
+                  <p>{{dados.Plano}} ({{dados.megas}})</p>
+                </div>
+                <div>
+                  <label for="">Phone Number</label>
+                  <p>{{dados.phone}}</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div>
+                  <label for="">Pick-up Location</label>
+                  <p>{{dados.picklocation}}</p>
+                </div>
+                <div>
+                  <label for="">Drop-off Location</label>
+                  <p>{{dados.droplocation}}</p>
+                </div>
+                <div>
+                  <label for="">Despositivo Number</label>
+                  <p>{{dados.device}}</p>
+                </div>
+                <div>
+                  <label for="">Custo</label>
+                  <p>{{dados.total}}$00</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <figure>
+                  <img src="{{dados.qrcode}}" alt="QRCODE">
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 @endsection

@@ -4,6 +4,7 @@ const Book = use('App/Models/Booking')
 const Pay = use('App/Models/Payment')
 const Plan = use('App/Models/Plan')
 const Place = use('App/Models/Place')
+const Device = use('App/Models/Device')
 class ReservaController {
     async lista({view}){
         const book = await Book.query().fetch()
@@ -165,9 +166,52 @@ class ReservaController {
         })
     } 
 
-    info({view, params}){
-        return view.render('reserva.info')
+    async info({view, params}){
+        const book = await Book.find(params.id)
+        const books = book.toJSON()
+
+        // console.log(books)
+
+        const plano = await Plan.find(books.plano_id)
+        const users = await User.find(books.user_id)
+        const picklocation = await Place.find(books.pickuplocation_id)
+        const droplocation = await Place.find(books.returnlocation_id)
+        const pay = await Pay.findBy('booking_id', books.id)
+        const device = await Device.find(books.device_id)
+        // console.log(pay)
+
+        const aq = books.pickupdate
+        const rq = books.returnday
+
+        var local = new Date(aq);
+        local.setMinutes( aq.getMinutes() - aq.getTimezoneOffset() )
+        const data = local.toJSON().slice(0, 10)
+
+        var local2 = new Date(rq);
+        local2.setMinutes( rq.getMinutes() - rq.getTimezoneOffset() )
+        const data2 = local2.toJSON().slice(0, 10)
+
+        const info = {
+            id: books.id,
+            nome: users.firstName + ' ' + users.lastName,
+            pickupDate: data,
+            returnDate: data2,
+            Plano: plano.nome,
+            megas: plano.megas,
+            phone: users.phone,
+            picklocation: picklocation.nome,
+            droplocation: droplocation.nome,
+            total: pay.valor,
+            qrcode: books.qrcode,
+            showup: books.showup,
+            devolver: books.devolver,
+            device: device.numero
+        }
+
+        return view.render('reserva.info', {
+            dados: info
+        })
     }
 }
-
+ 
 module.exports = ReservaController

@@ -27,7 +27,7 @@ Route.group(() => {
   // rotas para reservas
   Route.get('/reservas', 'ReservaController.lista')//listar todas as reservas
   Route.get('/reservas/:id', 'ReservaController.listar')//listar uma reserva especifica
-  Route.get('/reservas/info/:id', 'ReservaController.info')//ver os detalhes de uma reserva especifica
+  Route.get('/reservas/info/:id', 'ReservaController.info')//ver os detalhes de uma reserva especifica id reserva
 
   
   // rotas para usuarios
