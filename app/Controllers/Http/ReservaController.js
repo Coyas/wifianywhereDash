@@ -5,8 +5,78 @@ const Pay = use('App/Models/Payment')
 const Plan = use('App/Models/Plan')
 const Place = use('App/Models/Place')
 class ReservaController {
-    lista({view}){
-        return view.render('reserva.lista')
+    async lista({view}){
+        const book = await Book.query().fetch()
+        const books = book.toJSON()
+        const pay = await Pay
+        .query()
+        .sum('valor as total')
+
+        /**
+         * objecto com dados das cards
+         */
+        const cards = {
+            reservas: books.length,
+            resper: "0.00",
+            recargas: "0",
+            recper: "0.00",
+            performance: "00",
+            perper: "00",
+            gastos: pay[0].total,
+            gper: "00"
+        }
+
+        /**
+         * objecto que contem as reservas
+         */
+
+
+        
+        let dadosbook = []
+        for(var a=0; a < books.length; a++){
+
+            const user = await User.find(books[a].user_id)
+            const users = user.toJSON()
+
+            let plan = await Plan.find(books[a].plano_id)
+            let plano = plan.toJSON()
+            let picklocations = await Place.find(books[a].pickuplocation_id)
+            let picklocation = picklocations.toJSON()
+            let returnlocations = await Place.find(books[a].returnlocation_id)
+            let returnlocation = returnlocations.toJSON()
+
+            const aq = books[a].pickupdate
+            const rq = books[a].returnday
+
+            var local = new Date(aq);
+            local.setMinutes( aq.getMinutes() - aq.getTimezoneOffset() )
+            const data = local.toJSON().slice(0, 10)
+
+            var local2 = new Date(rq);
+            local2.setMinutes( rq.getMinutes() - rq.getTimezoneOffset() )
+            const data2 = local2.toJSON().slice(0, 10)
+            
+            dadosbook[a] = {
+                id: books[a].id,
+                avatar: users.avatar,
+                nome: users.firstName + ' ' + users.lastName,
+                pickupdate: data,
+                returndate: data2,
+                devolver: books[a].devolver,
+                showup: books[a].showup,
+                plano: plano.nome,
+                pickuplocation: picklocation.nome,
+                returnlocation: returnlocation.nome,
+                userID: books[a].user_id
+            } 
+        }
+
+        // console.log(dadosbook)
+
+        return view.render('reserva.lista', {
+            Table: dadosbook,
+            Cards: cards
+        })
     }
 
     async listar({view, params}){
@@ -93,7 +163,7 @@ class ReservaController {
             Cards: cards,
             Table: dadosbook
         })
-    }
+    } 
 
     info({view, params}){
         return view.render('reserva.info')
