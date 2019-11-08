@@ -1019,10 +1019,11 @@ var OrdersChart = (function() {
         }
       },
       data: {
-        labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        // labels: ['Dez', 'Jan', 'Fev', 'Mar', 'Mai', 'Jun'],
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
         datasets: [{
           label: 'Sales',
-          data: [25, 20, 30, 22, 17, 29]
+          data: [25, 20, 30, 22, 17, 29, 15, 19, 21, 10, 25, 23]
         }]
       }
     });
@@ -1051,7 +1052,7 @@ var OrdersChart = (function() {
 
 var SalesChart = (function() {
 
-  // Variables
+  // Variables 
 
   var $chart = $('#chart-sales');
 
@@ -1097,10 +1098,11 @@ var SalesChart = (function() {
         }
       },
       data: {
-        labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        // labels: ['Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
         datasets: [{
           label: 'Performance',
-          data: [0, 20, 10, 30, 15, 40, 20, 60, 60]
+          data: [0, 20, 10, 30, 15, 40, 20, 60, 60, 10, 15, 19]
         }]
       }
     });
