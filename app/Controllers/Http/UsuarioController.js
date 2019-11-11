@@ -3,7 +3,7 @@ const User = use('App/Models/User')
 
 class UsuarioController {
     async index({view}){
-        const user = await User.all()
+        const user = await User.query().where('access', '>', 1).fetch()
         const users = user.toJSON()
         /**
          * objeto para listar clientes
