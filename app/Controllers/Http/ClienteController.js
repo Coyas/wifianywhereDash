@@ -4,7 +4,7 @@ const Book = use('App/Models/Booking')
 const Pay = use('App/Models/Payment')
 class ClienteController {
     async lista({ view }) {
-        const user = await User.all()
+        const user = await User.query().where('access', '=', 1).fetch()// um usuario de nivel maior que 1 pode ser um cliente?
         const users = user.toJSON()
 
         const book = await Book.all()
