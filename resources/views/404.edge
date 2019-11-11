@@ -1,1 +1,33 @@
-404 pagina not found
+@layout('layouts.main')
+
+@section('content')
+<!-- Header -->
+<div id="idiot" class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url(/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+    <!-- Mask -->
+    <span class="mask bg-gradient-default opacity-8"></span>
+    <!-- Header container -->
+    <div class="container-fluid d-flex align-items-center">
+      <div class="row">
+        <div class="col-lg-7 col-md-10">
+            <a href="/" id="pper" class="btn btn-primary">Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Page content -->
+<div class="container mt--8 pb-5">
+        <div class="row justify-content-center">
+          <div class="col-lg-5 col-md-7">
+            <div class="card bg-secondary shadow border-0">
+           
+              <div class="card-body px-lg-5 py-lg-5">
+                <div class="text-center text-muted mb-4">
+                  <small>Pagina Nao Encontrada</small>
+                </div>
+                <h1 style="font-size: 6rem;" class="text-center">404</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+@endsection

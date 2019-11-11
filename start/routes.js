@@ -85,9 +85,9 @@ Route.post('/auth/login', 'Auth/LoginController.login')
 Route.any('*', async ({ view, response}) => {
       
     // return view.render('main')
-    return response.status(404).send('404 page')
-    // if(response.status(404)){
-    //   return view.render('404')
-    // }
+    // return response.status(404).send('404 page')
+    if(response.status(404)){
+      return view.render('404')
+    }
   
   })
