@@ -1,5 +1,7 @@
 'use strict'
 const User = use('App/Models/User')
+const { validate, validateAll } = use('Validator')
+const Hash = use('Hash')
 
 class UserController {
     async index({view, params, auth}){
@@ -45,10 +47,59 @@ class UserController {
     }
 
     async logs({view, params}){
-
+        
         return view.render('user/logs', {
             Lugar: 'Atividades'
         })
+    }
+
+    mudarsenha({view, params, auth}){
+        if(params.id != auth.user.id) {
+            return view.render('404')
+        }
+        
+        return view.render('user/senha', {
+            Lugar: 'Atividades'
+        })
+    }
+
+    async guardarsenha({request, response, session, auth}) {
+        const dados = request.all()
+        // validar campos de formulario
+        const validation = await validateAll(request.all(), {
+            old_password: 'required',
+            password: 'required|confirmed'
+        }) 
+
+        // retrieve user base on the form data
+        const user = await User.query()
+        .where('email', auth.user.email)
+        .where('is_active', true)
+        .where('access', '>', 1)// todos com acesso maior q 1 podem entrar no backoffice
+        .first()
+        
+        if(validation.fails()){
+            session.withErrors(validation.messages()).flashExcept(['password', 'password_confirmation'])
+
+            return response.redirect('back')
+        }
+
+        const passwordVerified = await Hash.verify(dados.old_password, user.password)
+
+        if(passwordVerified){
+            const safePassword = await Hash.make(dados.password)
+
+            const atualUser = await User.find(auth.user.id)
+            atualUser.password = safePassword
+
+            await atualUser.save()
+            
+            // response.send(`passwordVerified: ${passwordVerified} /n password: ${safePassword}`)
+            response.redirect(`/user/${auth.user.id}`)
+        }else {
+            response.redirect('back')
+        }
+
     }
 
     

@@ -34,8 +34,10 @@ Route.group(() => {
   Route.get('/user/:id', 'UserController.index')
   Route.put('/user/:id', 'UserController.editar')
   Route.get('/user/logs/:id', 'UserController.logs')
+  Route.get('/user/senha/:id', 'UserController.mudarsenha')
+  Route.post('/user/senha/:id', 'UserController.guardarsenha')
 
-   // rotas de  signup
+  // rotas de  signup
   Route.get('/auth/register', 'Auth/RegisterController.showform')
 
   Route.post('/auth/register', 'Auth/RegisterController.register') 

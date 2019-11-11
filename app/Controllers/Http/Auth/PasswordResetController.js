@@ -69,7 +69,7 @@ class PasswordResetController {
 
     showResetForm({ params, view }){
         return view.render('auth.passwords.reset', {token: params.token})
-    }
+    } 
 
     async reset ({ request, session, response}){
 
