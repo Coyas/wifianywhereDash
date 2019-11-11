@@ -72,9 +72,9 @@
                   
                   <td class="text-right">
                     @if(dados.active == 1)
-                    <a href="/usuarios/isactive" id="clienteLista" class="btn btn-sm btn-danger">Desativar</a>
+                    <a href="/usuarios/isactive/{{dados.id}}" id="clienteLista" class="btn btn-sm btn-danger">Desativar</a>
                     @else
-                    <a href="/usuarios/isactive" id="clienteLista" class="btn btn-sm btn-success">Ativar</a>
+                    <a href="/usuarios/isdesativo/{{dados.id}}" id="clienteLista" class="btn btn-sm btn-success">Ativar</a>
                     @endif
                       
                     <div class="dropdown">

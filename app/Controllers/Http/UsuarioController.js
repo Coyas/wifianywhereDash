@@ -34,8 +34,30 @@ class UsuarioController {
         })
     }
 
-    async isactive({params}){
-        return "is active"
+    async isactive({params, auth, view}){//if is active desativar
+        if(params.id == auth.user.id){//nao permite um utilizador desativar a sua propria conta
+            return view.render(404)
+        }
+        const user = await User.find(params.id)
+
+        user.is_active = 0
+        await user.save()
+
+        
+    }
+
+    async isdesativo({params, auth, view}){
+        if(params.id == auth.user.id){//nao permite um utilizador desativar a sua propria conta
+            return view.render(404)
+        }
+        console.log('user find')
+        const user = await User.find(params.id)
+
+        user.is_active = 1
+        console.log('user ativado')
+        const a = await user.save()
+        console.log('user find: '+a)
+        
     }
 }
 

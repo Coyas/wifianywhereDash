@@ -48,7 +48,8 @@ Route.group(() => {
   // logout
   Route.get('logout', 'Auth/AuthenticatedController.logout')
 
-  Route.get('/usuarios/isactive', 'UsuarioController.isactive') 
+  Route.get('/usuarios/isactive/:id', 'UsuarioController.isactive')
+  Route.get('/usuarios/isdesativo/:id', 'UsuarioController.isdesativo') 
 
 }).middleware(['auth'])
 
