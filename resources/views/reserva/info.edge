@@ -12,13 +12,11 @@
         @if(dados.showup && dados.devolver)
           <a class="btn btn-secondary">Finalizado</a>
         @elseif(dados.showup && !dados.devolver)
-          <a href="" class="btn btn-warning">Devolver</a>
+          <a href="/reservas/devolver/{{dados.id}}" class="btn btn-warning">Devolver</a>
         @elseif(!dados.showup && !dados.devolver)
-          <a href="" class="btn btn-primary">Por pegar</a>
+          <a href="/reservas/pegar/{{dados.id}}" class="btn btn-primary">Por pegar</a>
         @else
-          <a href="mailto:adidas.coyas@gmail.com">
-            <i class="bg-warning"></i> Contate-nos...
-          </a>
+          <a href="/reservas/pegar/{{dados.id}}" class="btn btn-primary">No showup</a>
         @endif 
       </div>
     </div>

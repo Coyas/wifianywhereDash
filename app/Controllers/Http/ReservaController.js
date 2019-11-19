@@ -5,8 +5,10 @@ const Pay = use('App/Models/Payment')
 const Plan = use('App/Models/Plan')
 const Place = use('App/Models/Place')
 const Device = use('App/Models/Device')
+const Momento = require('moment')
 class ReservaController {
-    async lista({view}){
+
+    async lista({view}) {
         const book = await Book.query().fetch()
         const books = book.toJSON()
         const pay = await Pay
@@ -80,7 +82,7 @@ class ReservaController {
         })
     }
 
-    async listar({view, params}){
+    async listar({view, params}) {
         const book = await Book
             .query()
             .where('user_id', params.id)
@@ -211,6 +213,28 @@ class ReservaController {
         return view.render('reserva.info', {
             dados: info
         })
+    }
+
+    async pegar({response, params}){
+        console.log(params.id)
+
+        const a = Momento().format('Y-M-D');
+        const book = await Book.find(params.id)
+        book.showup = a
+        await book.save()
+
+        response.redirect(`/reservas/info/${book.id}`)
+    }
+
+    async devolver({response, params}){
+        console.log(params.id)
+
+        const a = Momento().format('Y-M-D');
+        const book = await Book.find(params.id)
+        book.devolver = a
+        await book.save()
+
+        response.redirect(`/reservas/info/${book.id}`)
     }
 }
  

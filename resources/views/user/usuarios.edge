@@ -70,6 +70,7 @@
                     {{dados.completo}}$00
                   </td>
                   
+                  @if(dados.id != auth.user.id)
                   <td class="text-right">
                     @if(dados.active == 1)
                     <a href="/usuarios/isactive/{{dados.id}}" id="clienteLista" class="btn btn-sm btn-danger">Desativar</a>
@@ -83,6 +84,7 @@
                       </a>
                     </div>
                   </td>
+                  @endif
                 </tr>
                 @endeach
               </tbody>

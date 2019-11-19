@@ -29,6 +29,9 @@ Route.group(() => {
   Route.get('/reservas/:id', 'ReservaController.listar')//listar uma reserva especifica
   Route.get('/reservas/info/:id', 'ReservaController.info')//ver os detalhes de uma reserva especifica id reserva
 
+  Route.get('/reservas/pegar/:id', 'ReservaController.pegar')
+  Route.get('/reservas/devolver/:id', 'ReservaController.devolver')
+
   
   // rotas para usuarios
   Route.get('/user/:id', 'UserController.index')
@@ -50,6 +53,8 @@ Route.group(() => {
 
   Route.get('/usuarios/isactive/:id', 'UsuarioController.isactive')
   Route.get('/usuarios/isdesativo/:id', 'UsuarioController.isdesativo') 
+
+
 
 }).middleware(['auth'])
 

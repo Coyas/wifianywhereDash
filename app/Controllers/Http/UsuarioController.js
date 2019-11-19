@@ -34,7 +34,7 @@ class UsuarioController {
         })
     }
 
-    async isactive({params, auth, view}){//if is active desativar
+    async isactive({params, auth, view, response}){//if is active desativar
         if(params.id == auth.user.id){//nao permite um utilizador desativar a sua propria conta
             return view.render(404)
         }
@@ -43,10 +43,10 @@ class UsuarioController {
         user.is_active = 0
         await user.save()
 
-        
+        response.redirect('back')
     }
 
-    async isdesativo({params, auth, view}){
+    async isdesativo({params, auth, view, response}){
         if(params.id == auth.user.id){//nao permite um utilizador desativar a sua propria conta
             return view.render(404)
         }
@@ -58,6 +58,7 @@ class UsuarioController {
         const a = await user.save()
         console.log('user find: '+a)
         
+        response.redirect('back')
     }
 }
 
