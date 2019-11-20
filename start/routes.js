@@ -19,6 +19,7 @@ const Route = use('Route')
 Route.group(() => {
 
   Route.get('/', 'HomeController.index')
+  Route.get('/subscrito', 'HomeController.subscrito')
 
   // rota para clientes
   Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes
@@ -50,11 +51,8 @@ Route.group(() => {
 
   // logout
   Route.get('logout', 'Auth/AuthenticatedController.logout')
-
   Route.get('/usuarios/isactive/:id', 'UsuarioController.isactive')
   Route.get('/usuarios/isdesativo/:id', 'UsuarioController.isdesativo') 
-
-
 
 }).middleware(['auth'])
 

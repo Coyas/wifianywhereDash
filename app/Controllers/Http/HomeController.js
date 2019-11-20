@@ -48,6 +48,13 @@ class HomeController {
             Reservas: reservas
         })
     }
+
+    async subscrito({view, }){
+
+        return view.render('home.subscrito', {
+            Lugar: 'Dashboard'           
+        })
+    }
     
     
 }
