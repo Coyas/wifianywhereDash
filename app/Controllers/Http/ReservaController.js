@@ -226,15 +226,22 @@ class ReservaController {
         response.redirect(`/reservas/info/${book.id}`)
     }
 
-    async devolver({response, params}){
-        console.log(params.id)
+    async devolver({response, params, request}){
+        console.log('request ajax')
+        const dados = request.all()
+        console.log(request.all())
 
         const a = Momento().format('Y-M-D');
         const book = await Book.find(params.id)
-        book.devolver = a
-        await book.save()
+        if(book.device_id == dados.device_id){
+            book.devolver = a
+            await book.save()
 
-        response.redirect(`/reservas/info/${book.id}`)
+            response.redirect('back')
+        }else{
+            console.log('device nao existe')
+        }   
+
     }
 }
  

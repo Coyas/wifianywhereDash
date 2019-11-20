@@ -31,7 +31,7 @@ Route.group(() => {
   Route.get('/reservas/info/:id', 'ReservaController.info')//ver os detalhes de uma reserva especifica id reserva
 
   Route.get('/reservas/pegar/:id', 'ReservaController.pegar')
-  Route.get('/reservas/devolver/:id', 'ReservaController.devolver')
+  Route.post('/reservas/devolver/:id', 'ReservaController.devolver')
 
   
   // rotas para usuarios
