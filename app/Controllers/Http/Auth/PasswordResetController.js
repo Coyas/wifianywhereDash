@@ -73,7 +73,7 @@ class PasswordResetController {
 
     async reset ({ request, session, response}){
 
-        // validar campos de formulario
+        // validar campos de formularior
         const validation = await validateAll(request.all(), {
             token: 'required',
             email: 'required',

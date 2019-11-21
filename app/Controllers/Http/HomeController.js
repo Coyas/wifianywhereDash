@@ -52,7 +52,7 @@ class HomeController {
     async subscrito({view, }){
 
         return view.render('home.subscrito', {
-            Lugar: 'Dashboard'           
+            Lugar: 'Subscritos'       
         })
     }
     
