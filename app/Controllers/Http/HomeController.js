@@ -2,6 +2,7 @@
 const User = use('App/Models/User')
 const Book = use('App/Models/Booking')
 const Plan = use('App/Models/Plan')
+const Subs = use('App/Models/Subscribe')
 class HomeController {
     async index({ view }) {
         const book = await Book.query().fetch()
@@ -49,10 +50,23 @@ class HomeController {
         })
     }
 
-    async subscrito({view, }){
+    async subscrito({view}){
+        const sub = await Subs.all()
+        const subs = sub.toJSON()
+        let table = []
 
+        for(let i=0;i < subs.length;i++){
+            table[i] = {
+                index: i,
+                id: subs[i].id,
+                email: subs[i].email
+            }
+        }
+
+        console.log(table)
         return view.render('home.subscrito', {
-            Lugar: 'Subscritos'       
+            Lugar: 'Subscritos',
+            Table: table     
         })
     }
     
