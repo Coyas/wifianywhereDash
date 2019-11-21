@@ -3,6 +3,9 @@ const User = use('App/Models/User')
 const Book = use('App/Models/Booking')
 const Plan = use('App/Models/Plan')
 const Subs = use('App/Models/Subscribe')
+const Faq = use('App/Models/Faq')
+const { validate, validateAll } = use('Validator')
+
 class HomeController {
     async index({ view }) {
         const book = await Book.query().fetch()
@@ -10,7 +13,6 @@ class HomeController {
 
         const user = await User.query().fetch()
         const users = user.toJSON()
-
 
         const info = {
             users: users.length,
@@ -82,7 +84,49 @@ class HomeController {
         
     }
     
-    
+    async faqs({view}){
+        return view.render('faqs.index')
+    }
+
+    async novofaqs({view}){
+        return view.render('faqs.novo')
+    }
+
+    async guardarfaqs({request, session, response}){
+        const dados = request.all()
+        console.log(dados)
+        // validar campos de formulario
+        const validation = await validateAll(request.all(), {
+            title: 'required',
+            descricao: 'required'
+        }) 
+
+
+        if(validation.fails()){
+            session.withErrors(validation.messages()).flashExcept(['title', 'descricao'])
+
+            return response.redirect('back')
+        }
+
+
+        const faq = new Faq()
+        faq.title = dados.title
+        faq.descricao = dados.descricao
+        faq.lang = dados.lang
+        faq.category_id = dados.category
+        await faq.save()
+
+        response.redirect('/faqs')
+
+    }
+
+    async updatefaqs({view}){
+        return view.render('faqs.update')
+    }
+
+    async viewfaqs({view}){
+        return view.render('faqs.view')
+    }
 }
  
 module.exports = HomeController
