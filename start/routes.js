@@ -20,6 +20,7 @@ Route.group(() => {
 
   Route.get('/', 'HomeController.index')
   Route.get('/subscrito', 'HomeController.subscrito')
+  Route.get('/apagasubscrito/:id', 'HomeController.apagasubscrito')
 
   // rota para clientes
   Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes

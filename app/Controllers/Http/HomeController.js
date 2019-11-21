@@ -69,6 +69,18 @@ class HomeController {
             Table: table     
         })
     }
+
+    async apagasubscrito({params,view, response, auth}){
+        if(auth.user.access >= 3) {
+            const sub = await Subs.find(params.id)
+            await sub.delete()
+
+            response.redirect('back')
+        }else {
+            return view.render('404')
+        }
+        
+    }
     
     
 }
