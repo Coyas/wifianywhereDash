@@ -27,6 +27,7 @@ Route.group(() => {
   Route.get('/faqs/view/:id', 'HomeController.viewfaqs')
   Route.get('/faqs/update/:id', 'HomeController.updatefaqs')
   Route.put('/faqs/update/:id', 'HomeController.updatefaq')
+  Route.get('/faqs/apagar/:id', 'HomeController.apagarfaqs')
 
   Route.get('/getcategoria', 'HomeController.getcategoria')
 

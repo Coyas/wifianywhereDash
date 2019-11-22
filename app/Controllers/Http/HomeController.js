@@ -163,6 +163,9 @@ class HomeController {
         })
     }
     async updatefaq({response, request, params, session}){
+        if(auth.user.access < 3){
+            return view.render('404')
+        }
         const dados = request.all()
         console.log('update faq')
         // validar campos de formulario
@@ -206,6 +209,17 @@ class HomeController {
         }
 
 
+    }
+
+    async apagarfaqs({params, auth, response}){
+        if(auth.user.access < 3){
+            return view.render('404')
+        }
+
+        const faq = await Faq.find(params.id)
+        await faq.delete()
+
+        response.redirect('/faqs')
     }
 
     async getcategoria({request, response}){
