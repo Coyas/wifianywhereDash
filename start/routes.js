@@ -26,6 +26,7 @@ Route.group(() => {
   Route.post('/faqs/novo', 'HomeController.guardarfaqs')
   Route.get('/faqs/view/:id', 'HomeController.viewfaqs')
   Route.get('/faqs/update/:id', 'HomeController.updatefaqs')
+  Route.put('/faqs/update/:id', 'HomeController.updatefaq')
 
   // rota para clientes
   Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes

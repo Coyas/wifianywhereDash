@@ -8,12 +8,14 @@
   <!-- Header container -->
   <div class="container-fluid d-flex align-items-center">
     <div class="row">
+      @if(auth.user.access >= 3)
       <div class="col-lg-6 col-md-6">
-          <a href="/faqs/view/{{dados.id}}" class="devolver btn btn-warning">Apagar</a>      
+        <a href="/faqs/view/{{Data.id}}" class="devolver btn btn-warning">Apagar</a>      
       </div>
       <div class="col-lg-6 col-md-6">
-          <a href="/faqs/update/{{dados.id}}" class="btn btn-primary">Atualizar</a>
+          <a href="/faqs/update/{{Data.id}}" class="btn btn-primary">Atualizar</a>
       </div>
+      @endif
     </div>
   </div>
 </div>
@@ -24,39 +26,13 @@
       <div class="col">
         <div id="infore" class="card shadow">
           <div class="card-header border-0">
-            <h3 class="mb-0">Faqs Title 2</h3>
+            <h3 class="mb-0">{{Data.title}}</h3>
           </div>
 
           <div id="reservainfo" class="card-body">
             <div class="row">
               <div class="col-md-12">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                  inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                  Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                  inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                  Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                  inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                  Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                  inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                  Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                  inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                  Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                  inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                  Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                  inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                  Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                  inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                  Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                  inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                  Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
+                  {{{Data.descricao}}}
               </div>
             </div>
           </div>

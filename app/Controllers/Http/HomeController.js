@@ -4,6 +4,7 @@ const Book = use('App/Models/Booking')
 const Plan = use('App/Models/Plan')
 const Subs = use('App/Models/Subscribe')
 const Faq = use('App/Models/Faq')
+const Cat = use('App/Models/Category')
 const { validate, validateAll } = use('Validator')
 
 class HomeController {
@@ -84,15 +85,43 @@ class HomeController {
         
     }
     
-    async faqs({view}){
-        return view.render('faqs.index')
+    async faqs({view, auth}){
+        
+
+        const faq = await Faq.all()
+        const faqs = faq.toJSON()
+        let table = []
+        for(let i =0;i<faqs.length;i++){
+            let str = faqs[i].descricao
+            let res = str.substring(0, 20)
+
+            const catego = await Cat.find(faqs[i].category_id)
+
+            table[i] = {
+                index: i,
+                id: faqs[i].id,
+                title: faqs[i].title,
+                category: catego.nome,
+                lang: faqs[i].lang,
+                descricao: res+'...'
+            }
+        }
+        // console.log(table)
+        // die
+        return view.render('faqs.index', {
+            Table: table
+        })
     }
 
     async novofaqs({view}){
         return view.render('faqs.novo')
     }
 
-    async guardarfaqs({request, session, response}){
+    async guardarfaqs({request, session, response, auth}){
+        if(auth.user.access < 3){
+            return view.render('404')
+        }
+
         const dados = request.all()
         console.log(dados)
         // validar campos de formulario
@@ -103,7 +132,7 @@ class HomeController {
 
 
         if(validation.fails()){
-            session.withErrors(validation.messages()).flashExcept(['title', 'descricao'])
+            session.withErrors(validation.messages())
 
             return response.redirect('back')
         }
@@ -120,12 +149,63 @@ class HomeController {
 
     }
 
-    async updatefaqs({view}){
-        return view.render('faqs.update')
+    async updatefaqs({view, auth, params}){
+        if(auth.user.access < 3){
+            return view.render('404')
+        }
+
+        const faq = await Faq.find(params.id)
+        const faqs = faq.toJSON()
+        console.log(faqs)
+
+        return view.render('faqs.update', {
+            dados: faqs
+        })
+    }
+    async updatefaq({response, request, params, session}){
+        const dados = request.all()
+        console.log('update faq')
+        // validar campos de formulario
+        const validation = await validateAll(request.all(), {
+            title: 'required',
+            descricao: 'required'
+        }) 
+
+        console.log('update faq validation')
+        if(validation.fails()){
+            session.withErrors(validation.messages())
+            console.log('update faq validation error')
+            return response.redirect('back')
+        }
+
+        console.log('find faq')
+        const faq = await Faq.find(params.id)
+        faq.title = dados.title
+        faq.descricao = dados.descricao
+        await faq.save()
+
+        response.redirect(`/faqs/view/${params.id}`)
     }
 
-    async viewfaqs({view}){
-        return view.render('faqs.view')
+    async viewfaqs({view, params}){
+        console.log('params.id: '+params.id)
+        console.log(typeof(params.id))
+        console.log('Number: ')
+        console.log(typeof(Number()))
+        console.log(typeof(params.id) === typeof(Number()))
+        if( typeof(params.id) == typeof(String()) ){//tem de ficar integer
+
+            const faq = await Faq.find(params.id)
+            const faqs = faq.toJSON()
+            // console.log(faqs.nome)
+            return view.render('faqs.view', {
+                Data: faqs
+            })
+        }else {
+            return view.render('404')
+        }
+
+
     }
 }
  

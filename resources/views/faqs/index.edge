@@ -9,7 +9,9 @@
   <div class="container-fluid d-flex align-items-center">
     <div class="row">
       <div class="col-lg-7 col-md-10">
+        @if(auth.user.access >= 3)
         <a href="/faqs/novo" class="btn btn-info">Criar Faq</a>
+        @endif
       </div>
     </div>
   </div>
@@ -27,6 +29,7 @@
             <table id="myreservas" class="table align-items-center table-flush">
               <thead class="thead-light">
                 <tr>
+                  <th scope="col">####</th>
                   <th scope="col">Titulo</th>
                   <th scope="col">Categoria</th>
                   <th scope="col">Lingua</th>
@@ -35,41 +38,29 @@
                 </tr>
               </thead>
               <tbody>
-                @each(dados in User)
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <a href="/clientes/info/{{dados.id}}" class="avatar rounded-circle mr-3">
-                        @if(dados.avatar)
-                        <img alt="Image placeholder" src="{{dados.avatar}}">  
-                        @else
-                        <img alt="user" src="/assets/img/brand/user.svg">
-                        @endif
-                      </a>
-                      <div class="media-body">
-                        <span class="mb-0 text-sm">{{dados.nome}}</span>
-                      </div>
-                    </div>
-                  </th>
+                @each(dados in Table)
                   <td>
-                    <span class="badge badge-dot mr-4">
-                      {{{dados.estado}}}
-                    </span>
+                    # {{dados.index}}
                   </td>
                   <td>
-                    {{dados.reservas}}
+                    
+                      {{{dados.title}}}
+                    
+                  </td>
+                  <td>
+                    {{dados.category}}
                   </td>
                   
                   <td>
-                    {{dados.recargas}}
+                    {{dados.lang}}
                   </td>
                   <td>
-                    {{dados.completo}}$00
+                    {{dados.descricao}}
                   </td>
                   
                   
                   <td class="text-right">
-                    <a href="/usuarios/isdesativo/{{dados.id}}" id="clienteLista" class="btn btn-sm btn-success">Ativar</a>
+                    <a href="/faqs/view/{{dados.id}}" id="clienteLista" class="btn btn-sm btn-primary">detalhes</a>
                       
                     <div class="dropdown">
                       <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

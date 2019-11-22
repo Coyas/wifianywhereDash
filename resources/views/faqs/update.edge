@@ -8,7 +8,8 @@
   <!-- Header container -->
   <div class="container-fluid d-flex align-items-center">
     <div class="row">
-    <form action="" method="POST">
+    <form action="{{ '/faqs/update/' + dados.id + '?_method=PUT' }}" method="POST">
+      {{ csrfField() }}
       <div class="col-lg-7 col-md-10">
           <input type="submit" class="btn btn-primary" value="Guardar">
       </div>
@@ -26,41 +27,15 @@
 
               
             <h3 class="mb-0">
-                <input type="text" name="title" value="Faqs Title 2" class="form-controll">
+                <input type="text" name="title" value="{{dados.title}}" class="form-controll">
             </h3>
           </div>
 
           <div id="reservainfo" class="card-body">
             <div class="row">
               <div class="col-md-12">
-                  <textarea name="desc" id="" cols="125" rows="10">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                        inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                        Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                        inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                        Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                        inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                        Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                        inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                        Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                        inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                        Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                        inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                        Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                        inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                        Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                        inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                        Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores illum possimus 
-                        inventore, et voluptates, deleniti earum repudiandae iste ad neque suscipit laborum? 
-                        Distinctio reprehenderit repudiandae at sunt laudantium architecto odio?
+                  <textarea name="descricao" id="" cols="125" rows="10">
+                        {{dados.descricao}}
                   </textarea>
               </div>
             </form>
