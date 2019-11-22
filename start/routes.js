@@ -15,6 +15,7 @@
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
+const Helpers = use('Helpers')
 
 Route.group(() => {
 
@@ -28,6 +29,29 @@ Route.group(() => {
   Route.get('/faqs/update/:id', 'HomeController.updatefaqs')
   Route.put('/faqs/update/:id', 'HomeController.updatefaq')
   Route.get('/faqs/apagar/:id', 'HomeController.apagarfaqs')
+
+
+  Route.post('/upload', async ({ request, response }) => {
+    console.log('fazendo upload')
+    const profilePic = request.file('profile_pic', {
+      types: ['image'],
+      size: '10mb'
+    })
+
+    // {
+    //   name: 'custom-name.jpg',
+    //   overwrite: true
+    // }
+    console.log('movendo a pasta upload')
+    await profilePic.move(Helpers.publicPath('/upload'))
+
+    if (!profilePic.moved()) {
+      console.log('nao foi movido')
+      return profilePic.error()
+    }
+    console.log('movendo a pasta upload com sucesso')
+    response.redirect('back')
+  })
 
   Route.get('/getcategoria', 'HomeController.getcategoria')
 
