@@ -207,6 +207,28 @@ class HomeController {
 
 
     }
+
+    async getcategoria({request, response}){
+        const dados = request.all()
+        console.log(dados.lang)
+        
+        const catego = await Cat.query().where('lang', dados.lang).fetch()
+        // console.log(catego)
+        // const cat = catego.toJSON()
+        if(catego){
+            // let data = []
+            // for(let i = 0; i < cat.length;i++){
+            //     data[i]
+            // }
+            response.json(catego)
+        }else{
+            const data2 = {
+
+            }
+            response.json(data2)
+        }
+        
+    }
 }
  
 module.exports = HomeController

@@ -28,6 +28,8 @@ Route.group(() => {
   Route.get('/faqs/update/:id', 'HomeController.updatefaqs')
   Route.put('/faqs/update/:id', 'HomeController.updatefaq')
 
+  Route.get('/getcategoria', 'HomeController.getcategoria')
+
   // rota para clientes
   Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes
   Route.get('/clientes/info/:id', 'ClienteController.info')//ver o perfil do cliente

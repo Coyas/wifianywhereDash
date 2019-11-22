@@ -24,22 +24,28 @@
         <div id="infore" class="card shadow">
           <div class="card-header border-0">
             
-
-              
-            <h3 class="mb-0">
-                <input type="text" name="title" value="{{dados.title}}" class="form-controll">
-            </h3>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label class="form-control-label" for="input-address">Titulo</label>
+                <input type="text" id="input-username" name="title" value="{{dados.title}}" class="form-control form-control-alternative  {{ hasErrorFor('title') ? 'alert-danger' : ''}}" >
+              </div>
+            </div>
           </div>
 
+          
+
           <div id="reservainfo" class="card-body">
-            <div class="row">
-              <div class="col-md-12">
-                  <textarea name="descricao" id="" cols="125" rows="10">
-                        {{dados.descricao}}
-                  </textarea>
+
+              
+            
+              <div class="pl-lg-12">
+                <div class="form-group">
+                  <label>Descreve</label>
+                <textarea name="descricao" rows="15" class="form-control form-control-alternative  {{ hasErrorFor('title') ? 'alert-danger' : ''}}" placeholder="Algumas palavras sobre esta questao ...">{{dados.descricao}}</textarea>
+                </div>
               </div>
             </form>
-            </div>
+
           </div>
         </div>
       </div>
