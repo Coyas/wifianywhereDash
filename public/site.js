@@ -6,7 +6,20 @@ $('#myreservas').DataTable({
 
 
 
+
 })
+const realFile = document.getElementById('real_file');
+const fakeFilebtn = document.getElementById('fakefile');
+
+fakeFilebtn.addEventListener("click", function() {
+  realFile.click();
+  
+  realFile.onchange = function () {
+    document.getElementById('file_form').submit()
+    
+  };
+})
+
 
 $('#devolver').click(function(){
 

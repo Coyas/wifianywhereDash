@@ -29,4 +29,12 @@
   padding: 0 !important;
 }
 
+input[type=file] {
+  display: none;
+}
+
+#fakefile {
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=site.css.map */

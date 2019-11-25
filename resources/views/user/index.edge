@@ -32,19 +32,20 @@
                   <div class="row justify-content-center">
                     <div class="col-lg-3 order-lg-2">
                       <div class="card-profile-image">
-                          <form method="POST" action="/upload" enctype="multipart/form-data">
+                          <form id="file_form" method="POST" action="/upload" enctype="multipart/form-data">
                             {{ csrfField() }}
-                            <input type="file" name="profile_pic" />
-                            <button type="submit"> Submit </button>
+                            <input type="file" id="real_file" name="profile_pic" />
+                            <a for="file" id="fakefile"> 
+                                <!--/assets/img/theme/team-4-800x800.jpg-->
+                                @if(auth.user.avatar)
+                                <img src="{{auth.user.avatar}}" class="rounded-circle">
+                                @else
+                                <img src="/assets/img/brand/user.svg" class="rounded-circle" width="200" height="200">  
+                                @endif
+                            </a>
+                            
                           </form>
-                        <a href="#">
-                          <!--/assets/img/theme/team-4-800x800.jpg-->
-                          @if(auth.user.avatar)
-                          <img src="{{auth.user.avatar}}" class="rounded-circle">
-                          @else
-                          <img src="/assets/img/brand/user.svg" class="rounded-circle" width="200" height="200">  
-                          @endif
-                        </a>
+                        
                       </div>
                     </div>
                   </div>
