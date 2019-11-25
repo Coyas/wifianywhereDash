@@ -137,6 +137,13 @@
               <i class="ni ni-ui-04"></i> Ir para site
             </a>
           </li>
+          @if(auth.user.access > 3)
+          <li class="nav-item">
+            <a class="nav-link text-center">
+              <input id="siteStatus" type="checkbox" {{config.online == 1 ? "checked" : " "}}  data-toggle="toggle">
+            </a>
+          </li>
+          @endif
         </ul>
       </div>
     </div>

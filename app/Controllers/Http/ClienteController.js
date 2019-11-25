@@ -2,8 +2,10 @@
 const User = use('App/Models/User')
 const Book = use('App/Models/Booking')
 const Pay = use('App/Models/Payment')
+const Config = use('App/Models/Config')
 class ClienteController {
     async lista({ view }) {
+        const config = await Config.find(1)
         const user = await User.query().where('access', '=', 1).fetch()// um usuario de nivel maior que 1 pode ser um cliente?
         const users = user.toJSON()
 
@@ -55,11 +57,13 @@ class ClienteController {
         return view.render('cliente.lista', {
             Lugar: 'Lista de Clientes',
             User: Users,
-            Cards: cards
+            Cards: cards,
+            config: config
         })
     }
 
     async info({view, params}){
+        const config = await Config.find(1)
         const users = await User.find(params.id)
         const user = users.toJSON()
 
@@ -92,7 +96,8 @@ class ClienteController {
 
         return view.render('cliente.info', {
             Lugar: `Cliente Username:  ${dados.username}`,
-            User: dados
+            User: dados,
+            config: config
         })
     }
 }

@@ -84,6 +84,7 @@ Route.group(() => {
   })
 
   Route.get('/getcategoria', 'HomeController.getcategoria')
+  Route.get('/siteconfig', 'HomeController.siteconfig')
 
   // rota para clientes
   Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes

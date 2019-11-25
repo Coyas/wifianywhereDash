@@ -1,13 +1,59 @@
 $(document).ready(function(){
 // iniciando o datatable
-$('#myreservas').DataTable({
-  // responsive: true
-});
+  $('#myreservas').DataTable({
+    // responsive: true
+  });
 
-
-
+  $('#siteStatus').change(function() 
+  {
+    if(this.checked == true)
+    {
+      // alert('site online');
+      let data = {
+        status: 1
+      }
+    
+      $.ajax({
+        type: "GET",
+        url: "/siteconfig",
+        data: data,
+        dataType: 'json',
+        success: (ok) => {
+          // console.log('listar...')
+          console.log(ok);  
+          
+        },
+        error: (res) => {
+          console.log(res);
+          
+        }
+      });
+    }else{
+      // alert('site offline');
+      let data = {
+        status: 0
+      }
+    
+      $.ajax({
+        type: "GET",
+        url: "/siteconfig",
+        data: data,
+        dataType: 'json',
+        success: (ok) => {
+          // console.log('listar...')
+          console.log(ok);  
+          
+        },
+        error: (res) => {
+          console.log(res);
+          
+        }
+      });
+    }
+  });
 
 })
+
 const realFile = document.getElementById('real_file');
 const fakeFilebtn = document.getElementById('fakefile');
 

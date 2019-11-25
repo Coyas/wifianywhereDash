@@ -2,10 +2,11 @@
 const User = use('App/Models/User')
 const { validate, validateAll } = use('Validator')
 const Hash = use('Hash')
+const Config = use('App/Models/Config')
 
 class UserController {
     async index({view, params, auth}){
-
+        const config = await Config.find(1)
         const user = await User.find(params.id)
 
         // se nao existe manda para 404
@@ -15,7 +16,8 @@ class UserController {
         return view.render('user/index', {
             Lugar: 'Perfil',
             paraid: params.id,//id do usuario listado
-            User: user
+            User: user,
+            config: config
         })
     }
 
@@ -47,9 +49,10 @@ class UserController {
     }
 
     async logs({view, params}){
-        
+        const config = await Config.find(1)
         return view.render('user/logs', {
-            Lugar: 'Atividades'
+            Lugar: 'Atividades',
+            config: config
         })
     }
 
@@ -57,9 +60,11 @@ class UserController {
         if(params.id != auth.user.id) {
             return view.render('404')
         }
+        const config = await Config.find(1)
         
         return view.render('user/senha', {
-            Lugar: 'Atividades'
+            Lugar: 'Atividades',
+            config: config
         })
     }
 

@@ -1,8 +1,10 @@
 'use strict'
 const User = use('App/Models/User')
+const Config = use('App/Models/Config')
 
 class UsuarioController {
     async index({view}){
+        const config = await Config.find(1)
         const user = await User.query().where('access', '>', 1).fetch()
         const users = user.toJSON()
         /**
@@ -30,7 +32,8 @@ class UsuarioController {
         }
         return view.render('user/usuarios', {
             Lugar: 'Usuarios',
-            User: Users
+            User: Users,
+            config: config
         })
     }
 

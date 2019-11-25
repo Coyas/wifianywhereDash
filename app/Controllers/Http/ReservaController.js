@@ -6,9 +6,11 @@ const Plan = use('App/Models/Plan')
 const Place = use('App/Models/Place')
 const Device = use('App/Models/Device')
 const Momento = require('moment')
+const Config = use('App/Models/Config')
 class ReservaController {
 
     async lista({view}) {
+        const config = await Config.find(1)
         const book = await Book.query().fetch()
         const books = book.toJSON()
         const pay = await Pay
@@ -78,11 +80,13 @@ class ReservaController {
 
         return view.render('reserva.lista', {
             Table: dadosbook,
-            Cards: cards
+            Cards: cards,
+            config: config
         })
     }
 
     async listar({view, params}) {
+        const config = await Config.find(1)
         const book = await Book
             .query()
             .where('user_id', params.id)
@@ -164,11 +168,13 @@ class ReservaController {
             Lugar: `Reservas de : ${users.username}`,
             User: users,
             Cards: cards,
-            Table: dadosbook
+            Table: dadosbook,
+            config: config
         })
     } 
 
     async info({view, params}){
+        const config = await Config.find(1)
         const book = await Book.find(params.id)
         const books = book.toJSON()
 
@@ -211,7 +217,8 @@ class ReservaController {
         }
 
         return view.render('reserva.info', {
-            dados: info
+            dados: info,
+            config: config
         })
     }
 

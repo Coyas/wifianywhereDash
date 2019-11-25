@@ -5,10 +5,12 @@ const Plan = use('App/Models/Plan')
 const Subs = use('App/Models/Subscribe')
 const Faq = use('App/Models/Faq')
 const Cat = use('App/Models/Category')
+const Config = use('App/Models/Config')
 const { validate, validateAll } = use('Validator')
 
 class HomeController {
     async index({ view }) {
+        const config = await Config.find(1)
         const book = await Book.query().fetch()
         const books = book.toJSON()
 
@@ -46,14 +48,18 @@ class HomeController {
             }
         }
 
+        console.log(config)
         return view.render('home.welcome', {
             Lugar: 'Dashboard',
             info: info,
-            Reservas: reservas
+            Reservas: reservas,
+            config: config
         })
     }
 
     async subscrito({view}){
+        const config = await Config.find(1)
+
         const sub = await Subs.all()
         const subs = sub.toJSON()
         let table = []
@@ -69,7 +75,8 @@ class HomeController {
         console.log(table)
         return view.render('home.subscrito', {
             Lugar: 'Subscritos',
-            Table: table     
+            Table: table,
+            config: config
         })
     }
 
@@ -87,7 +94,7 @@ class HomeController {
     
     async faqs({view, auth}){
         
-
+        const config = await Config.find(1)
         const faq = await Faq.all()
         const faqs = faq.toJSON()
         let table = []
@@ -109,12 +116,17 @@ class HomeController {
         // console.log(table)
         // die
         return view.render('faqs.index', {
-            Table: table
+            Table: table,
+            config: config
         })
     }
 
     async novofaqs({view}){
-        return view.render('faqs.novo')
+        const config = await Config.find(1)
+
+        return view.render('faqs.novo', {
+            config, config
+        })
     }
 
     async guardarfaqs({request, session, response, auth}){
@@ -150,6 +162,7 @@ class HomeController {
     }
 
     async updatefaqs({view, auth, params}){
+        const config = await Config.find(1)
         if(auth.user.access < 3){
             return view.render('404')
         }
@@ -159,7 +172,8 @@ class HomeController {
         console.log(faqs)
 
         return view.render('faqs.update', {
-            dados: faqs
+            dados: faqs,
+            config: config
         })
     }
     async updatefaq({response, request, params, session}){
@@ -191,6 +205,7 @@ class HomeController {
     }
 
     async viewfaqs({view, params}){
+        const config = await Config.find(1)
         console.log('params.id: '+params.id)
         console.log(typeof(params.id))
         console.log('Number: ')
@@ -202,7 +217,8 @@ class HomeController {
             const faqs = faq.toJSON()
             // console.log(faqs.nome)
             return view.render('faqs.view', {
-                Data: faqs
+                Data: faqs,
+                config: config
             })
         }else {
             return view.render('404')
@@ -242,6 +258,17 @@ class HomeController {
             response.json(data2)
         }
         
+    }
+
+    async siteconfig({request, response}){
+        const dados = request.all()
+        console.log(dados)
+
+        const config = await Config.find(1)
+        config.online = dados.status
+        const a = await config.save()
+
+        response.json(a)
     }
 }
  
