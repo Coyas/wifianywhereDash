@@ -12,20 +12,7 @@ class ClienteController {
         const book = await Book.all()
         const books = book.toJSON()
 
-        /**
-         * objecto com dados das cards
-         */
-        const cards = {
-            clientes: users.length,
-            cper: "3.48",
-            reservas: books.length,
-            resper: "3.48",
-            recargas: "0",
-            recper: "5.32",
-            performance: "50",
-            perper: "12"
-        }
-        
+       
 
        
 
@@ -57,7 +44,6 @@ class ClienteController {
         return view.render('cliente.lista', {
             Lugar: 'Lista de Clientes',
             User: Users,
-            Cards: cards,
             config: config
         })
     }
