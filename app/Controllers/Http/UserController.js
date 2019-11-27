@@ -56,7 +56,7 @@ class UserController {
         })
     }
 
-    mudarsenha({view, params, auth}){
+    async mudarsenha({view, params, auth}){
         if(params.id != auth.user.id) {
             return view.render('404')
         }

@@ -86,6 +86,15 @@ class ClienteController {
             config: config
         })
     }
+
+    async newcliente({view}){
+        const config = await Config.find(1)
+        
+        return view.render('cliente.novo', {
+            Lugar: `Novo CLiente`,
+            config: config
+        })
+    }
 }
 
 module.exports = ClienteController

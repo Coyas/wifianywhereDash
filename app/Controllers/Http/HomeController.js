@@ -176,7 +176,7 @@ class HomeController {
             config: config
         })
     }
-    async updatefaq({response, request, params, session}){
+    async updatefaq({response, request, params, session, auth}){
         if(auth.user.access < 3){
             return view.render('404')
         }
