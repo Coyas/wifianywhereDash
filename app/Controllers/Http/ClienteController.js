@@ -3,6 +3,11 @@ const User = use('App/Models/User')
 const Book = use('App/Models/Booking')
 const Pay = use('App/Models/Payment')
 const Config = use('App/Models/Config')
+const { validate, validateAll } = use('Validator')
+const randomString = require('random-string')
+const Mail = use('Mail')
+const Env = use('Env')
+
 class ClienteController {
     async lista({ view }) {
         const config = await Config.find(1)
@@ -11,10 +16,6 @@ class ClienteController {
 
         const book = await Book.all()
         const books = book.toJSON()
-
-       
-
-       
 
         /**
          * objeto para listar clientes
@@ -94,6 +95,77 @@ class ClienteController {
             Lugar: `Novo CLiente`,
             config: config
         })
+    }
+
+    async savecliente({request, response, session}){
+        // const userData = request.only(['nome', 'apelido', 'username', 'email', 'street_address', 'biling_address', 'city', 'country', 'zip_code', 'sobreme'])
+
+         // validar campos de formulario
+         const validation = await validateAll(request.all(), {
+            username: 'required|unique:users,username',
+            firstName: 'required',
+            lastName: 'required',
+            email: 'required|email|unique:users,email',
+            street_address: 'required',
+            city: 'required',
+            country: 'required',
+            zip_code: 'required',
+            phone: 'required',
+            password: 'required'
+        })
+
+        if(validation.fails()){
+            session.withErrors(validation.messages())
+            // console.log('create user validation error: ')
+            // console.log(validation.messages())
+            return response.redirect('back')
+        }
+
+        const userData = {
+            username: request.input('username'),
+            firstName: request.input('firstName'),
+            lastName: request.input('lastName'),
+            email: request.input('email'),
+            street_address: request.input('street_address'),
+            biling_address: request.input('biling_address'),
+            city: request.input('city'),
+            country: request.input('country'),
+            zip_code: request.input('zip_code'),
+            sobreme: request.input('sobreme'),
+            // is_active: -> default 0 
+            password: request.input('password'),
+            confirmation_token: randomString({length: 40})
+        }
+
+        console.log(userData)
+
+        response.send('create cliente')
+        // save and get instance back
+        const user = await User.create(userData)
+
+        if(user){
+            //enviar email de confirmacao
+            console.log('sending email...')
+            await Mail.send('auth.emails.confirm_email', userData, message => {
+                message.to(user.email)
+                .from(Env.get('MAIL_USERNAME'))
+                .subject('please confirm your wifianywhere  account')
+            })
+
+            //display success message
+            console.log('flashing messages...')
+            session.flash({
+                notification:{
+                    type: 'success',
+                    message: 'successful registration! an email has been sent to your email address'
+                }
+            })
+
+            //redirecionar para a pagina clientes
+            response.redirect('/clientes')
+        }else{
+            response.redirect('back') 
+        }
     }
 }
 

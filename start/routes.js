@@ -89,7 +89,8 @@ Route.group(() => {
   // rota para clientes
   Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes
   Route.get('/cliente/novo', 'ClienteController.newcliente')// rota para criar novo cliente
-  Route.get('/clientes/info/:id', 'ClienteController.info')//ver o perfil do cliente
+  Route.get('/clientes/info/:id', 'ClienteController.info')//ver o perfil do cliente savecliente
+  Route.post('/clientes/novo', 'ClienteController.savecliente')
   
   // rotas para reservas
   Route.get('/reservas', 'ReservaController.lista')//listar todas as reservas

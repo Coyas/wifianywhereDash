@@ -16003,7 +16003,7 @@ textarea[resize="horizontal"] {
   display: inline-block;
   position: absolute;
   right: 15px;
-  top: 2px;
+  top: 35px;
   transform: translateY(50%);
   border-radius: 50%;
   font-size: 9px;
@@ -16745,7 +16745,7 @@ textarea[resize="horizontal"] {
 }
 
 .navbar-horizontal .navbar-brand img {
-  height: 30px;
+  height: 85px;
 }
 
 .navbar-horizontal .navbar-dark .navbar-brand {

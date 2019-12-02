@@ -5,8 +5,142 @@
  <div id="idiot" class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url(/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
     <!-- Mask -->
     <span class="mask bg-gradient-default opacity-8"></span>
-
+  <!-- Header container -->
+    <div class="container-fluid d-flex align-items-center">
+      <div class="row">
+        <div class="col-lg-7 col-md-10">
+          <a href="/clientes" class="btn btn-info"> << Voltar</a>
+        </div>
+      </div>
+    </div>
   </div>
 
+
+    <!-- Page content -->
+    <div class="container-fluid mt--7"> 
+      <div class="row justify-content-center">
+    
+        <div class="col-md-8 order-xl-1">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Criar Um Cliente</h3>
+                </div>
+                <div class="col-4 text-right">
+                  
+                <!--  <a href="#" class="btn btn-sm btn-warning">Atualizar</a>-->  
+                
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form action="/clientes/novo" method="POST">
+                  {{ csrfField() }}
+                <h6 class="heading-small text-muted mb-4">Informaçao do usuario</h6>
+                <div class="pl-lg-4">
+
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group {{ hasErrorFor('firstName') ? 'has-danger' : ''}}">
+                          <label class="form-control-label" for="input-first-name">Primeiro Nome </label>
+                          <input type="text" name="firstName" id="input-first-name" value="{{ old('firstName', '') }}" class="form-control {{ hasErrorFor('firstName') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="First name">
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                      <div class="form-group {{ hasErrorFor('lastName') ? 'has-danger': ''}}">
+                          <label class="form-control-label" for="input-last-name">Ultimo Nome (apelido)</label>
+                        <input type="text" name="lastName" id="input-last-name" value="{{ old('lastName', '') }}" class="form-control  {{ hasErrorFor('lastName') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="Last name" >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group {{ hasErrorFor('username') ? 'has-danger': ''}}">
+                        <label class="form-control-label" for="input-username">Username</label>
+                        <input type="text" name="username" value="{{ old('username', '') }}" id="input-username" class="form-control {{ hasErrorFor('username') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="Username" >
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group {{ hasErrorFor('email') ? 'has-danger' : ''}}">
+                        <label class="form-control-label" for="input-email">Endereco de Email</label>
+                        <input type="email" name="email" value="{{ old('email', '') }}" id="input-email" class="form-control {{ hasErrorFor('email') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="jesse@example.com">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group {{ hasErrorFor('phone') ? 'has-danger' : ''}}">
+                        <label class="form-control-label" for="input-username">Contacto</label>
+                        <input type="number" name="phone" value="{{ old('phone', '') }}" id="input-username" class="form-control {{ hasErrorFor('phone') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="phone" >
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group {{ hasErrorFor('password') ? 'has-danger' : ''}}">
+                        <label class="form-control-label" for="input-email">Senha</label>
+                        <input type="text" name="password" value="{{ old('password', '') }}" id="input-email" class="form-control {{ hasErrorFor('password') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="password">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4" />
+                <!-- Address -->
+                <h6 class="heading-small text-muted mb-4">Informaçao de contacto</h6>
+                
+                <div class="pl-lg-4">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group {{ hasErrorFor('street_address') ? 'has-danger' : ''}}">
+                          <label class="form-control-label" for="input-address">Endereço</label>
+                          <input id="input-address" name="street_address" value="{{ old('street_address', '') }}" class="form-control {{ hasErrorFor('street_address') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="Street address" type="text">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="form-control-label" for="input-address">Endereco de cobrança (opcional)</label>
+                          <input id="input-address" name="biling_address" value="{{ old('biling_address', '') }}" class="form-control form-control-alternative" placeholder="Billing address" type="text">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="form-group {{ hasErrorFor('city') ? 'has-danger' : ''}}">
+                          <label class="form-control-label" for="input-city">Cidade</label>
+                          <input type="text" name="city" value="{{ old('city', '') }}" id="input-city" class="form-control {{ hasErrorFor('city') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="City" >
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group {{ hasErrorFor('country') ? 'has-danger' : ''}}">
+                          <label class="form-control-label" for="input-country">Pais</label>
+                          <input type="text" name="country" value="{{ old('country', '') }}" id="input-country" class="form-control {{ hasErrorFor('country') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="Country" >
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group {{ hasErrorFor('zip_code') ? 'has-danger' : ''}}">
+                          <label class="form-control-label" for="input-country">Zip code</label>
+                          <input type="number" name="zip_code" value="{{ old('zip_code', '') }}" id="input-postal-code" class="form-control {{ hasErrorFor('zip_code') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="Postal code">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                
+                <hr class="my-4" />
+                <!-- Description -->
+                <h6 class="heading-small text-muted mb-4">Sobre o cliente (opcional)</h6>
+                <div class="pl-lg-4">
+                  <div class="form-group">
+                    <label></label>
+                    <textarea name="sobreme" rows="4" class="form-control" placeholder="Algumas palavras...">{{ old('sobreme', '')}}</textarea>
+                  </div>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Criar">
+              </form>
+            </div>
+          </div>
+        
+      </div>
+      </div>
   
 @endsection
