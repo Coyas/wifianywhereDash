@@ -72,13 +72,13 @@
                     <div class="col-lg-6">
                       <div class="form-group {{ hasErrorFor('phone') ? 'has-danger' : ''}}">
                         <label class="form-control-label" for="input-username">Contacto</label>
-                        <input type="number" name="phone" value="{{ old('phone', '') }}" id="input-username" class="form-control {{ hasErrorFor('phone') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="phone" >
+                        <input type="number" name="phone"  value="{{ old('phone', '') }}" id="input-username" class="form-control {{ hasErrorFor('phone') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="phone" >
                       </div>
                     </div>
                     <div class="col-lg-6">
                       <div class="form-group {{ hasErrorFor('password') ? 'has-danger' : ''}}">
                         <label class="form-control-label" for="input-email">Senha</label>
-                        <input type="text" name="password" value="{{ old('password', '') }}" id="input-email" class="form-control {{ hasErrorFor('password') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="password">
+                        <input type="password" name="password" readonly value="{{ pass }}" id="input-email" class="form-control {{ hasErrorFor('password') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="password">
                       </div>
                     </div>
                   </div>

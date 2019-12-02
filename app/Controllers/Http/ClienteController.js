@@ -93,7 +93,8 @@ class ClienteController {
         
         return view.render('cliente.novo', {
             Lugar: `Novo CLiente`,
-            config: config
+            config: config,
+            pass: randomString({length: 10})
         })
     }
 
