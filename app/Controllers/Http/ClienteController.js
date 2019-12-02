@@ -147,7 +147,7 @@ class ClienteController {
         if(user){
             //enviar email de confirmacao
             console.log('sending email...')
-            await Mail.send('auth.emails.confirm_email', userData, message => {
+            await Mail.send('auth.emails.cliente_confirm_email', userData, message => {
                 message.to(user.email)
                 .from(Env.get('MAIL_USERNAME'))
                 .subject('please confirm your wifianywhere  account')

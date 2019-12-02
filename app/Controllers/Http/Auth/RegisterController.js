@@ -63,7 +63,7 @@ class RegisterController {
         await Mail.send('auth.emails.confirm_email', dados, message => {
             message.to(dados.email)
             .from(Env.get('MAIL_USERNAME'))
-            .subject('Please confirm your email address')
+            .subject('please confirm your wifianywhere  account')
         })
 
         //display success message
@@ -94,7 +94,7 @@ class RegisterController {
         session.flash({
             notification: {
                 type: 'success',
-                message: 'Seu email foi confimado com sucesso'
+                message: 'Seu email foi confirmado com sucesso'
             }
         })
 
