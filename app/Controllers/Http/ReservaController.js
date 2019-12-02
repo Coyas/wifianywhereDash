@@ -253,7 +253,9 @@ class ReservaController {
 
     // efetuar reservas
     // novareserva(){}
-
+    //guardar reserva
+    // guardareserva(){}
+    
 }
  
 module.exports = ReservaController
