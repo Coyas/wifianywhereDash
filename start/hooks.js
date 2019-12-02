@@ -13,6 +13,12 @@ hooks.after.providersBooted( () => {
         return path ? `${APP_URL}/${path}` : APP_URL
     })
 
+    View.global('backUrl', path => {
+        const BACK_URL = Env.get('BACK_URL')
+
+        return path ? `${BACK_URL}/${path}` : BACK_URL
+    })
+
     // handle invalidSessionException
     Exception.handle('InvalidSessionException', (error, { response }) => {
         return response.redirect('/auth/login')
