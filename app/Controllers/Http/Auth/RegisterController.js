@@ -6,6 +6,7 @@ const User = use('App/Models/User')
 const randomString = require('random-string')
 const Mail = use('Mail')
 const Env = use('Env')
+const Event = use('Event')
 
 class RegisterController {
     async showform({ view }){
@@ -59,12 +60,16 @@ class RegisterController {
         }
 
         //send confirmation email
-        console.log('sending email...')
-        await Mail.send('auth.emails.confirm_email', dados, message => {
-            message.to(dados.email)
-            .from(Env.get('MAIL_USERNAME'))
-            .subject('please confirm your wifianywhere  account')
-        })
+        console.log('sending email (using events)...')
+
+        Event.fire('new::user', dados)
+        
+        console.log('o evento funcionou??')
+        // await Mail.send('auth.emails.confirm_email', dados, message => {
+        //     message.to(dados.email)
+        //     .from(Env.get('MAIL_USERNAME'))
+        //     .subject('please confirm your wifianywhere  account')
+        // })
 
         //display success message
         console.log('flashing messages...')
