@@ -42,11 +42,12 @@ class PasswordResetController {
                 token
             }
 
-            await Mail.send('auth.emails.password_reset', mailData, message => {
-                message.to(user.email)
-                .from(Env.get('MAIL_USERNAME'))
-                .subject('password reset link')
-            })
+            Event.fire('resetpassword::user', mailData)
+            // await Mail.send('auth.emails.password_reset', mailData, message => {
+            //     message.to(user.email)
+            //     .from(Env.get('MAIL_USERNAME'))
+            //     .subject('password reset link')
+            // })
 
             session.flash({
                 notification: {

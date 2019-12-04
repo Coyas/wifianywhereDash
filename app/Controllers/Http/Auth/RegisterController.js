@@ -65,12 +65,7 @@ class RegisterController {
         Event.fire('new::user', dados)
         
         console.log('o evento funcionou??')
-        // await Mail.send('auth.emails.confirm_email', dados, message => {
-        //     message.to(dados.email)
-        //     .from(Env.get('MAIL_USERNAME'))
-        //     .subject('please confirm your wifianywhere  account')
-        // })
-
+        
         //display success message
         console.log('flashing messages...')
         session.flash({

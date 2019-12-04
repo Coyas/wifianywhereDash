@@ -7,10 +7,20 @@ const User = exports = module.exports = {}
 User.novo = async (dados) => {
     console.log('estou dentro do evento new::user')
         
-    await Mail.send('auth.emails.cliente_confirm_email', dados, message => {
+    await Mail.send('auth.emails.confirm_email', dados, message => {
         message.to(dados.email)
         .from(Env.get('MAIL_USERNAME'))
         .subject('please confirm your wifianywhere  account')
     })
-} 
+}
+
+User.resetpassword = async (dados) => {
+    console.log('estou dentro do evento user::passwordreset')
+
+    await Mail.send('auth.emails.password_reset', mailData, message => {
+        message.to(user.email)
+        .from(Env.get('MAIL_USERNAME'))
+        .subject('password reset link')
+    })
+}
  

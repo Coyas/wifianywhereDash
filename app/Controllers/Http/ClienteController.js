@@ -150,13 +150,7 @@ class ClienteController {
             console.log('sending email...')
 
             Event.fire('new::cliente', userData)
-            // await Mail.send('auth.emails.cliente_confirm_email', userData, message => {
-            //     message.to(user.email)
-            //     .from(Env.get('MAIL_USERNAME'))
-            //     .subject('please confirm your wifianywhere  account')
-            // })
-
-            //display success message
+            
             console.log('flashing messages...')
             session.flash({
                 notification:{
