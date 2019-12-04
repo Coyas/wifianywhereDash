@@ -7,6 +7,7 @@ const RandomString = require('random-string')
 const Mail = use('Mail')
 const Hash = use('Hash')
 const Env = use('Env')
+const Event = use('Event')
 
 class PasswordResetController {
 
@@ -42,12 +43,8 @@ class PasswordResetController {
                 token
             }
 
+            // console.log(mailData)
             Event.fire('resetpassword::user', mailData)
-            // await Mail.send('auth.emails.password_reset', mailData, message => {
-            //     message.to(user.email)
-            //     .from(Env.get('MAIL_USERNAME'))
-            //     .subject('password reset link')
-            // })
 
             session.flash({
                 notification: {
@@ -59,6 +56,7 @@ class PasswordResetController {
             return response.redirect('/auth/login')
             
         } catch (error) {
+            console.log(error)
             session.flash({
                 notification: {
                     type: 'danger',

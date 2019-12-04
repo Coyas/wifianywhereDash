@@ -17,8 +17,8 @@ User.novo = async (dados) => {
 User.resetpassword = async (dados) => {
     console.log('estou dentro do evento user::passwordreset')
 
-    await Mail.send('auth.emails.password_reset', mailData, message => {
-        message.to(user.email)
+    await Mail.send('auth.emails.password_reset', dados, message => {
+        message.to(dados.user.email)
         .from(Env.get('MAIL_USERNAME'))
         .subject('password reset link')
     })
