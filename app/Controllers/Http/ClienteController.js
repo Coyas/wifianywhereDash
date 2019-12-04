@@ -7,6 +7,7 @@ const { validate, validateAll } = use('Validator')
 const randomString = require('random-string')
 const Mail = use('Mail')
 const Env = use('Env')
+const Event = use('Event')
 
 class ClienteController {
     async lista({ view }) {
@@ -147,11 +148,13 @@ class ClienteController {
         if(user){
             //enviar email de confirmacao
             console.log('sending email...')
-            await Mail.send('auth.emails.cliente_confirm_email', userData, message => {
-                message.to(user.email)
-                .from(Env.get('MAIL_USERNAME'))
-                .subject('please confirm your wifianywhere  account')
-            })
+
+            Event.fire('new::cliente', userData)
+            // await Mail.send('auth.emails.cliente_confirm_email', userData, message => {
+            //     message.to(user.email)
+            //     .from(Env.get('MAIL_USERNAME'))
+            //     .subject('please confirm your wifianywhere  account')
+            // })
 
             //display success message
             console.log('flashing messages...')
