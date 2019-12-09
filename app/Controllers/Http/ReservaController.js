@@ -7,6 +7,9 @@ const Place = use('App/Models/Place')
 const Device = use('App/Models/Device')
 const Momento = require('moment')
 const Config = use('App/Models/Config')
+const { validate, validateAll } = use('Validator')
+
+
 class ReservaController {
 
     async lista({view}) {
@@ -252,10 +255,140 @@ class ReservaController {
     }
 
     // efetuar reservas
-    // novareserva(){}
-    //guardar reserva
-    // guardareserva(){}
+    async novareserva({view, params}){
+        const config = await Config.find(1)
+
+        const user = await User.find(params.id)
+
+        return view.render('reserva.novo', {
+            Lugar: 'Nova Reserva',
+            config: config,
+            User: user
+        })
+    }
+    async guardareserva({response, params, request, auth, session, view}){
+        console.log(params.id)
+
+        console.log(request.all())
+        // validar campos de formulario
+        const validation = await validateAll(request.all(), {
+            firstName: 'required',
+            lastName: 'required',
+            email: 'required',
+            street_address: 'required',
+            city: 'required',
+            country: 'required',
+            zip_code: 'required',
+            phone: 'required'
+        })
+
+        if(validation.fails()){
+            session.withErrors(validation.messages())
+            // console.log('create user validation error: ')
+            // console.log(validation.messages())
+            return response.redirect('back')
+        }
+
+        const user = await User.find(params.id)
+        user.firstName = request.input('firstName')
+        user.lastName = request.input('lastName')
+        user.email = request.input('email')
+        user.street_address = request.input('street_address')
+        user.biling_address = request.input('biling_address')
+        user.city = request.input('city')
+        user.country = request.input('country')
+        user.zip_code = request.input('zip_code')
+        user.phone = request.input('phone')
+        user.sobreme = request.input('sobreme')
+
+        await user.save()
+
+        // nao funciona se nao ha nada paa atualizar
+        // if(u){
+        //     // response.send('guardar nova reserva')
+        //     response.redirect(`/reservas/chooseplano/${params.id}`)
+        // }else{
+        //     //implementa u metodo de alert
+        //     response.redirect('back')
+        // }
+    }
+
+    async chooseplanos({view, params}) {
+        const config = await Config.find(1)
+
+        const user = await User.find(params.id)
+
+        if(!user){
+            response.send('Usuario nao existe')
+        }
+
+        // dados
+        // lista de planos
+        const planos = await Plan.all()
+        const plano = planos.toJSON()
+        console.log(plano)
+        // pick up location list
+        const locals = await Place.all()
+        const local = locals.toJSON()
+        // return location list
+
+        return view.render('reserva.chooseplanos', {
+            Lugar: 'Ordem De Reserva',
+            config: config,
+            Plano: plano,
+            Cliente: params.id,
+            Local: local
+        })
+    }
+    async guardarplanos({response, request, params, session}){
+        console.log(params.id)
+
+        console.log(request.all())
+        // validar campos de formulario
+        const validation = await validateAll(request.all(), {
+            pickupdate: 'required',
+            returnday: 'required',
+            plano_id: 'required',
+            pickuplocation_id: 'required',
+            returnlocation_id: 'required'
+        })
+
+        if(validation.fails()){
+            session.withErrors(validation.messages())
+            // console.log('create user validation error: ')
+            // console.log(validation.messages())
+            return response.redirect('back')
+        }
+
+        const user = await User.find(params.id)
+
+        if(!user){
+            response.send('Usuario nao existe')
+        }
+
+        const book = new Book()
+        book.pickupDate = request.input('pickupdate')
+        book.returnday  = request.input('returnday')
+        book.flynumber  = request.input('flynumber')
+        book.check      = null //atribuir um random numver para validacao
+        book.plano_id   = request.input('plano_id')
+        book.pickuplocation_id = request.input('pickuplocation_id')
+        book.returnlocation_id = request.input('returnlocation_id')
+        book.user_id    = params.id
+        book.device_id  = 2//pagar um device live ou q vai estar livre
+
+        const ok = await book.save()
+
+        if(!book){
+            response.send('Nao foi possivel criar um book')
+        }
+
+        response.send('book criado com sucesso  ')
+    }
+
     
+    async pagarreserva({view}){}
+    // guardarpagar({}){}
 }
  
 module.exports = ReservaController

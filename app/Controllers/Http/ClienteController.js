@@ -64,6 +64,7 @@ class ClienteController {
 
 
         const dados = {
+            id: user.id,
             cliente: user.firstName+' '+user.lastName,
             reservas: book.length,
             recargas: "0",

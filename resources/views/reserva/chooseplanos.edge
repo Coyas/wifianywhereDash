@@ -1,0 +1,143 @@
+@layout('layouts.main')
+
+@section('content')
+ <!-- Header -->
+ <div id="idiot" class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url(/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+    <!-- Mask -->
+    <span class="mask bg-gradient-default opacity-8"></span>
+  <!-- Header container -->
+    <div class="container-fluid d-flex align-items-center">
+      <div class="row">
+        <div class="col-lg-7 col-md-10">
+          {{--  <a href="/clientes" class="btn btn-info"> << Clientes</a>  --}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- Page content -->
+    <div class="container-fluid mt--7"> 
+      <div class="row justify-content-center">
+    
+        <div class="col-md-8 order-xl-1">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">Defina seu produto</h3>
+                </div>
+                <div class="col-4 text-right">
+                  
+                <!--  <a href="#" class="btn btn-sm btn-warning">Atualizar</a>-->  
+                
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <form action="{{'/reservas/guardarplanos/' + Cliente}}" method="POST">
+                  {{ csrfField() }}
+                <h6 class="heading-small text-muted mb-4">Informaçao da reserva</h6>
+                <div class="pl-lg-4">
+
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group {{ hasErrorFor('pickupdate') ? 'has-danger' : ''}}">
+                          <label class="form-control-label" for="input-first-name">Pick-up Date </label>
+                          <input type="date" name="pickupdate" id="input-first-name" class="form-control {{ hasErrorFor('pickupdate') ? 'is-invalid' : 'form-control-alternative'}}" >
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                      <div class="form-group {{ hasErrorFor('returnday') ? 'has-danger': ''}}">
+                          <label class="form-control-label" for="input-last-name">Return Date</label>
+                        <input type="date" name="returnday" id="input-last-name" class="form-control  {{ hasErrorFor('returnday') ? 'is-invalid' : 'form-control-alternative'}}"  >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group {{ hasErrorFor('plano_id') ? 'has-danger' : ''}}">
+                          <label class="form-control-label" for="input-username">Escolha Um Plano</label>
+                          <select name="plano_id" class="form-control {{ hasErrorFor('plano_id') ? 'is-invalid' : 'form-control-alternative'}}">
+                              @each(plan in Plano)
+                              <option value="{{plan.id}}">{{plan.nome}} ({{plan.megas}} MB)</option>
+                              @endeach
+                          </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group {{ hasErrorFor('flynumber') ? 'has-danger' : ''}}">
+                        <label class="form-control-label" for="input-email">Flyght Number (opcional)</label>
+                        <input type="number" name="flynumber"  class="form-control {{ hasErrorFor('flynumber') ? 'is-invalid' : 'form-control-alternative'}}" placeholder="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4" />
+                <!-- Address -->
+                <h6 class="heading-small text-muted mb-4">Informaçoes Sobre O Plano</h6>
+                
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-md-12">
+                      terra
+                    </div>
+                  </div>
+                </div>
+
+                <hr>
+                <h6 class="heading-small text-muted mb-4">Lugares de Aquisição</h6>
+                <div class="pl-lg-4">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group {{ hasErrorFor('pickuplocation_id') ? 'has-danger' : ''}}">
+                          <label class="form-control-label" for="input-address">Pick-up Location</label>
+                          <select name="pickuplocation_id" class="form-control {{ hasErrorFor('pickuplocation_id') ? 'is-invalid' : 'form-control-alternative'}}">
+                            <option value="" selected>Escolha...</option>
+                            @each(local in Local)
+                              <option value="{{local.id}}">{{local.nome}}</option>
+                            @endeach
+                          </select>
+                          
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="form-control-label" for="input-address">Return Location</label>
+                          <select name="returnlocation_id" class="form-control {{ hasErrorFor('returnlocation_id') ? 'is-invalid' : 'form-control-alternative'}}">
+                            <option value="" selected>Escolha...</option>
+                            @each(local in Local)
+                              <option value="{{local.id}}">{{local.nome}}</option>
+                            @endeach
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                
+                <hr class="my-4" />
+                <!-- Description -->
+                
+                <div class="pl-lg-4">
+                  
+                </div>
+                <div class="pl-lg-8">
+                  <div class="row">
+                    <div class="col-lg-6" >
+                        <a href="" class="btn btn-warning" style="width: 147.9px !important;">Canselar</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="submit" class="btn btn-primary" value="Escolher Plano">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        
+      </div>
+      </div>
+  
+@endsection

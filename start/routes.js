@@ -92,7 +92,7 @@ Route.group(() => {
   Route.get('/clientes/info/:id', 'ClienteController.info')//ver o perfil do cliente savecliente
   Route.post('/clientes/novo', 'ClienteController.savecliente')
   
-  // rotas para reservas
+  // rotas para reservas 
   Route.get('/reservas', 'ReservaController.lista')//listar todas as reservas
   Route.get('/reservas/:id', 'ReservaController.listar')//listar uma reserva especifica
   Route.get('/reservas/info/:id', 'ReservaController.info')//ver os detalhes de uma reserva especifica id reserva
@@ -100,6 +100,15 @@ Route.group(() => {
   Route.get('/reservas/pegar/:id', 'ReservaController.pegar')
   Route.post('/reservas/devolver/:id', 'ReservaController.devolver')
 
+  // nova reserva ---------------------------------------------------------------
+  Route.get('/reservas/novareserva/:id', 'ReservaController.novareserva')
+  Route.put('/reservas/guardareserva/:id', 'ReservaController.guardareserva')
+
+  //choose plano
+  Route.get('/reservas/chooseplano/:id', 'ReservaController.chooseplanos')
+  Route.post('/reservas/guardarplanos/:id', 'ReservaController.guardarplanos')
+  
+  // ----------------------------------------------------------------------------
   
   // rotas para usuarios
   Route.get('/user/:id', 'UserController.index')
