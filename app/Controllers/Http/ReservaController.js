@@ -284,8 +284,8 @@ class ReservaController {
 
         if(validation.fails()){
             session.withErrors(validation.messages())
-            // console.log('create user validation error: ')
-            // console.log(validation.messages())
+            console.log('create user validation error: ')
+            console.log(validation.messages())
             return response.redirect('back')
         }
 
@@ -306,7 +306,7 @@ class ReservaController {
         // nao funciona se nao ha nada paa atualizar
         // if(u){
         //     // response.send('guardar nova reserva')
-        //     response.redirect(`/reservas/chooseplano/${params.id}`)
+            response.redirect(`/reservas/chooseplano/${params.id}`)
         // }else{
         //     //implementa u metodo de alert
         //     response.redirect('back')
@@ -340,6 +340,7 @@ class ReservaController {
             Local: local
         })
     }
+
     async guardarplanos({response, request, params, session}){
         console.log(params.id)
 
@@ -379,15 +380,31 @@ class ReservaController {
 
         const ok = await book.save()
 
-        if(!book){
+        if(!ok){
             response.send('Nao foi possivel criar um book')
         }
 
-        response.send('book criado com sucesso  ')
+        // response.send('book criado com sucesso  ')
+        response.redirect(`/reservas/pagareserva/${params.id}`)//params.id = id do booking
     }
 
     
-    async pagarreserva({view}){}
+    async pagareserva({view, params}){
+        const config = await Config.find(1)
+
+        const book = await Book.find(params.id)
+
+        if(!book){
+            return view.render('404')
+        }
+
+        // get pagar reserva dados
+
+        return view.render('reserva.pagar', {
+            Lugar: 'Ordem De Reserva',
+            config: config,
+        })
+    }
     // guardarpagar({}){}
 }
  

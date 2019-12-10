@@ -83,8 +83,10 @@ Route.group(() => {
     response.redirect('back')
   })
 
+  //routas de ajax
   Route.get('/getcategoria', 'HomeController.getcategoria')
   Route.get('/siteconfig', 'HomeController.siteconfig')
+  Route.get('/getdados', 'HomeController.getdados')
 
   // rota para clientes
   Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes
@@ -108,6 +110,8 @@ Route.group(() => {
   Route.get('/reservas/chooseplano/:id', 'ReservaController.chooseplanos')
   Route.post('/reservas/guardarplanos/:id', 'ReservaController.guardarplanos')
   
+  //pagar reserva
+  Route.get('/reservas/pagareserva/:id', 'ReservaController.pagareserva')
   // ----------------------------------------------------------------------------
   
   // rotas para usuarios

@@ -6,6 +6,7 @@ const Subs = use('App/Models/Subscribe')
 const Faq = use('App/Models/Faq')
 const Cat = use('App/Models/Category')
 const Config = use('App/Models/Config')
+const Device = use('App/Models/Device')
 const { validate, validateAll } = use('Validator')
 
 class HomeController {
@@ -258,6 +259,49 @@ class HomeController {
             response.json(data2)
         }
         
+    }
+
+    /**
+     * 
+     * pegar dados sobre planos e devices
+     */
+    async getdados({response, request}){
+        const dados = request.all()
+        console.log(`dados:`)
+        console.log(dados)
+
+        if(!dados){
+            response.json({
+                'plano': 'sem dados'
+            })
+        }
+        const plano = await Plan.find(dados.plano)
+
+        //get device livre ou que possam estar livres
+        const device = await Device.find(2)
+
+        if(plano && device){
+            var obj = {
+                plano: plano.nome,
+                megas: plano.megas,
+                preco: plano.preco,
+                deviceid: device.id,
+                devicenome: device.nome,
+                devicenum: device.numero,
+                devicefoto: '/assets/img/brand/blue.png'
+            }
+        }else {
+            var obj = {
+                plano: plano.nome,
+                megas: plano.megas,
+                preco: plano.preco,
+                device: "Sem Despositivos Livres"
+            }
+        }
+
+        
+
+        response.json(obj)
     }
 
     async siteconfig({request, response}){
