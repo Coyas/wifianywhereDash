@@ -54,3 +54,136 @@ input[type="file"]{
     width: 100%;
     height: 100%;
 }
+p#detal {
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+
+// css do choose plano loading
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i');
+#detalhesR{
+
+    .loader-wrapper {
+        font-family: 'Source Sans Pro', sans-serif;
+        position: absolute;
+        // top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 120px 0 0;
+      } 
+      
+      .sandwatch-holder {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(0deg);
+        width: 43px;
+        animation: rotateHolder 2s linear infinite;
+      }
+      
+      @keyframes rotateHolder {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        
+        90% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        
+        100% {
+          transform: translate(-50%, -50%) rotate(180deg);
+        }
+      }
+      
+      .sandwatch-holder:after {
+        content: "";
+        position: absolute;
+        width: 2px;
+        height: 45px;
+        background: #1bb5e5;
+        left: 41%;
+        top: 45%;
+        transform: translate(-50%, -50%);
+        margin: -17px 0 0;
+        animation: moveStream 2s linear infinite;
+      }
+      
+      .sandwatch-top, .sandwatch-bottom {
+        width: 35px;
+        height: 35px;
+        position: relative;
+        border: 6px solid #a56818;
+        border-right: 2px solid #a56818;
+        border-top: 2px solid #a56818;
+        border-radius: 50px 100px 50px 30px;
+        overflow: hidden;
+      }
+      
+      .sandwatch-top {
+        transform: rotate(-45deg);
+      }
+      
+      .sandwatch-holder:before {
+        position: absolute;
+        content: "";
+        width: 8px;
+        height: 12px;
+        background: #a56818;
+        left: 43%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      .sandwatch-bottom {
+        transform: rotate(135deg);
+        margin: 12px 0 0;
+      }
+      
+      .sandwatch-top:before, .sandwatch-bottom:before {
+        content: "";
+        position: absolute;
+        width:100%;
+        height: 100%;
+        background: #1bb5e5;
+        border-radius: 0 100px 0 0;
+      }
+      
+      .sandwatch-top:before {
+        transform: translate(0, 0);
+        animation: dropSand 2s linear infinite;
+      }
+      
+      .sandwatch-bottom:before {
+        transform: translate(25px, -25px);
+        border-radius: 0 0 0 12px;
+        animation: fillSand 2s linear infinite;
+      }
+      
+      @keyframes dropSand {
+        100% {
+          transform: translate(-22px, 22px);
+        }
+      }
+      
+      @keyframes fillSand {
+        4% {
+          transform: translate(25px, -25px);
+        }
+        
+        100% {
+          transform: translate(-1px, 0);
+        }
+      }
+      
+      @keyframes moveStream {
+        10% {
+          margin: 17px 0 0;
+        }
+        
+        100% {
+          margin: 17px 0 0;
+        }
+      }
+}
+
+

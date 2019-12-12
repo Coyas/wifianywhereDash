@@ -96,6 +96,7 @@
                         <div class="form-group {{ hasErrorFor('plano_id') ? 'has-danger' : ''}}">
                           <label class="form-control-label" for="input-username">Escolha Um Plano</label>
                           <select id="changePlano" name="plano_id" class="form-control {{ hasErrorFor('plano_id') ? 'is-invalid' : 'form-control-alternative'}}">
+                              <option value="0" selected>Escolha seu plano...</option>
                               @each(plan in Plano)
                                 <option value="{{plan.id}}">{{plan.nome}} ({{plan.megas}} MB)</option>
                               @endeach
@@ -118,7 +119,7 @@
                   
                 </div>
 
-                <hr class="my-5">
+                <hr class="my-3">
                 
                 <div class="pl-lg-8">
                   <div class="row">

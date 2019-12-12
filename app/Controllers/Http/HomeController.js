@@ -280,8 +280,9 @@ class HomeController {
         //get device livre ou que possam estar livres
         const device = await Device.find(2)
 
-        if(plano && device){
+        if(plano && device){//1 - 1
             var obj = {
+                caso: 1,
                 plano: plano.nome,
                 megas: plano.megas,
                 preco: plano.preco,
@@ -290,11 +291,27 @@ class HomeController {
                 devicenum: device.numero,
                 devicefoto: '/assets/img/brand/blue.png'
             }
-        }else {
+        }else if(plano && !device) { //1 - 0
             var obj = {
+                caso: 2,
                 plano: plano.nome,
                 megas: plano.megas,
                 preco: plano.preco,
+                device: "Sem Despositivos Livres"
+            }
+        }else if(!plano && device) { //0 - 1
+            var obj = {
+                caso: 3,
+                plano: "Não existem planos disponíveis",
+                deviceid: device.id,
+                devicenome: device.nome,
+                devicenum: device.numero,
+                devicefoto: '/assets/img/brand/blue.png'
+            }
+        } else { // 0 - 0
+            var obj = {
+                caso: 4,
+                plano: "Não existem planos disponíveis",
                 device: "Sem Despositivos Livres"
             }
         }
