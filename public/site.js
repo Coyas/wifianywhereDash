@@ -260,7 +260,11 @@ $('#changePlano').change(function () {
   var id = $(this).children(":selected").val();
   // alert('valor do id: ' + id);
   var picklocal = document.getElementById('pilocal')
-  var local = picklocal.options[picklocal.selectedIndex].value;
+  if(!picklocal){
+    console.log("nullo")
+    var local = picklocal.options[picklocal.selectedIndex].value;
+  }
+  
   // alert('local: ' + local)
   
   if(!id && !local){
@@ -284,13 +288,15 @@ $('#changePlano').change(function () {
       let dada2 = document.querySelector('#detalhesR');
       dada2.style.padding = "7%";
       dada.innerHTML = `
-      <div class="loader-wrapper">
-        <div class="sandwatch-holder">
-          <div class="sandwatch-top"></div>
-          <div class="sandwatch-bottom"></div>
+      <!-- o div detalhes vem aqui -->
+        <div class="loader-wrapper">
+          <div class="sandwatch-holder">
+            <div class="sandwatch-top"></div>
+            <div class="sandwatch-bottom"></div>
+          </div>
+          Loading...
         </div>
-        Loading...
-      </div>
+      
       `;
 
       setTimeout(() => planos(ok, dada), 3000);

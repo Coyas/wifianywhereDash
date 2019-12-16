@@ -385,7 +385,7 @@ class ReservaController {
         }
 
         // response.send('book criado com sucesso  ')
-        response.redirect(`/reservas/pagareserva/${params.id}`)//params.id = id do booking
+        response.redirect(`/reservas/pagareserva/${book.id}?id=2321221`)// id do booking
     }
 
     
@@ -407,5 +407,5 @@ class ReservaController {
     }
     // guardarpagar({}){}
 }
- 
+  
 module.exports = ReservaController
