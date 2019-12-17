@@ -142,15 +142,15 @@ Route.group(() => {
 
 }).middleware(['authendicated'])
 
-  // reset password by email
-  Route.get('password/reset', 'Auth/PasswordResetController.showLinkRequestForm')
+// reset password by email
+Route.get('password/reset', 'Auth/PasswordResetController.showLinkRequestForm')
 
-  Route.post('password/email', 'Auth/PasswordResetController.sendResetLinkEmail')
+Route.post('password/email', 'Auth/PasswordResetController.sendResetLinkEmail')
 
-  // reset password token
-  Route.get('password/reset/:token', 'Auth/PasswordResetController.showResetForm')
+// reset password token
+Route.get('password/reset/:token', 'Auth/PasswordResetController.showResetForm')
 
-  Route.post('password/reset', 'Auth/PasswordResetController.reset')
+Route.post('password/reset', 'Auth/PasswordResetController.reset')
 
 // confirmacao de email
 Route.get('register/confirm/:token', 'Auth/RegisterController.confirmEmail')
@@ -166,12 +166,10 @@ Route.post('/auth/login', 'Auth/LoginController.login')
  * 500 - internal server error
  */
 // 404 pages
-Route.any('*', async ({ view, response}) => {
-      
-    // return view.render('main')
-    // return response.status(404).send('404 page')
-    if(response.status(404)){
-      return view.render('404')
-    }
-  
-  })
+Route.any('*', async ({ view, response}) => {    
+  // return view.render('main')
+  // return response.status(404).send('404 page')
+  if(response.status(404)){
+    return view.render('404')
+  }  
+})

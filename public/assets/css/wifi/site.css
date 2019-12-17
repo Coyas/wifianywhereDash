@@ -53,6 +53,10 @@ p#detal {
   font-weight: bold;
 }
 
+#warn {
+  font-weight: bold;
+}
+
 #detalhesR .loader-wrapper {
   font-family: "Source Sans Pro", sans-serif;
   position: absolute;

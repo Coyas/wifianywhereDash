@@ -8,6 +8,8 @@ const Device = use('App/Models/Device')
 const Momento = require('moment')
 const Config = use('App/Models/Config')
 const { validate, validateAll } = use('Validator')
+const querystring = require('querystring')
+const randomString = require('random-string')
 
 
 class ReservaController {
@@ -254,20 +256,30 @@ class ReservaController {
 
     }
 
-    // efetuar reservas
+    /**
+     * 
+     * Inicio do proceso de reserva
+     */
     async novareserva({view, params}){
         const config = await Config.find(1)
 
         const user = await User.find(params.id)
 
+        console.log('randomString')
+        const cripto = randomString({length: 40})
+        console.log(cripto)
+
         return view.render('reserva.novo', {
             Lugar: 'Nova Reserva',
             config: config,
-            User: user
+            User: user,
+            check: cripto
         })
     }
-    async guardareserva({response, params, request, auth, session, view}){
-        console.log(params.id)
+    async guardareserva({response, params, request, session, location}){
+        console.log('queryString (ya): ')
+        console.log(request.get().check)
+        // console.log(request)
 
         console.log(request.all())
         // validar campos de formulario
@@ -306,7 +318,7 @@ class ReservaController {
         // nao funciona se nao ha nada paa atualizar
         // if(u){
         //     // response.send('guardar nova reserva')
-            response.redirect(`/reservas/chooseplano/${params.id}`)
+            response.redirect(`/reservas/chooseplano/${params.id}?check=${request.input('check')}`)
         // }else{
         //     //implementa u metodo de alert
         //     response.redirect('back')
@@ -321,6 +333,10 @@ class ReservaController {
         if(!user){
             response.send('Usuario nao existe')
         }
+
+        console.log('queryString: #########################"')
+        const query = querystring.decode()
+        console.log(query)
 
         // dados
         // lista de planos
@@ -385,7 +401,7 @@ class ReservaController {
         }
 
         // response.send('book criado com sucesso  ')
-        response.redirect(`/reservas/pagareserva/${book.id}?id=2321221`)// id do booking
+        response.redirect(`/reservas/pagareserva/${book.id}`)// id do booking
     }
 
     

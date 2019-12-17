@@ -80,107 +80,9 @@ $(document).ready(function(){
 
       let dada = document.getElementById('detalhesR');      
 
-      switch(ok.caso){
-        case 1: 
-          dada.innerHTML = `
-          <div class="row">
-          <div class="col-md-4">
-            <div class="planoDetail">
-              <p class="pd"><span>Plano:</span> ${ok.plano}</p>
-              <p class="pd"><span>Megas:</span> ${ok.megas} MB</p>
-              <p class="pd"><span>Preço:</span> ${ok.preco}$00</p>
-              <p ></p>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <div class="row">
-              <div class="col-md-6">
-                <p class="pd"><span>Despositivo N°:</span> ${ok.deviceid}</p>
-                <p class="pd"><span>Nome:</span> ${ok.devicenome} </p>
-                <p class="pd"><span>Numero:</span> ${ok.devicenum} </p>
-              </div>
-              <div class="col-md-6">
-                <img id="reinfo" src="${ok.devicefoto}" alt="">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row my-3">
-          <div class="col-md-12 text-center">
-            <p>( Será cobrado 330$00 por cada dia de aluguer e somado ao valor do pacote )</p>
-          </div>
-        </div>
-          `;
-          break;
-        case 2:
-            dada.innerHTML = `
-            <div class="row">
-            <div class="col-md-4">
-              <div class="planoDetail">
-                <p class="pd"><span>Plano:</span> ${ok.plano}</p>
-                <p class="pd"><span>Megas:</span> ${ok.megas} MB</p>
-                <p class="pd"><span>Preço:</span> ${ok.preco}$00</p>
-                <p ></p>
-              </div>
-            </div>
-            <div class="col-md-8">
-              <p id="detal"> ${ok.device}</p>
-            </div>
-          </div>
-          <div class="row my-3">
-            <div class="col-md-12 text-center">
-              <p>( Será cobrado 330$00 por cada dia de aluguer e somado ao valor do pacote )</p>
-            </div>
-          </div>
-            `;
-          break;
-        case 3:
-            dada.innerHTML = `
-            <div class="row">
-            <div class="col-md-4">
-              <p id="detal"> ${ok.plano} </p>
-            </div>
-            <div class="col-md-8">
-              <div class="row">
-                <div class="col-md-6">
-                  <p class="pd"><span>Despositivo N°:</span> ${ok.deviceid}</p>
-                  <p class="pd"><span>Nome:</span> ${ok.devicenome} </p>
-                  <p class="pd"><span>Numero:</span> ${ok.devicenum} </p>
-                </div>
-                <div class="col-md-6">
-                  <img id="reinfo" src="${ok.devicefoto}" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row my-3">
-            <div class="col-md-12 text-center">
-              <p>( Será cobrado 330$00 por cada dia de aluguer e somado ao valor do pacote )</p>
-            </div>
-          </div>
-            `;
-          break;
-        case 4:
-            dada.innerHTML = `
-            <div class="row">
-            <div class="col-md-4">
-              <p  id="detal">${ok.plano}</p>
-            </div>
-            <div class="col-md-8">
-              <p id="detal"> ${ok.device}</p>
-            </div>
-          </div>
-          <div class="row my-3">
-            <div class="col-md-12 text-center">
-              <p>( Será cobrado 330$00 por cada dia de aluguer e somado ao valor do pacote )</p>
-            </div>
-          </div>
-            `;
-          break;
-        default:
-          console.log("que opcao de mostrar detalhes é essa ( dafault valor/caso )")
-      }
-
+      planos(ok, dada)
+      // setTimeout(() => planos(ok, dada), 3000);
+      
     },
     error: (res) => {
       console.log(res);
@@ -312,22 +214,32 @@ $('#changePlano').change(function () {
 
 // cont planos
 
+
 function planos(ok, dada) {
+
+  var pickdate = document.querySelector('input[name=pickupdate]').value
+  var dropdate = document.querySelector('input[name=returnday]').value
+  // console.log(pickdate)
+  // console.log(dropdate)
+
+
   switch(ok.caso){
     case 1: 
       dada.innerHTML = `
       <div class="row">
       <div class="col-md-4">
         <div class="planoDetail">
+          <p class="pd"><span>Pick-up Date</span> ${pickdate}</p>
           <p class="pd"><span>Plano:</span> ${ok.plano}</p>
           <p class="pd"><span>Megas:</span> ${ok.megas} MB</p>
-          <p class="pd"><span>Preço:</span> ${ok.preco}$00</p>
+          <p class="pd"><span>Preço:</span> &euro;${ok.preco}</p>
           <p ></p>
         </div>
       </div>
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-6">
+            <p class="pd"><span>Pick-up Date</span> ${dropdate}</p>
             <p class="pd"><span>Despositivo N°:</span> ${ok.deviceid}</p>
             <p class="pd"><span>Nome:</span> ${ok.devicenome} </p>
             <p class="pd"><span>Numero:</span> ${ok.devicenum} </p>
@@ -340,7 +252,7 @@ function planos(ok, dada) {
     </div>
     <div class="row my-3">
       <div class="col-md-12 text-center">
-        <p>( Será cobrado 330$00 por cada dia de aluguer e somado ao valor do pacote )</p>
+      <p id="warn"> Será cobrado &euro;3 por cada dia de aluguer e somado ao valor do pacote </p>
       </div>
     </div>
       `;
@@ -350,19 +262,21 @@ function planos(ok, dada) {
         <div class="row">
         <div class="col-md-4">
           <div class="planoDetail">
+            <p class="pd"><span>Pick-up Date</span> ${pickdate}</p>
             <p class="pd"><span>Plano:</span> ${ok.plano}</p>
             <p class="pd"><span>Megas:</span> ${ok.megas} MB</p>
-            <p class="pd"><span>Preço:</span> ${ok.preco}$00</p>
+            <p class="pd"><span>Preço:</span> &euro;${ok.preco}</p>
             <p ></p>
           </div>
         </div>
         <div class="col-md-8">
+          <p class="pd"><span>Pick-up Date</span> ${dropdate}</p>
           <p id="detal"> ${ok.device}</p>
         </div>
       </div>
       <div class="row my-3">
         <div class="col-md-12 text-center">
-          <p>( Será cobrado 330$00 por cada dia de aluguer e somado ao valor do pacote )</p>
+        <p id="warn"> Será cobrado &euro;3 por cada dia de aluguer e somado ao valor do pacote </p>
         </div>
       </div>
         `;
@@ -371,11 +285,13 @@ function planos(ok, dada) {
         dada.innerHTML = `
         <div class="row">
         <div class="col-md-4">
+          <p class="pd"><span>Pick-up Date</span> ${pickdate}</p>
           <p  id="detal"> ${ok.plano} </p>
         </div>
         <div class="col-md-8">
           <div class="row">
             <div class="col-md-6">
+              <p class="pd"><span>Pick-up Date</span> ${dropdate}</p>
               <p class="pd"><span>Despositivo N°:</span> ${ok.deviceid}</p>
               <p class="pd"><span>Nome:</span> ${ok.devicenome} </p>
               <p class="pd"><span>Numero:</span> ${ok.devicenum} </p>
@@ -388,7 +304,7 @@ function planos(ok, dada) {
       </div>
       <div class="row my-3">
         <div class="col-md-12 text-center">
-          <p>( Será cobrado 330$00 por cada dia de aluguer e somado ao valor do pacote )</p>
+        <p id="warn"> Será cobrado &euro;3 por cada dia de aluguer e somado ao valor do pacote </p>
         </div>
       </div>
         `;
@@ -405,7 +321,7 @@ function planos(ok, dada) {
       </div>
       <div class="row my-3">
         <div class="col-md-12 text-center">
-          <p>( Será cobrado 330$00 por cada dia de aluguer e somado ao valor do pacote )</p>
+          <p id="warn"> Será cobrado &euro;3 por cada dia de aluguer e somado ao valor do pacote </p>
         </div>
       </div>
         `;
