@@ -35,16 +35,17 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="{{'/reservas/guardarplanos/' + Cliente}}" method="POST">
+              <form action="{{'/reservas/guardarplanos/' + bookId}}" method="POST">
                   {{ csrfField() }}
               
                 <div class="pl-lg-8">
                   <div class="row">
                     <div class="col-lg-6" >
-                        <a href="" class="btn btn-warning" style="width: 147.9px !important;">Canselar</a>
+                    <a href="/reservas/chooseplano/{{Cliente}}?check={{check}}" class="btn btn-warning" style="width: 147.9px !important;"><< Voltar</a>
                     </div>
+                    <input type="hidden" name="check" value="{{check}}">
                     <div class="col-lg-6">
-                        <input type="submit" class="btn btn-primary" value="Escolher Plano">
+                        <input type="submit" class="btn btn-primary" value="Confirmar">
                     </div>
                   </div>
                 </div>

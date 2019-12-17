@@ -107,7 +107,7 @@ Route.group(() => {
   Route.put('/reservas/guardareserva/:id', 'ReservaController.guardareserva')
 
   //choose plano
-  Route.get('/reservas/chooseplano/:id', 'ReservaController.chooseplanos')
+  Route.get(`/reservas/chooseplano/:id`, 'ReservaController.chooseplanos')
   Route.post('/reservas/guardarplanos/:id', 'ReservaController.guardarplanos')
   
   //pagar reserva

@@ -273,13 +273,10 @@ class ReservaController {
             Lugar: 'Nova Reserva',
             config: config,
             User: user,
-            check: cripto
+            check: cripto            
         })
     }
-    async guardareserva({response, params, request, session, location}){
-        console.log('queryString (ya): ')
-        console.log(request.get().check)
-        // console.log(request)
+    async guardareserva({response, params, request, session}){
 
         console.log(request.all())
         // validar campos de formulario
@@ -325,7 +322,12 @@ class ReservaController {
         // }
     }
 
-    async chooseplanos({view, params}) {
+    async chooseplanos({view, params, request}) {
+        
+        console.log('request check data: ')
+        const { check } = request.get()
+        console.log(check)
+
         const config = await Config.find(1)
 
         const user = await User.find(params.id)
@@ -333,10 +335,6 @@ class ReservaController {
         if(!user){
             response.send('Usuario nao existe')
         }
-
-        console.log('queryString: #########################"')
-        const query = querystring.decode()
-        console.log(query)
 
         // dados
         // lista de planos
@@ -353,12 +351,17 @@ class ReservaController {
             config: config,
             Plano: plano,
             Cliente: params.id,
-            Local: local
+            Local: local,
+            check
         })
     }
 
     async guardarplanos({response, request, params, session}){
+        console.log('params id(cliente id): ')
         console.log(params.id)
+        console.log('queryString do input:')
+        console.log(request.all())
+        const { check } = request.all()
 
         console.log(request.all())
         // validar campos de formulario
@@ -383,6 +386,9 @@ class ReservaController {
             response.send('Usuario nao existe')
         }
 
+
+
+        console.log('Criando o booking...')
         const book = new Book()
         book.pickupDate = request.input('pickupdate')
         book.returnday  = request.input('returnday')
@@ -401,11 +407,16 @@ class ReservaController {
         }
 
         // response.send('book criado com sucesso  ')
-        response.redirect(`/reservas/pagareserva/${book.id}`)// id do booking
+        response.redirect(`/reservas/pagareserva/${book.id}?check=${check}`)// id do booking
     }
 
     
-    async pagareserva({view, params}){
+    async pagareserva({view, params, request}){
+        console.log('request check data: ')
+        const { check } = request.get()
+        const bookId = params.id 
+        console.log(check)
+
         const config = await Config.find(1)
 
         const book = await Book.find(params.id)
@@ -419,6 +430,8 @@ class ReservaController {
         return view.render('reserva.pagar', {
             Lugar: 'Ordem De Reserva',
             config: config,
+            bookId,
+            check
         })
     }
     // guardarpagar({}){}
