@@ -14,6 +14,13 @@
         margin-left: 2%;
     }
 }
+.card-footer {
+  display: flex;
+  justify-content: space-around;
+}
+.pabaixo {
+  margin-top: 5%;
+}
 
 #reservainfo {
     div {
@@ -40,6 +47,11 @@
 
 input[type="file"]{
     display: none;
+}
+
+.storno {
+  display: flex;
+  justify-content: space-between;
 }
 
 #fakefile {
@@ -74,8 +86,8 @@ p#detal {
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 120px 0 0;
-      } 
-      
+      }
+
       .sandwatch-holder {
         position: absolute;
         top: 50%;
@@ -84,21 +96,21 @@ p#detal {
         width: 43px;
         animation: rotateHolder 2s linear infinite;
       }
-      
+
       @keyframes rotateHolder {
         0% {
           transform: translate(-50%, -50%) rotate(0deg);
         }
-        
+
         90% {
           transform: translate(-50%, -50%) rotate(0deg);
         }
-        
+
         100% {
           transform: translate(-50%, -50%) rotate(180deg);
         }
       }
-      
+
       .sandwatch-holder:after {
         content: "";
         position: absolute;
@@ -111,7 +123,7 @@ p#detal {
         margin: -17px 0 0;
         animation: moveStream 2s linear infinite;
       }
-      
+
       .sandwatch-top, .sandwatch-bottom {
         width: 35px;
         height: 35px;
@@ -122,11 +134,11 @@ p#detal {
         border-radius: 50px 100px 50px 30px;
         overflow: hidden;
       }
-      
+
       .sandwatch-top {
         transform: rotate(-45deg);
       }
-      
+
       .sandwatch-holder:before {
         position: absolute;
         content: "";
@@ -137,12 +149,12 @@ p#detal {
         top: 50%;
         transform: translate(-50%, -50%);
       }
-      
+
       .sandwatch-bottom {
         transform: rotate(135deg);
         margin: 12px 0 0;
       }
-      
+
       .sandwatch-top:before, .sandwatch-bottom:before {
         content: "";
         position: absolute;
@@ -151,39 +163,39 @@ p#detal {
         background: #1bb5e5;
         border-radius: 0 100px 0 0;
       }
-      
+
       .sandwatch-top:before {
         transform: translate(0, 0);
         animation: dropSand 2s linear infinite;
       }
-      
+
       .sandwatch-bottom:before {
         transform: translate(25px, -25px);
         border-radius: 0 0 0 12px;
         animation: fillSand 2s linear infinite;
       }
-      
+
       @keyframes dropSand {
         100% {
           transform: translate(-22px, 22px);
         }
       }
-      
+
       @keyframes fillSand {
         4% {
           transform: translate(25px, -25px);
         }
-        
+
         100% {
           transform: translate(-1px, 0);
         }
       }
-      
+
       @keyframes moveStream {
         10% {
           margin: 17px 0 0;
         }
-        
+
         100% {
           margin: 17px 0 0;
         }

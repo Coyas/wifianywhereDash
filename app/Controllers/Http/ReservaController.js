@@ -32,7 +32,7 @@ class ReservaController {
             recper: "0.00",
             performance: "00",
             perper: "00",
-            gastos: pay[0].total,
+            gastos: pay ? pay[0].total : '00',
             gper: "00"
         }
 
@@ -41,7 +41,7 @@ class ReservaController {
          */
 
 
-        
+
         let dadosbook = []
         for(var a=0; a < books.length; a++){
 
@@ -65,7 +65,7 @@ class ReservaController {
             var local2 = new Date(rq);
             local2.setMinutes( rq.getMinutes() - rq.getTimezoneOffset() )
             const data2 = local2.toJSON().slice(0, 10)
-            
+
             dadosbook[a] = {
                 id: books[a].id,
                 avatar: users.avatar,
@@ -78,7 +78,7 @@ class ReservaController {
                 pickuplocation: picklocation.nome,
                 returnlocation: returnlocation.nome,
                 userID: books[a].user_id
-            } 
+            }
         }
 
         // console.log(dadosbook)
@@ -103,13 +103,13 @@ class ReservaController {
 
 
         const books = book.toJSON()
-        
+
         const pay = await Pay
             .query()
             .sum('valor as total')
 
         // console.log(pay[0].total)
-        
+
 
         /**
          * objecto com dados das cards
@@ -132,7 +132,7 @@ class ReservaController {
         const user = await User.find(params.id)
         const users = user.toJSON()
 
-        
+
         let dadosbook = []
         for(var a=0; a < books.length; a++){
             let plan = await Plan.find(books[a].plano_id)
@@ -152,7 +152,7 @@ class ReservaController {
             var local2 = new Date(rq);
             local2.setMinutes( rq.getMinutes() - rq.getTimezoneOffset() )
             const data2 = local2.toJSON().slice(0, 10)
-            
+
                 dadosbook[a] = {
                     id: books[a].id,
                     avatar: users.avatar,
@@ -164,7 +164,7 @@ class ReservaController {
                     pickuplocation: picklocation.nome,
                     returnlocation: returnlocation.nome,
                     userID: books[a].user_id
-                } 
+                }
         }
 
         console.log(dadosbook)
@@ -176,11 +176,18 @@ class ReservaController {
             Table: dadosbook,
             config: config
         })
-    } 
+    }
 
     async info({view, params}){
+        //pegar as configuracoes do app
         const config = await Config.find(1)
+        //essa pesquisa vai ter que ser mais elaborado pois, vai precisar verificar o estatus do booking e pegar so os finalizados
         const book = await Book.find(params.id)
+        //verificar se o booking existe, pois se nao existir vai apresentar error nas outras pesquisas
+        if(!book){
+          return view.render('404')
+        }
+
         const books = book.toJSON()
 
         // console.log(books)
@@ -214,11 +221,11 @@ class ReservaController {
             phone: users.phone,
             picklocation: picklocation.nome,
             droplocation: droplocation.nome,
-            total: pay.valor,
+            total: pay ? pay.valor : '00',
             qrcode: books.qrcode,
             showup: books.showup,
             devolver: books.devolver,
-            device: device.numero
+            device: device ? device.numero : '--'
         }
 
         return view.render('reserva.info', {
@@ -235,29 +242,45 @@ class ReservaController {
         book.showup = a
         await book.save()
 
+        //fazer recaregamento de saldo
+
         response.redirect(`/reservas/info/${book.id}`)
     }
 
     async devolver({response, params, request}){
-        console.log('request ajax')
         const dados = request.all()
         console.log(request.all())
 
         const a = Momento().format('Y-M-D');
         const book = await Book.find(params.id)
+
         if(book.device_id == dados.device_id){
             book.devolver = a
             await book.save()
+            console.log('device existe')
 
+            //caso houver um azarde força devolver estorno
+            const storno = (dados) ? dados.Storno : '0'
+            console.log(storno)
+            // processar o estorno
+            switch(Number(storno)){
+              case 0: // devolver estorno
+                console.log('devolver estorno')
+                break
+              case 1: // cobrar estorno
+                console.log('cobrar estorno')
+                break
+            }
+            //recarregar a pagina
             response.redirect('back')
         }else{
             console.log('device nao existe')
-        }   
+        }
 
     }
 
     /**
-     * 
+     *
      * Inicio do proceso de reserva
      */
     async novareserva({view, params}){
@@ -273,7 +296,7 @@ class ReservaController {
             Lugar: 'Nova Reserva',
             config: config,
             User: user,
-            check: cripto            
+            check: cripto
         })
     }
     async guardareserva({response, params, request, session}){
@@ -323,14 +346,14 @@ class ReservaController {
     }
 
     async chooseplanos({view, params, request}) {
-        
+
         console.log('request check data: ')
         const { check } = request.get()
         console.log(check)
 
         const config = await Config.find(1)
 
-        const user = await User.find(params.id)
+        const user = await User.find(params.id)//id pertence ao user
 
         if(!user){
             response.send('Usuario nao existe')
@@ -350,7 +373,7 @@ class ReservaController {
             Lugar: 'Ordem De Reserva',
             config: config,
             Plano: plano,
-            Cliente: params.id,
+            Cliente: params.id,//id do user
             Local: local,
             check
         })
@@ -386,14 +409,18 @@ class ReservaController {
             response.send('Usuario nao existe')
         }
 
+        //converter a data
+        const pick = Momento(request.input('pickupdate')).format('YYYY-MM-DD')
+        const drop = Momento(request.input('returnday')).format('YYYY-MM-DD')
+
 
 
         console.log('Criando o booking...')
         const book = new Book()
-        book.pickupDate = request.input('pickupdate')
-        book.returnday  = request.input('returnday')
+        book.pickupDate = pick
+        book.returnday  = drop
         book.flynumber  = request.input('flynumber')
-        book.check      = null //atribuir um random numver para validacao
+        book.check      = check ? check : null //atribuir um random numver para validacao
         book.plano_id   = request.input('plano_id')
         book.pickuplocation_id = request.input('pickuplocation_id')
         book.returnlocation_id = request.input('returnlocation_id')
@@ -407,14 +434,14 @@ class ReservaController {
         }
 
         // response.send('book criado com sucesso  ')
-        response.redirect(`/reservas/pagareserva/${book.id}?check=${check}`)// id do booking
+        response.redirect(`/reservas/pagareserva/${book.id}?check=${check}&paramsId=${params.id}`)// id do booking
     }
 
-    
+
     async pagareserva({view, params, request}){
         console.log('request check data: ')
-        const { check } = request.get()
-        const bookId = params.id 
+        const { check, paramsId } = request.get()
+        const bookId = params.id
         console.log(check)
 
         const config = await Config.find(1)
@@ -431,10 +458,30 @@ class ReservaController {
             Lugar: 'Ordem De Reserva',
             config: config,
             bookId,
+            Cliente: paramsId,
             check
         })
     }
-    // guardarpagar({}){}
+    async guardarpagar({response, request, params}){
+      console.log(params)
+      console.log(request)
+
+      const validation = await validateAll(request.all(), {
+        valor: 'required',
+        tipo: 'required',
+    })
+
+    if(validation.fails()){
+      session.withErrors(validation.messages())
+      // console.log('create user validation error: ')
+      // console.log(validation.messages())
+      return response.redirect('back')
+    }
+
+    // fazer o pagamento( adicionar dados na tabela payment)
+
+      response.send('a efetuar pagamento')
+    }
 }
-  
+
 module.exports = ReservaController

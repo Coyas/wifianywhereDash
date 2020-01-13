@@ -64,7 +64,7 @@ Route.group(() => {
     }else{
       console.log('vazia')
     }
-    
+
     await profilePic.move(Helpers.publicPath(upload))
 
     if (!profilePic.moved()) {
@@ -93,27 +93,28 @@ Route.group(() => {
   Route.get('/cliente/novo', 'ClienteController.newcliente')// rota para criar novo cliente
   Route.get('/clientes/info/:id', 'ClienteController.info')//ver o perfil do cliente savecliente
   Route.post('/clientes/novo', 'ClienteController.savecliente')
-  
-  // rotas para reservas 
+
+  // rotas para reservas
   Route.get('/reservas', 'ReservaController.lista')//listar todas as reservas
   Route.get('/reservas/:id', 'ReservaController.listar')//listar uma reserva especifica
   Route.get('/reservas/info/:id', 'ReservaController.info')//ver os detalhes de uma reserva especifica id reserva
 
   Route.get('/reservas/pegar/:id', 'ReservaController.pegar')
-  Route.post('/reservas/devolver/:id', 'ReservaController.devolver')
+  Route.post('/reservas/devolver/:id', 'ReservaController.devolver')// id da reserva
 
   // nova reserva ---------------------------------------------------------------
-  Route.get('/reservas/novareserva/:id', 'ReservaController.novareserva')
-  Route.put('/reservas/guardareserva/:id', 'ReservaController.guardareserva')
+  Route.get('/reservas/novareserva/:id', 'ReservaController.novareserva')// id pertence ao user
+  Route.put('/reservas/guardareserva/:id', 'ReservaController.guardareserva')//id pertence ao user
 
   //choose plano
-  Route.get(`/reservas/chooseplano/:id`, 'ReservaController.chooseplanos')
-  Route.post('/reservas/guardarplanos/:id', 'ReservaController.guardarplanos')
-  
+  Route.get(`/reservas/chooseplano/:id`, 'ReservaController.chooseplanos')//id do user
+  Route.post('/reservas/guardarplanos/:id', 'ReservaController.guardarplanos')//id do user
+
   //pagar reserva
-  Route.get('/reservas/pagareserva/:id', 'ReservaController.pagareserva')
+  Route.get('/reservas/pagareserva/:id', 'ReservaController.pagareserva')//id do booking
+  Route.post('/reservas/guardarpagar/:id', 'ReservaController.guardarpagar')//id do booking
   // ----------------------------------------------------------------------------
-  
+
   // rotas para usuarios
   Route.get('/user/:id', 'UserController.index')
   Route.put('/user/:id', 'UserController.editar')
@@ -124,7 +125,7 @@ Route.group(() => {
   // rotas de  signup
   Route.get('/auth/register', 'Auth/RegisterController.showform')
 
-  Route.post('/auth/register', 'Auth/RegisterController.register') 
+  Route.post('/auth/register', 'Auth/RegisterController.register')
 
   Route.get('/usuarios', 'UsuarioController.index')
 
@@ -132,11 +133,11 @@ Route.group(() => {
   // logout
   Route.get('logout', 'Auth/AuthenticatedController.logout')
   Route.get('/usuarios/isactive/:id', 'UsuarioController.isactive')
-  Route.get('/usuarios/isdesativo/:id', 'UsuarioController.isdesativo') 
+  Route.get('/usuarios/isdesativo/:id', 'UsuarioController.isdesativo')
 
 }).middleware(['auth'])
 
-Route.group(() => { 
+Route.group(() => {
   // login
   Route.get('/auth/login', 'Auth/LoginController.showformlogin')
 
@@ -161,15 +162,15 @@ Route.post('/auth/login', 'Auth/LoginController.login')
 
 /**
  *  Error handler pages
- * 
+ *
  * 404 - page not found
  * 500 - internal server error
  */
 // 404 pages
-Route.any('*', async ({ view, response}) => {    
+Route.any('*', async ({ view, response}) => {
   // return view.render('main')
   // return response.status(404).send('404 page')
   if(response.status(404)){
     return view.render('404')
-  }  
+  }
 })

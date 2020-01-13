@@ -7,7 +7,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "test": "node ace test",
-    "sass": "sass --watch public/scss/wifi/:public/assets/css/wifi"
+    "sass": "sass --watch public/scss/wifi/:public/assets/css/wifi",
+    "commit": "git-cz"
   },
   "keywords": [
     "adonisjs",
@@ -33,8 +34,15 @@
     "mysql": "^2.17.1",
     "random-string": "^0.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.0.2"
+  },
   "autoload": {
     "App": "./app"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

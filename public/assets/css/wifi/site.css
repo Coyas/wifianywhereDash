@@ -12,6 +12,15 @@
   margin-left: 2%;
 }
 
+.card-footer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.pabaixo {
+  margin-top: 5%;
+}
+
 #reservainfo div label {
   color: #32325d;
 }
@@ -32,6 +41,11 @@
 
 input[type=file] {
   display: none;
+}
+
+.storno {
+  display: flex;
+  justify-content: space-between;
 }
 
 #fakefile {

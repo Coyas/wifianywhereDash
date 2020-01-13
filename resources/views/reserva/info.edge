@@ -13,12 +13,12 @@
           <a class="btn btn-secondary">Finalizado</a>
         @elseif(dados.showup && !dados.devolver)
          <!-- data-toggle="modal" data-target="#exampleModalCenter"-->
-          <a href="" class="devolver btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter">Devolver</a>
+          <a href="" class="devolver btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter">Por Devolver</a>
         @elseif(!dados.showup && !dados.devolver)
-          <a href="/reservas/pegar/{{dados.id}}" class="btn btn-primary">Por pegar</a>
+          <a href="" class="btn btn-primary">Aguardando cliente...</a>
         @else
-          <a href="/reservas/pegar/{{dados.id}}" class="btn btn-primary">No showup</a>
-        @endif 
+          <a href="" class="btn btn-primary">No showup</a>
+        @endif
       </div>
     </div>
   </div>
@@ -68,7 +68,7 @@
                 </div>
                 <div>
                   <label for="">Dispositivo Number</label>
-                  <p>{{dados.device}}</p>
+                  <p>{{dados.device}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Mudar Dispositivo"><i class="fas fa-sync-alt"></i></a></p>
                 </div>
                 <div>
                   <label for="">Custo</label>
@@ -82,22 +82,111 @@
               </div>
             </div>
           </div>
+          <div id="" class="card-footer">
+            @if(dados.showup && dados.devolver)
+
+            @elseif(dados.showup && !dados.devolver)
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#finalizar">
+              Finalizar Reserva
+            </button>
+
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#recarregar">
+              Recarregar Reserva
+            </button>
+
+
+
+              <button type="button" class="btn btn-secondary " data-toggle="modal" data-target="#modal-notification">Canselar</button>
+              <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+                <div class="modal-dialog modal-danger modal-dialog-centered modal-10" role="document">
+                    <div class="modal-content bg-gradient-danger">
+
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-notification">A Sua Atencao É Requerida</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="py-3 text-center">
+                                <i class="ni ni-bell-55 ni-3x"></i>
+                                <h4 class="heading mt-4">Devias Ser Isso</h4>
+                                <p>Canselar uma reserva pode ou nao ter custos, dependendo da data do canselamento</p>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-link text-white ml-auto">Sim</button>
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Nao</button>
+                        </div>
+
+                    </div>
+                </div>
+              </div>
+
+
+            @elseif(!dados.showup && !dados.devolver)
+            <a href="/reservas/pegar/{{dados.id}}" class="btn btn-success" >
+              Confirmar Levantamento
+            </a>
+
+
+              <button type="button" class="btn btn-secondary " data-toggle="modal" data-target="#modal-notification">Canselar</button>
+              <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+                <div class="modal-dialog modal-danger modal-dialog-centered modal-10" role="document">
+                    <div class="modal-content bg-gradient-danger">
+
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="modal-title-notification">A Sua Atencao É Requerida</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="py-3 text-center">
+                                <i class="ni ni-bell-55 ni-3x"></i>
+                                <h4 class="heading mt-4">Atenção</h4>
+                                <p>Canselar uma reserva pode ou nao ter custos, dependendo da data do cancelamento</p>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-link text-white ml-auto">Sim</button>
+                            <button type="button" class="btn btn-white" data-dismiss="modal">Nao</button>
+                        </div>
+
+                    </div>
+                </div>
+              </div>
+
+
+            @else
+              <a  class="btn btn-secondary" >
+                Nao Apareceu
+              </a>
+            @endif
+
+          </div>
         </div>
       </div>
     </div>
 
     {{--  modal  --}}
     <!-- Button trigger modal -->
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Launch demo modal
-</button>-->
 
-<!-- Modal -->
-   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+<!-- Modal finalizar reserva -->
+   <div class="modal fade" id="finalizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-center" id="exampleModalLongTitle">confirmacao</h5>
+          <h5 class="modal-title text-center" id="exampleModalLongTitle">Confirmacao do Dispositivo</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -105,7 +194,32 @@
         <form action="/reservas/devolver/{{dados.id}}" method="POST">
           {{ csrfField() }}
           <div class="modal-body">
-            <input type="text" name="device_id" placeholder="Despositivo">
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-tag"></i></span>
+                </div>
+                <input name="device_id" class="form-control" placeholder="ID Do Dispositivo" type="text">
+              </div>
+            </div>
+
+            <!-- checkboxs para cobrar extorno -->
+            <div class="storno">
+              <!-- devolver extorno -->
+              <div class="custom-control custom-control-alternative custom-checkbox">
+                <input name="Storno" class="custom-control-input" id="devolverStorno" type="radio" value="0" checked>
+                <label class="custom-control-label" for="devolverStorno">
+                  <span class="text-muted">Devolver Storno</span>
+                </label>
+              </div>
+              <!-- cobrar extorno -->
+              <div class="custom-control custom-control-alternative custom-checkbox">
+                <input name="Storno" class="custom-control-input" id="cobrarStorno" type="radio" value="1">
+                <label class="custom-control-label" for="cobrarStorno">
+                  <span class="text-muted">Cobrar Storno</span>
+                </label>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Canselar</button>
@@ -114,5 +228,58 @@
         </form>
       </div>
     </div>
-  </div> 
+  </div>
+
+  <!-- Modal recarregar reserva -->
+  <div class="modal fade" id="recarregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center" id="exampleModalLongTitle">Recarregar Dispositivo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="" method="POST">
+          {{ csrfField() }}
+          <div class="modal-body">
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-mobile-button"></i></span>
+                </div>
+                <input name="dev_numero" class="form-control" placeholder="Numero Do Dispositivo" type="number">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Canselar</button>
+            <button id="devolver" type="submit" class="btn btn-primary">Confirmar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal canselar reserva (implementar com switalert) -->
+  <!--  <div class="modal fade" id="canselar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center" id="exampleModalLongTitle">Canselar a Reserva</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+          <div class="modal-body">
+            Desejas Canselar a Reserva?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Nao</button>
+            <button id="devolver" type="submit" class="btn btn-primary">Sim</button>
+          </div>
+      </div>
+    </div>
+  </div>  -->
+
 @endsection

@@ -17,9 +17,9 @@
 
 
     <!-- Page content -->
-    <div class="container-fluid mt--7"> 
+    <div class="container-fluid mt--7">
       <div class="row justify-content-center">
-    
+
         <div class="col-md-8 order-xl-1">
           <div class="card bg-secondary shadow">
             <div class="card-header bg-white border-0">
@@ -28,25 +28,38 @@
                   <h3 class="mb-0">Processo de pagamento</h3>
                 </div>
                 <div class="col-4 text-right">
-                  
-                <!--  <a href="#" class="btn btn-sm btn-warning">Atualizar</a>-->  
-                
+
+                <!--  <a href="#" class="btn btn-sm btn-warning">Atualizar</a>-->
+
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <form action="{{'/reservas/guardarplanos/' + bookId}}" method="POST">
+              <form action="{{'/reservas/guardarpagar/' + bookId}}" method="POST">
                   {{ csrfField() }}
 
-                <div class="pl-lg-3">
+                <div class="pl-lg-4">
+
                   <div class="row">
-                    <div class="col-md-12">
-                      ola mundo
+                    <div class="col-lg-6">
+                      <div class="form-group {{ hasErrorFor('total') ? 'has-danger' : ''}}">
+                        <label class="form-control-label" for="input-first-name">Valor </label>
+                        <input type="text" name="valor" id="valor" class="form-control {{ hasErrorFor('total') ? 'is-invalid' : 'form-control-alternative'}}" >
+                      </div>
                     </div>
+                    <div class="col-lg-6 pabaixo">
+                      <div class="form-group {{ hasErrorFor('tipo') ? 'has-danger': ''}}">
+                          <label class="form-control-label" for="input-last-name"></label>
+                        <input type="radio" name="tipo" id="tipo" class="" value="1" checked> Dinheiro
+                        &nbsp;&nbsp;&nbsp;
+                        <label class="form-control-label" for="input-pos"></label>
+                        <input type="radio" name="tipo" id="tipo" class=""  value="0"> POS
+                      </div>
                   </div>
                 </div>
+              </div>
 
-              
+
                 <div class="pl-lg-8">
                   <div class="row">
                     <div class="col-lg-6" >
@@ -61,8 +74,8 @@
               </form>
             </div>
           </div>
-        
+
       </div>
       </div>
-  
+
 @endsection
