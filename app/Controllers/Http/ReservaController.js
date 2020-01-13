@@ -480,6 +480,8 @@ class ReservaController {
 
     // fazer o pagamento( adicionar dados na tabela payment)
 
+    //enviar o email de confirmacao de pagamento (usando events)
+
       response.send('a efetuar pagamento')
     }
 }
