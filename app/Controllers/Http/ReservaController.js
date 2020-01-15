@@ -20,7 +20,7 @@ class ReservaController {
         const books = book.toJSON()
         const pay = await Pay
         .query()
-        .sum('valor as total')
+        .sum('merchantRespPurchaseAmount as total')
 
         /**
          * objecto com dados das cards
@@ -106,7 +106,7 @@ class ReservaController {
 
         const pay = await Pay
             .query()
-            .sum('valor as total')
+            .sum('merchantRespPurchaseAmount as total')
 
         // console.log(pay[0].total)
 
@@ -188,6 +188,9 @@ class ReservaController {
           return view.render('404')
         }
 
+        const Plans = await Plan.all()
+        const Planos = Plans.toJSON()
+
         const books = book.toJSON()
 
         // console.log(books)
@@ -230,7 +233,8 @@ class ReservaController {
 
         return view.render('reserva.info', {
             dados: info,
-            config: config
+            config: config,
+            Planos
         })
     }
 
