@@ -7,6 +7,9 @@ const Place = use('App/Models/Place')
 const Device = use('App/Models/Device')
 const Momento = require('moment')
 const Config = use('App/Models/Config')
+const moment = use('moment')
+const Sisp = use('App/Services/Sisp')
+const Env = use('Env')
 const {
   validate,
   validateAll
@@ -455,7 +458,7 @@ class ReservaController {
     book.pickuplocation_id = request.input('pickuplocation_id')
     book.returnlocation_id = request.input('returnlocation_id')
     book.user_id = params.id
-    book.device_id = 2 //pagar um device live ou q vai estar livre
+    book.device_id = '3196' //pagar um device live ou q vai estar livre
 
     const ok = await book.save()
 
@@ -464,7 +467,7 @@ class ReservaController {
     }
 
     // response.send('book criado com sucesso  ')
-    response.redirect(`/reservas/pagareserva/${book.id}?check=${check}&paramsId=${params.id}`) // id do booking
+    response.redirect(`/reservas/pagareserva/${book.id}?check=${check}&paramsId=${params.id}`) // params.id do booking
   }
 
 
@@ -478,25 +481,47 @@ class ReservaController {
       check,
       paramsId
     } = request.get()
-    const bookId = params.id
-    console.log(check)
+    // const bookId = params.id
+    console.log(check + ' || ' + paramsId)
 
     const config = await Config.first()
 
+    console.log('params.id:')
+    console.log(params.id)
     const book = await Book.find(params.id)
+    console.log('book')
+    console.log(book)
 
     if (!book) {
       return view.render('404')
     }
 
+    const plano = await Plan.find(book.plano_id)
+    const device = await Device.find(book.device_id)
+
     // get pagar reserva dados
+    const pagaInfo = {
+      bookId: params.id,
+      cliente: paramsId,
+      check,
+      pickdate: book.pickdate,
+      dropdate: book.dropdate,
+      deviceid: book.device_id,
+      devicenome: device.nome,
+      devicenum: device.numero,
+      devicefoto: device.photo,
+      megas: plano.megas + 'MB',
+      plano: plano.nome,
+      preco: amount
+    }
 
     return view.render('reserva.pagar', {
       Lugar: 'Ordem De Reserva',
-      config: config,
-      bookId,
-      Cliente: paramsId,
-      check
+      config: config, //permite faze o switch de online para offline do frontend
+      // bookId,
+      // Cliente: paramsId,
+      // check,
+      PagarData: pagaInfo
     })
   }
   async guardarpagar({
@@ -526,7 +551,110 @@ class ReservaController {
     response.send('a efetuar pagamento')
   }
 
+  async getRecarregarAmount({
+    view,
+    params,
+    request
+  }) {
+
+    return view.render('reserva.pagar')
+  }
+
   async recarregar({
+    response,
+    request,
+    params
+  }) {
+
+    const dados = request.all()
+    const plan = await Plan.find(dados.plano_id)
+
+    // get config
+    const configs = await Config.first()
+    // console.log(configs)
+    const config = configs.toJSON()
+
+
+
+    //criando o formulario de envio para o sisp
+
+    // CONFIGURACOES wifianywhere
+    // var posID = "90000063"
+    // var posAutCode = "WNLzClRHixeJUAsx"
+    // CONFIGURACOES teste
+    // var posID = "90051"
+    // var posAutCode = "123456789A"
+
+    // OBTER DADOS DE PAGAMENTO
+    var amount = (parseInt((Number(plan.preco) * Number(config.txcambio)), 10)).toString()
+    console.log(amount)
+    // return
+
+    var merchantRef = "R" + moment().format('YYYYMMDDHHmmss')
+    var merchantSession = "S" + moment().format('YYYYMMDDHHmmss')
+    var dateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+
+    //url de callback  https://mc.vinti4net.cv/VbV_Merchant_Example_v2/merchantResp.jsp
+    // var responseUrl = 'https://mc.vinti4net.cv/VbV_Merchant_Example_v2/merchantResp.jsp'
+    var responseUrl = `${Env.get('APP_URL')}/reservas/recargaCallback`
+
+    // pegar o numero do device
+    const books = await Book.find(params.bookid)
+    const book = books.toJSON()
+    console.log('book id:')
+    console.log(book)
+    const DeviceNumeros = await Device.find(book.device_id)
+    const DeviceNumero = DeviceNumeros.toJSON()
+    console.log('Device numero:')
+    console.log(DeviceNumero.numero)
+
+    // return
+    //tem que bai Modulo sisp
+    var formData = {
+      transactionCode: "3", //opcao 3 para recarregamento
+      posID: Env.get('posId'),
+
+      merchantRef: merchantRef,
+      merchantSession: merchantSession,
+
+      amount: amount,
+      currency: "132",
+
+      is3DSec: "1",
+      urlMerchantResponse: responseUrl, //tambem conhecido como meu url de callback
+
+      languageMessages: "pt",
+      timeStamp: dateTime,
+
+      fingerprintversion: "1",
+
+      entityCode: Env.get('CvmovelEntityCode'), //code para cvmovel (obrigatorio), ver com a sisp
+      referenceNumber: DeviceNumero.numero.toString() //numero a ser recarregado (obrigatorio)
+    };
+
+    //criando o objecto fingerprint baseado no formData
+    formData.fingerprint = Sisp.GerarFingerPrintEnvio(
+      Env.get('posAutoCode'), formData.timeStamp, formData.amount,
+      formData.merchantRef, formData.merchantSession, formData.posID,
+      formData.currency, formData.transactionCode, formData.entityCode, formData.referenceNumber
+    )
+
+    console.log('formData out')
+    console.log(formData)
+
+    // //gerar o formulario de envio
+    const formHtml = Sisp.autoPost(formData)
+
+    console.log('formHtml')
+    console.log(formHtml)
+
+    //enviar a requisicao para o sisp
+    console.log('formHtml enviando para o sisp')
+    response.send(formHtml)
+    // response.send(request.all() + ' || ' + formHtml)
+  }
+
+  async recargaCallback({
     response,
     request
   }) {

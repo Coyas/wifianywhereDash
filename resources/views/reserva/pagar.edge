@@ -35,15 +35,39 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="{{'/reservas/guardarpagar/' + bookId}}" method="POST">
+              <form action="{{'/reservas/guardarpagar/' + PagarData.bookId}}" method="POST">
                   {{ csrfField() }}
 
                 <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="planoDetail">
+                        <p class="pd"><span>Pick-up Date</span> {{PagarData.pickdate}}</p>
+                        <p class="pd"><span>Plano:</span> {{PagarData.plano}}</p>
+                        <p class="pd"><span>Megas:</span> {{PagarData.megas}} MB</p>
+                        <p class="pd"><span>Preço:</span> &euro;{{PagarData.preco}}</p>
+                        <p ></p>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <p class="pd"><span>Pick-up Date</span> {{PagarData.dropdate}}</p>
+                          <p class="pd"><span>Despositivo N°:</span> {{PagarData.deviceid}}</p>
+                          <p class="pd"><span>Nome:</span> {{PagarData.devicenome}} </p>
+                          <p class="pd"><span>Numero:</span> {{PagarData.devicenum}} </p>
+                        </div>
+                        <div class="col-md-6">
+                          <img id="reinfo" src="{{PagarData.devicefoto}}" alt="">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <div class="row">
                     <div class="col-lg-6">
                       <div class="form-group {{ hasErrorFor('total') ? 'has-danger' : ''}}">
-                        <label class="form-control-label" for="input-first-name">Valor </label>
+                        <label class="form-control-label" for="input-first-name">Entrada </label>
                         <input type="text" name="valor" id="valor" class="form-control {{ hasErrorFor('total') ? 'is-invalid' : 'form-control-alternative'}}" >
                       </div>
                     </div>
@@ -63,9 +87,9 @@
                 <div class="pl-lg-8">
                   <div class="row">
                     <div class="col-lg-6" >
-                    <a href="/reservas/chooseplano/{{Cliente}}?check={{check}}" class="btn btn-warning" style="width: 147.9px !important;"><< Voltar</a>
+                    <a href="/reservas/chooseplano/{{PagarData.cliente}}?check={{PagarData.check}}" class="btn btn-warning" style="width: 147.9px !important;"><< Voltar</a>
                     </div>
-                    <input type="hidden" name="check" value="{{check}}">
+                    <input type="hidden" name="check" value="{{PagarData.check}}">
                     <div class="col-lg-6">
                         <input type="submit" class="btn btn-primary" value="Confirmar">
                     </div>

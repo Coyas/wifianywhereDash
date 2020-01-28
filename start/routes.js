@@ -118,7 +118,10 @@ Route.group(() => {
   Route.get('/reservas/pagareserva/:id', 'ReservaController.pagareserva') //id do booking
   Route.post('/reservas/guardarpagar/:id', 'ReservaController.guardarpagar') //id do booking
 
+
+  Route.post('/reservas/getRecarregarAmount/:bookid', 'ReservaController.getRecarregarAmount')
   Route.post('/reservas/recarregar/:bookid', 'ReservaController.recarregar')
+  Route.post('/reservas/recargaCallback', 'ReservaController.recargaCallback')
   // ----------------------------------------------------------------------------
 
   // rotas para usuarios

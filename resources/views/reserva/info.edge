@@ -268,7 +268,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="/reservas/recarregar/{{Info.id}}" method="POST">
+        <form action="/reservas/getRecarregarAmount/{{dados.id}}" method="GET">
           {{ csrfField() }}
           <div class="modal-body">
             <!--  <div class="form-group">
@@ -285,7 +285,7 @@
                   <span class="input-group-text"><i class="ni ni-box-2"></i></span>
                 </div>
                 {{--  <input name="device_id" class="form-control" placeholder="ID Do Dispositivo" type="text">  --}}
-                <select name="device_id" id="" class="form-control">
+                <select name="plano_id" id="" class="form-control">
                   <option value="0" selected>Escolha o plafond</option>
                   @each(plan in Planos)
                     <option value="{{plan.id}}">{{plan.nome}} ({{plan.megas}}MB)</option>
