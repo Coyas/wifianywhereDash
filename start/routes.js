@@ -33,7 +33,11 @@ Route.group(() => {
   Route.get('/faqs/apagar/:id', 'HomeController.apagarfaqs')
 
 
-  Route.post('/upload', async ({ request, response, auth }) => {
+  Route.post('/upload', async ({
+    request,
+    response,
+    auth
+  }) => {
     console.log('fazendo upload')
     const profilePic = request.file('profile_pic', {
       types: ['image'],
@@ -45,13 +49,13 @@ Route.group(() => {
     //   name: 'custom-name.jpg',
     //   overwrite: true
     // }
-    const upload = '/upload/'+auth.user.username
+    const upload = '/upload/' + auth.user.username
 
     // iniciar class user
     const user = await User.find(auth.user.id)
 
     console.log('movendo a pasta upload')
-    if(user.avatar){
+    if (user.avatar) {
       console.log(Helpers.publicPath(user.avatar))
 
       fs.unlink(Helpers.publicPath(user.avatar), (err) => {
@@ -61,7 +65,7 @@ Route.group(() => {
         }
         console.log('successfully deleted /tmp/hello');
       })
-    }else{
+    } else {
       console.log('vazia')
     }
 
@@ -76,7 +80,7 @@ Route.group(() => {
     // console.log(profilePic.extname)
 
     // continuacao da class user
-    user.avatar = upload+'/'+profilePic.fileName
+    user.avatar = upload + '/' + profilePic.fileName
     await user.save()
 
     console.log('movendo a pasta upload com sucesso')
@@ -89,30 +93,32 @@ Route.group(() => {
   Route.get('/getdados', 'HomeController.getdados')
 
   // rota para clientes
-  Route.get('/clientes', 'ClienteController.lista')//listar todos os clientes
-  Route.get('/cliente/novo', 'ClienteController.newcliente')// rota para criar novo cliente
-  Route.get('/clientes/info/:id', 'ClienteController.info')//ver o perfil do cliente savecliente
+  Route.get('/clientes', 'ClienteController.lista') //listar todos os clientes
+  Route.get('/cliente/novo', 'ClienteController.newcliente') // rota para criar novo cliente
+  Route.get('/clientes/info/:id', 'ClienteController.info') //ver o perfil do cliente savecliente
   Route.post('/clientes/novo', 'ClienteController.savecliente')
 
   // rotas para reservas
-  Route.get('/reservas', 'ReservaController.lista')//listar todas as reservas
-  Route.get('/reservas/:id', 'ReservaController.listar')//listar uma reserva especifica
-  Route.get('/reservas/info/:id', 'ReservaController.info')//ver os detalhes de uma reserva especifica id reserva
+  Route.get('/reservas', 'ReservaController.lista') //listar todas as reservas
+  Route.get('/reservas/:id', 'ReservaController.listar') //listar uma reserva especifica
+  Route.get('/reservas/info/:id', 'ReservaController.info') //ver os detalhes de uma reserva especifica id reserva
 
   Route.get('/reservas/pegar/:id', 'ReservaController.pegar')
-  Route.post('/reservas/devolver/:id', 'ReservaController.devolver')// id da reserva
+  Route.post('/reservas/devolver/:id', 'ReservaController.devolver') // id da reserva
 
   // nova reserva ---------------------------------------------------------------
-  Route.get('/reservas/novareserva/:id', 'ReservaController.novareserva')// id pertence ao user
-  Route.put('/reservas/guardareserva/:id', 'ReservaController.guardareserva')//id pertence ao user
+  Route.get('/reservas/novareserva/:id', 'ReservaController.novareserva') // id pertence ao user
+  Route.put('/reservas/guardareserva/:id', 'ReservaController.guardareserva') //id pertence ao user
 
   //choose plano
-  Route.get(`/reservas/chooseplano/:id`, 'ReservaController.chooseplanos')//id do user
-  Route.post('/reservas/guardarplanos/:id', 'ReservaController.guardarplanos')//id do user
+  Route.get(`/reservas/chooseplano/:id`, 'ReservaController.chooseplanos') //id do user
+  Route.post('/reservas/guardarplanos/:id', 'ReservaController.guardarplanos') //id do user
 
   //pagar reserva
-  Route.get('/reservas/pagareserva/:id', 'ReservaController.pagareserva')//id do booking
-  Route.post('/reservas/guardarpagar/:id', 'ReservaController.guardarpagar')//id do booking
+  Route.get('/reservas/pagareserva/:id', 'ReservaController.pagareserva') //id do booking
+  Route.post('/reservas/guardarpagar/:id', 'ReservaController.guardarpagar') //id do booking
+
+  Route.post('/reservas/recarregar/:bookid', 'ReservaController.recarregar')
   // ----------------------------------------------------------------------------
 
   // rotas para usuarios
@@ -167,10 +173,13 @@ Route.post('/auth/login', 'Auth/LoginController.login')
  * 500 - internal server error
  */
 // 404 pages
-Route.any('*', async ({ view, response}) => {
+Route.any('*', async ({
+  view,
+  response
+}) => {
   // return view.render('main')
   // return response.status(404).send('404 page')
-  if(response.status(404)){
+  if (response.status(404)) {
     return view.render('404')
   }
 })

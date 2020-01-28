@@ -9,7 +9,7 @@
   <div class="container-fluid d-flex align-items-center">
     <div class="row">
       <div class="col-lg-7 col-md-10">
-        
+
         <p class="text-white mt-0 mb-5">Lista das Reservas</p>
         <a href="" class="btn btn-info">Nova Reserva</a>
       </div>
@@ -25,7 +25,7 @@
             <h3 class="mb-0">Calendario Das Reservas</h3>
           </div>
 
-          <div id='calendar'></div>
+          {{--  <div id='calendar'></div>  --}}
 
         </div>
       </div>
@@ -46,7 +46,7 @@
                   <th scope="col">Plano</th>
                   <th scope="col">pick-up date</th>
                   <th scope="col">return date</th>
-                  <th scope="col">Estado</th>                  
+                  <th scope="col">Estado</th>
                   <th scope="col">Pickup location</th>
                   <th scope="col">Return location</th>
                   <th scope="col"></th>
@@ -59,7 +59,7 @@
                         <div class="media align-items-center">
                           <a href="/reservas/{{dados.userID}}" class="avatar rounded-circle mr-3">
                             @if(dados.avatar)
-                            <img alt="Image placeholder" src="{{dados.avatar}}">  
+                            <img alt="Image placeholder" src="{{dados.avatar}}">
                             @else
                             <img alt="user" src="/assets/img/brand/user.svg">
                             @endif
@@ -97,8 +97,8 @@
                               <i class="bg-warning"></i> Problema...
                           </a>
                         </span>
-                      @endif   
-  
+                      @endif
+
                     </td>
                     <td>
                       {{dados.pickuplocation}}

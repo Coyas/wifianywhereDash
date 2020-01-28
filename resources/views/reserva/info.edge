@@ -112,8 +112,8 @@
 
                             <div class="py-3 text-center">
                                 <i class="ni ni-bell-55 ni-3x"></i>
-                                <h4 class="heading mt-4">Devias Ser Isso</h4>
-                                <p>Canselar uma reserva pode ou nao ter custos, dependendo da data do canselamento</p>
+                                <h4 class="heading mt-4">Devias Ler Isso</h4>
+                                <p>Cancelar uma reserva pode ou nao ter custos, dependendo da data do cancelamento</p>
                             </div>
 
                         </div>
@@ -162,7 +162,7 @@
               </div>
 
 
-              <button type="button" class="btn btn-secondary " data-toggle="modal" data-target="#modal-notification">Canselar</button>
+              <button type="button" class="btn btn-secondary " data-toggle="modal" data-target="#modal-notification">Cancelar</button>
               <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
                 <div class="modal-dialog modal-danger modal-dialog-centered modal-10" role="document">
                     <div class="modal-content bg-gradient-danger">
@@ -250,7 +250,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Canselar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             <button id="devolver" type="submit" class="btn btn-primary">Confirmar</button>
           </div>
         </form>
@@ -268,17 +268,17 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="" method="POST">
+        <form action="/reservas/recarregar/{{Info.id}}" method="POST">
           {{ csrfField() }}
           <div class="modal-body">
-            <div class="form-group">
+            <!--  <div class="form-group">
               <div class="input-group input-group-alternative mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="ni ni-mobile-button"></i></span>
                 </div>
                 <input name="device_id" class="form-control" placeholder="ID Do Dispositivo" type="text">
               </div>
-            </div>
+            </div>  -->
             <div class="form-group">
               <div class="input-group input-group-alternative mb-3">
                 <div class="input-group-prepend">
@@ -295,7 +295,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Canselar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             <button id="devolver" type="submit" class="btn btn-primary">Confirmar</button>
           </div>
         </form>
