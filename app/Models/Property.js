@@ -4,9 +4,9 @@
 const Model = use('Model')
 
 class Property extends Model {
-    devices() {
-        this.belongsTo('App/Models/Device')
-    }
+  devices() {
+    this.belongsTo('App/Models/Device')
+  }
 }
 
 module.exports = Property

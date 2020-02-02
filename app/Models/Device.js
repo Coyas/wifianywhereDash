@@ -4,9 +4,9 @@
 const Model = use('Model')
 
 class Device extends Model {
-    property() {
-        return this.hasMany('App/Models/Property')
-    }
+  property() {
+    return this.hasMany('App/Models/Property')
+  }
 }
 
 module.exports = Device

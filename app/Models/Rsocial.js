@@ -3,7 +3,6 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
-class Rsocial extends Model {
-}
+class Rsocial extends Model {}
 
 module.exports = Rsocial

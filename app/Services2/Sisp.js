@@ -25,8 +25,8 @@ class Sisp {
     if (entityCode)
       toHash += Number(entityCode.trim());
 
-    if (referenceNumber)
-      toHash += Number(referenceNumber.trim());
+    if (referenceNumber) toHash += Number(referenceNumber.trim());
+
 
     return this.GenerateSHA512StringToBase64(toHash);
   }
