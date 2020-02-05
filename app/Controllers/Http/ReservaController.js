@@ -283,6 +283,7 @@ class ReservaController {
     // });
 
     const cripto = await Utils.generateCheck(auth);
+    console.log('cripto hash controller');
     console.log(cripto);
 
     return view.render('reserva.novo', {
@@ -303,8 +304,9 @@ class ReservaController {
       street_address: 'required',
       city: 'required',
       country: 'required',
-      zip_code: 'required',
+      // zip_code: 'required',
       phone: 'required',
+      check: 'required',
     });
 
     if (validation.fails()) {

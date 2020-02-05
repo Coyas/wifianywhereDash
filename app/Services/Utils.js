@@ -10,6 +10,7 @@ const Encryption = use('Encryption');
 const Env = use('Env');
 const Social = use('App/Models/Rsocial');
 const Contact = use('App/Models/Wifianywhere');
+// const Crypto = use('crypto');
 const axios = require('axios');
 
 class Utils {
@@ -106,20 +107,24 @@ class Utils {
     console.log('generate criptoHash');
     console.log(criptoHash);
     // se houver um '/' no hash substitui pelo '0!0'
+    console.log('replace / por 0!0');
+    console.log('uri encode: ' + encodeURI(criptoHash));
 
     return criptoHash.replace(/\//g, '0!0');
   }
 
   static async verificarCheck(check, auth) {
-    console.log('verificar check');
+    console.log('pegar check');
     console.log(check);
+    console.log('replace 0!0 por /');
     const criptohash = check.replace(/0!0/g, '/');
-    console.log('verificar criptoHash');
+    console.log('pegar criptoHash');
     console.log(criptohash);
+    console.log('decriptografar criptohash');
     const decriptohash = this.decriptografarHash(criptohash);
-    console.log('verificar decriptohash');
+    console.log('pegar decriptohash');
     console.log(decriptohash);
-
+    console.log('send decriptohash boolean value');
     return this.verificarHash(decriptohash, auth);
   }
 }
