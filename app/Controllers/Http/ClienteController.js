@@ -58,7 +58,8 @@ class ClienteController {
     const users = await User.find(params.id);
 
     // Activate user
-    if (request.get('activate')) {
+    const { activate } = request.get();
+    if (activate) {
       users.is_active = 1;
       await users.save();
     }
