@@ -11,7 +11,9 @@
         <div class="col-lg-7 col-md-10">
           <h1 class="display-2 text-white">{{cliente}}</h1>
           <p class="text-white mt-0 mb-5">Aqui podes ver o progresso do utilizador feitas na plataforma</p>
+          @if(User.isActive == 1)
           <a href="/reservas/novareserva/{{User.id}}" class="btn btn-info">Fazer reserva</a>
+          @endif
         </div>
       </div>
     </div>
@@ -37,7 +39,11 @@
               </div>
               <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div class="d-flex justify-content-between">
+                  @if(User.isActive === 0)
                   <a href="/clientes/info/{{auth.user.id}}?activate=true" class="btn btn-sm btn-info mr-4">Ativar</a>
+                  @else
+                  <a href="/clientes/info/{{auth.user.id}}?activate=false" class="btn btn-sm btn-info mr-4">Desativar</a>
+                  @endif
                   <a href="#" class="btn btn-sm btn-default float-right">Message</a>
                 </div>
               </div>
