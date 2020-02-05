@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Book confirm</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    .container {
+
+    }
+    .item1, .item2, .item5 {
+      text-align: center;
+    }
+    /* .item {
+      text-align: center;
+    } */
+
+    ul .a {
+      color: #0d315b;
+    }
+    ul .b{
+      color: #8b8b8b;
+    }
+    ul .a{
+      color: #0d315b;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    ul .b {
+      color: #8b8b8b;
+      font-size: 1.3rem;
+    }
+    ul li {
+      list-style-type: none;
+    }
+    .item1 img {
+      width: 100%;
+    }
+    h1 {
+      color: #0d315b;
+      font-weight: bold;
+    }
+    .item1 {
+      margin-bottom: 2%;
+    }
+    .item2{
+      margin-bottom: 5%;
+    }
+    .item3 {
+      /* background-color: red; */
+      width: 45%;
+      padding: 5%;
+    }
+    .item4 {
+      /* background-color: blue; */
+      width: 45%;
+      padding: 5%;
+    }
+    .box {
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+    .item3, .item4 {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+    figure {
+      text-align: center;
+    }
+    a {
+      /* position: absolute; */
+      /* margin: 0 0 0 22%; */
+      color:#1e2432 !important;
+      background-color:#01f6fb;
+      border-color:#01f6fb;
+      font-size: 0.9em;
+      font-weight: bold;
+      -webkit-border-radius: 500px;
+      -moz-border-radius: 500px;
+      border-radius: 500px;
+      border: 1px solid #01f6fb;
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: .375rem .75rem;
+      line-height: 1.5;
+      transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      text-decoration: none;
+      margin-bottom: 5%;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+    span {
+      /* display: flex; */
+      color:cadetblue;
+      word-wrap: break-word;
+      width: 50%;
+      max-width: 50%;
+    }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="item item1">
+      <img src="https://res.cloudinary.com/coyas/image/upload/v1579805290/site/emailsHeader/header2_woik7q.jpg" alt="qrcode">
+    </div>
+    <div class="item item2"><h1>BOOKING CONFIRMATION</h1></div>
+    <div class="box">
+      <div class="item item3">
+        <ul>
+          <li class="a">NAME</li>
+          <li class="b">{{cliente.nome}}</li>
+          <li class="a">PICK-UP DATE</li>
+          <li class="b">{{book.pickupdate}}</li>
+          <li class="a">Return Date</li>
+          <li class="b">{{book.dropoffdate}}</li>
+          <li class="a">Choosen Plan</li>
+          <li class="b">{{plano.nome}}</li>
+          <li class="a">Phone Number</li>
+          <li class="b">{{cliente.phone}}</li>
+          <li class="a">Pick-up location</li>
+          <li class="b">{{place.pickup}}</li>
+          <li class="a">Drop-off location</li>
+          <li class="b">{{place.dropoff}}</li>
+          <li class="a">Total price</li>
+          <li class="b">{{book.preco}}</li>
+        </ul>
+      </div>
+      <div class="item item4">
+        <figure>
+          <img src="{{book.image}}" alt="qrcode">
+          <figcaption>
+            <a href="{{URL}}?url={{book.url}}">Go To Account</a>
+            <h6>if for any reason the button does not work use this link below</h6>
+            <span>{{book.url}}</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

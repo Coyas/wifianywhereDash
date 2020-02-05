@@ -5,9 +5,9 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: [
-    'airbnb-base',
-  ],
+
+  extends: ['airbnb-base'],
+
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -16,5 +16,8 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
+    'class-methods-use-this': 0,
+    'template-curly-spacing': ['error', 'never'],
+    'object-curly-newline': ['error', { consistent: true }],
   },
 };

@@ -1,4 +1,4 @@
-// "use strict";
+// 'use strict';
 /* global use */
 const User = use("App/Models/User");
 const Book = use("App/Models/Booking");
@@ -9,6 +9,7 @@ const Cat = use("App/Models/Category");
 const Config = use("App/Models/Config");
 const Device = use("App/Models/Device");
 const { validateAll } = use("Validator");
+const Category = use("App/Models/Category");
 const moment = use("moment");
 
 class HomeController {
@@ -25,7 +26,7 @@ class HomeController {
       reservas: books.length
     };
 
-    let reservas = [];
+    const reservas = [];
 
     for (let i = 0; i < books.length; i++) {
       const plano = await Plan.find(books[i].plano_id);
@@ -37,7 +38,7 @@ class HomeController {
       reservas[i] = {
         id: books[i].id,
         plano: plano.nome,
-        cliente: cliente.firstName + " " + cliente.lastName,
+        cliente: `${cliente.firstName} ${cliente.lastName}`,
         pickupDate: data,
         returnDate: data2
       };
@@ -57,7 +58,9 @@ class HomeController {
 
     const sub = await Subs.all();
     const subs = sub.toJSON();
-    let table = [];
+    const table = [];
+
+    // const
 
     for (let i = 0; i < subs.length; i++) {
       table[i] = {
@@ -86,33 +89,11 @@ class HomeController {
     }
   }
 
-  async faqs({ view, auth }) {
+  async faqs({ view }) {
     const config = await Config.first();
-    const faq = await Faq.all();
-    const faqs = faq.toJSON();
 
-    let table = [];
-
-    for (let i = 0; i < faqs.length; i++) {
-      let str = faqs[i].descricao;
-      let res = str.substring(0, 20);
-
-      const catego = await Cat.find(faqs[i].category_id);
-
-      table[i] = {
-        index: i,
-        id: faqs[i].id,
-        title: faqs[i].title,
-        category: catego.nome,
-        lang: faqs[i].lang,
-        descricao: res + "..."
-      };
-    }
-    // console.log(table)
-    // die
     return view.render("faqs.index", {
-      Table: table,
-      config: config
+      config
     });
   }
 

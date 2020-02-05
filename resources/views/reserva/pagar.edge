@@ -35,7 +35,7 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="{{'/reservas/guardarpagar/' + PagarData.bookId}}" method="POST">
+              <form action="{{'/reservas/guardarpagar/' + PagarData.bookId + '?cve=' + PagarData.cve}}" method="POST">
                   {{ csrfField() }}
 
                 <div class="pl-lg-4">
@@ -45,8 +45,10 @@
                         <p class="pd"><span>Pick-up Date</span> {{PagarData.pickdate}}</p>
                         <p class="pd"><span>Plano:</span> {{PagarData.plano}}</p>
                         <p class="pd"><span>Megas:</span> {{PagarData.megas}} MB</p>
-                        <p class="pd"><span>Preço:</span> &euro;{{PagarData.preco}}</p>
-                        <p ></p>
+                        <p class="pd"><span>Subtotal</span> &euro;{{PagarData.subtotal}}</p>
+                        <p class="pd"><span>Total:</span> &euro;{{PagarData.total}}</p>
+                        <p class="pd"><span>Total (cve):</span> {{PagarData.cve}}$00</p>
+                        {{--  <p></p>  --}}
                       </div>
                     </div>
                     <div class="col-md-8">
@@ -56,6 +58,7 @@
                           <p class="pd"><span>Despositivo N°:</span> {{PagarData.deviceid}}</p>
                           <p class="pd"><span>Nome:</span> {{PagarData.devicenome}} </p>
                           <p class="pd"><span>Numero:</span> {{PagarData.devicenum}} </p>
+                          <p class="pd"><span>powerBank:</span> {{PagarData.powerbank}} </p>
                         </div>
                         <div class="col-md-6">
                           <img id="reinfo" src="{{PagarData.devicefoto}}" alt="">
@@ -67,17 +70,17 @@
                   <div class="row">
                     <div class="col-lg-6">
                       <div class="form-group {{ hasErrorFor('total') ? 'has-danger' : ''}}">
-                        <label class="form-control-label" for="input-first-name">Entrada </label>
+                        <label class="form-control-label" for="input-first-name">Valor de Entrada </label>
                         <input type="text" name="valor" id="valor" class="form-control {{ hasErrorFor('total') ? 'is-invalid' : 'form-control-alternative'}}" >
                       </div>
                     </div>
                     <div class="col-lg-6 pabaixo">
                       <div class="form-group {{ hasErrorFor('tipo') ? 'has-danger': ''}}">
                           <label class="form-control-label" for="input-last-name"></label>
-                        <input type="radio" name="tipo" id="tipo" class="" value="1" checked> Dinheiro
+                        <input type="radio" name="tipo" id="tipo" class="" value="11" checked> Dinheiro
                         &nbsp;&nbsp;&nbsp;
                         <label class="form-control-label" for="input-pos"></label>
-                        <input type="radio" name="tipo" id="tipo" class=""  value="0"> POS
+                        <input type="radio" name="tipo" id="tipo" class=""  value="12"> POS
                       </div>
                   </div>
                 </div>
