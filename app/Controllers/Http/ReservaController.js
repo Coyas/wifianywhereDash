@@ -16,6 +16,7 @@ const Utils = use('App/Services/Utils');
 const reservaDevice = use('App/Services/reservaDevice');
 const Hash = use('Hash');
 const Cloudinary = use('App/Services/Cloudinary');
+const Event = use('Event');
 // const querystring = require('querystring')
 // const randomString = require('random-string');
 
@@ -355,7 +356,7 @@ class ReservaController {
 
     const ok = await Utils.verificarCheck(check, auth);
     if (!ok) {
-      console.log('verificar check');
+      // console.log('verificar check');
       return view.render('404');
     }
 
@@ -364,7 +365,7 @@ class ReservaController {
     const user = await User.find(params.id); // id pertence ao user
 
     if (!user) {
-      console.log('user not found');
+      // console.log('user not found');
       return view.render('404');
     }
 
@@ -437,7 +438,7 @@ class ReservaController {
     // get device livre
     // let deviceLivre = any;
     // do {
-    console.log('executando o doWhile getDeviceLivre');
+
     const deviceLivre = await reservaDevice.getDeviceLivres();
     if (!deviceLivre) {
       return response.send('nao ha device livre');
@@ -524,7 +525,7 @@ class ReservaController {
 
     // var duration = Momento.duration(x.diff(y, 'days'))
     const numdays = y.diff(x, 'days');
-    console.log(numdays);
+    // console.log(numdays);
 
     // forma da reserva
     // tem de pegar este book do bd!!!!!!
@@ -635,7 +636,7 @@ class ReservaController {
     await pagamento.save();
 
     // codigo de pagamento para wifianywhere
-    if (pagamento.tipo !== 11) {
+    if (pagamento.tipo !== '11') {
       session.flash({
         notification: {
           type: 'warning',
@@ -644,12 +645,15 @@ class ReservaController {
       });
 
       // return response.redirect(`/user/info/${auth.user.id}/book/${book.id}`);
-      return response.send('pagamento');
+      return response.send(
+        'pagamento Houve um erro no pagamento da reserva, tente mais tarde!'
+      );
     }
 
     // dados para o email de confirmacao
-    const configs = Config.first();
-    const config = configs.toJSON();
+    const config = await Config.first();
+
+    // const config = configs.toJSON();
 
     const PL = await Plan.find(book.plano_id);
     const Pl = await Place.find(book.pickuplocation_id);
@@ -681,8 +685,8 @@ class ReservaController {
     // enviar o email de confirmacao de pagamento (usando events)
     Event.fire('user::confirmBook', Confirmacao);
 
-    return response.send('...a...efetuar...pagamento...');
-    // return response.redirect(`/user/info/${auth.user.id}/book/${book.id}`);
+    // return response.send('...pagamento...efetuado com sucesso...');
+    return response.redirect(`/reservas/info/${book.id}`);
   }
 
   async getRecarregarAmount({ view, params, request }) {
