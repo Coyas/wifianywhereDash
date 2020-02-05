@@ -166,11 +166,13 @@ class ReservaController {
   }
 
   async info({ view, params }) {
-    //pegar as configuracoes do app
+    // pegar as configuracoes do app
     const config = await Config.first();
-    //essa pesquisa vai ter que ser mais elaborado pois, vai precisar verificar o estatus do booking e pegar so os finalizados
+    /* essa pesquisa vai ter que ser mais elaborado pois, vai precisar verificar o
+     * estatus do booking e pegar so os finalizados
+     */
     const book = await Book.find(params.id);
-    //verificar se o booking existe, pois se nao existir vai apresentar error nas outras pesquisas
+    // verificar se o booking existe, pois se nao existir vai apresentar error nas outras pesquisas
     if (!book) {
       return view.render('404');
     }

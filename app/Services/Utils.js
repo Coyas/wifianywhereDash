@@ -103,24 +103,29 @@ class Utils {
     const hash = await this.generateHash(auth);
     console.log('generate Hash');
     console.log(hash);
-    const criptoHash = await this.criptografarHash(hash);
+    let criptoHash = await this.criptografarHash(hash);
     console.log('generate criptoHash');
     console.log(criptoHash);
     // se houver um '/' no hash substitui pelo '0!0'
     console.log('replace / por 0!0');
-    console.log('uri encode: ' + encodeURI(criptoHash));
+    console.log('uri encode: ' + criptoHash);
 
-    return criptoHash.replace(/\//g, '0!0');
+    criptoHash = encodeURIComponent(criptoHash);
+
+    return criptoHash; // .replace(/\//g, '0!0');
   }
 
   static async verificarCheck(check, auth) {
     console.log('pegar check');
     console.log(check);
-    console.log('replace 0!0 por /');
-    const criptohash = check.replace(/0!0/g, '/');
-    console.log('pegar criptoHash');
-    console.log(criptohash);
+    // console.log('replace 0!0 por /');
+    // let criptohash = check.replace(/0!0/g, '/');
+    // console.log('pegar criptoHash');
+    // console.log(criptohash);
     console.log('decriptografar criptohash');
+
+    const criptohash = decodeURIComponent(check);
+
     const decriptohash = this.decriptografarHash(criptohash);
     console.log('pegar decriptohash');
     console.log(decriptohash);
