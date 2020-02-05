@@ -10,6 +10,9 @@
   "license": "MIT",
   "author": "Ailton M. Duarte",
   "main": "server.js",
+  "nodemonConfig": {
+    "ext": "*.js,*.json,*.edge"
+  },
   "scripts": {
     "commit": "git-cz",
     "sass": "sass --watch public/scss/wifi/:public/assets/css/wifi",
