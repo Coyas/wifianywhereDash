@@ -1,194 +1,184 @@
-$(document).ready(function(){
-// iniciando o datatable
+$(document).ready(function() {
+  // iniciando o datatable
   $('#myreservas').DataTable({
     // responsive: true
   });
 
-  $('#siteStatus').change(function() 
-  {
-    if(this.checked == true)
-    {
+  $('#siteStatus').change(function() {
+    if (this.checked == true) {
       // alert('site online');
       let data = {
-        status: 1
-      }
-    
+        status: 1,
+      };
+
       $.ajax({
-        type: "GET",
-        url: "/siteconfig",
+        type: 'GET',
+        url: '/siteconfig',
         data: data,
         dataType: 'json',
-        success: (ok) => {
+        success: ok => {
           // console.log('listar...')
-          console.log(ok);  
-          
+          console.log(ok);
         },
-        error: (res) => {
+        error: res => {
           console.log(res);
-          
-        }
+        },
       });
-
-    }else{
-
+    } else {
       // alert('site offline');
       let data = {
-        status: 0
-      }
-    
+        status: 0,
+      };
+
       $.ajax({
-        type: "GET",
-        url: "/siteconfig",
+        type: 'GET',
+        url: '/siteconfig',
         data: data,
         dataType: 'json',
-        success: (ok) => {
+        success: ok => {
           // console.log('listar...')
-          console.log(ok);  
-          
+          console.log(ok);
         },
-        error: (res) => {
+        error: res => {
           console.log(res);
-          
-        }
+        },
       });
     }
   });
 
   // definir o valor padrao da caixa de detalhes
-  var id = $('#changePlano').children(":selected").val();
+  var id = $('#changePlano')
+    .children(':selected')
+    .val();
   // alert('valor do id: ' + id);
-  var picklocal = document.getElementById('pilocal')
+  var picklocal = document.getElementById('pilocal');
   var local = picklocal.options[picklocal.selectedIndex].value;
   // alert('local: ' + local)
-  
-  if(!id && !local){
-    console.log('O select esta sem um valor ou é: ' + id + ' && ' + local)
+
+  if (!id && !local) {
+    console.log('O select esta sem um valor ou é: ' + id + ' && ' + local);
   }
   let data = {
     plano: id,
-    local: local
-  }
+    local: local,
+  };
 
   $.ajax({
-    type: "GET",
-    url: "/getdados",
+    type: 'GET',
+    url: '/getdados',
     data: data,
     dataType: 'json',
-    success: (ok) => {
+    success: ok => {
       console.log('listar...');
       console.log(ok);
 
-      let dada = document.getElementById('detalhesR');      
+      let dada = document.getElementById('detalhesR');
 
-      planos(ok, dada)
+      planos(ok, dada);
       // setTimeout(() => planos(ok, dada), 3000);
-      
     },
-    error: (res) => {
+    error: res => {
       console.log(res);
-      
-    }
+    },
   });
-
-})
+});
 
 const realFile = document.getElementById('real_file');
 const fakeFilebtn = document.getElementById('fakefile');
 
-if(realFile && fakeFilebtn){
-  fakeFilebtn.addEventListener("click", function() {
+if (realFile && fakeFilebtn) {
+  fakeFilebtn.addEventListener('click', function() {
     realFile.click();
-    
-    realFile.onchange = function () {
-      document.getElementById('file_form').submit()
-      
+
+    realFile.onchange = function() {
+      document.getElementById('file_form').submit();
     };
-  })
+  });
 }
 
-
-$('#devolver').click(function(){
-
+$('#devolver').click(function() {
   // swal({
   //   title: "Confirmado!",
   //   text: "Despositivo Devolvido",
   //   icon: "success",
   //   button: "continuar",
   // });
+});
 
-})
-
-$('#lang').change(function () {
+$('#lang').change(function() {
   // alert('test')
-  var id = $(this).children(":selected").val();
+  var id = $(this)
+    .children(':selected')
+    .val();
   alert(id);
   let data = {
-    lang: id
-  }
+    lang: id,
+  };
 
   $.ajax({
-    type: "GET",
-    url: "/getcategoria",
+    type: 'GET',
+    url: '/getcategoria',
     data: data,
     dataType: 'json',
-    success: (ok) => {
+    success: ok => {
       // console.log('listar...')
-      // console.log(ok[0].nome);  
-      
+      // console.log(ok[0].nome);
+
       let select = document.getElementById('categoria');
-      $('select#categoria').children().remove();
+      $('select#categoria')
+        .children()
+        .remove();
 
       ok.forEach(c => {
-        console.log(c);  
+        console.log(c);
         let opt = document.createElement('option');
         select.appendChild(opt);
         opt.setAttribute('value', c.id);
         opt.innerText = c.nome;
-      })
+      });
     },
-    error: (res) => {
+    error: res => {
       console.log(res);
-      
-    }
+    },
   });
-  
-})
+});
 
-
-
-$('#changePlano').change(function () {
+$('#changePlano').change(function() {
   // alert('plano selecionado');
 
-  var id = $(this).children(":selected").val();
+  var id = $(this)
+    .children(':selected')
+    .val();
   // alert('valor do id: ' + id);
-  var picklocal = document.getElementById('pilocal')
-  if(!picklocal){
-    console.log("nullo")
+  var picklocal = document.getElementById('pilocal');
+  if (!picklocal) {
+    console.log('nullo');
     var local = picklocal.options[picklocal.selectedIndex].value;
   }
-  
+
   // alert('local: ' + local)
-  
-  if(!id && !local){
-    console.log('O select esta sem um valor ou é: ' + id + ' && ' + local)
+
+  if (!id && !local) {
+    console.log('O select esta sem um valor ou é: ' + id + ' && ' + local);
   }
   let data = {
     plano: id,
-    local: local
-  }
+    local: local,
+  };
 
   $.ajax({
-    type: "GET",
-    url: "/getdados",
+    type: 'GET',
+    url: '/getdados',
     data: data,
     dataType: 'json',
-    success: (ok) => {
+    success: ok => {
       console.log('listar...');
       console.log(ok);
 
       let dada = document.getElementById('detalhesR');
       let dada2 = document.querySelector('#detalhesR');
-      dada2.style.padding = "7%";
+      dada2.style.padding = '7%';
+
       dada.innerHTML = `
       <!-- o div detalhes vem aqui -->
         <div class="loader-wrapper">
@@ -198,33 +188,27 @@ $('#changePlano').change(function () {
           </div>
           Loading...
         </div>
-      
+
       `;
 
       setTimeout(() => planos(ok, dada), 3000);
-      
     },
-    error: (res) => {
+    error: res => {
       console.log(res);
-      
-    }
+    },
   });
-
 });
 
 // cont planos
 
-
 function planos(ok, dada) {
-
-  var pickdate = document.querySelector('input[name=pickupdate]').value
-  var dropdate = document.querySelector('input[name=returnday]').value
+  const pickdate = document.querySelector('input[name=pickupdate]').value;
+  const dropdate = document.querySelector('input[name=returnday]').value;
   // console.log(pickdate)
   // console.log(dropdate)
 
-
-  switch(ok.caso){
-    case 1: 
+  switch (ok.caso) {
+    case 1:
       dada.innerHTML = `
       <div class="row">
       <div class="col-md-4">
@@ -258,7 +242,7 @@ function planos(ok, dada) {
       `;
       break;
     case 2:
-        dada.innerHTML = `
+      dada.innerHTML = `
         <div class="row">
         <div class="col-md-4">
           <div class="planoDetail">
@@ -282,7 +266,7 @@ function planos(ok, dada) {
         `;
       break;
     case 3:
-        dada.innerHTML = `
+      dada.innerHTML = `
         <div class="row">
         <div class="col-md-4">
           <p class="pd"><span>Pick-up Date</span> ${pickdate}</p>
@@ -310,7 +294,7 @@ function planos(ok, dada) {
         `;
       break;
     case 4:
-        dada.innerHTML = `
+      dada.innerHTML = `
         <div class="row">
         <div class="col-md-4">
           <p id="detal">${ok.plano}</p>
@@ -327,6 +311,8 @@ function planos(ok, dada) {
         `;
       break;
     default:
-      console.log("que opcao de mostrar detalhes é essa ( dafault valor/caso )");
+      console.log(
+        'que opcao de mostrar detalhes é essa ( dafault valor/caso )'
+      );
   }
 }
