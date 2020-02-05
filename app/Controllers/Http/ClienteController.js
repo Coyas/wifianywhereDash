@@ -59,10 +59,12 @@ class ClienteController {
 
     // Activate user
     const { activate } = request.get();
-    if (activate) {
+    if (activate === 'true') {
       users.is_active = 1;
-      await users.save();
+    } else if (activate === 'false') {
+      users.is_active = 0;
     }
+    await users.save();
 
     const user = users.toJSON();
 
