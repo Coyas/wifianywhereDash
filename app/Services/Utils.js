@@ -89,19 +89,21 @@ class Utils {
   }
 
   static criptografarHash(hash) {
+    console.log('encrypt url');
     return Encryption.encrypt(hash);
   }
 
   static decriptografarHash(criptohash) {
+    console.log('decrypt url');
     return Encryption.decrypt(criptohash);
   }
 
   static async generateCheck(auth) {
     const hash = await this.generateHash(auth);
-    console.log('Hash');
+    console.log('generate Hash');
     console.log(hash);
     const criptoHash = await this.criptografarHash(hash);
-    console.log('criptoHash');
+    console.log('generate criptoHash');
     console.log(criptoHash);
     // se houver um '/' no hash substitui pelo '0!0'
 
@@ -109,16 +111,16 @@ class Utils {
   }
 
   static async verificarCheck(check, auth) {
-    console.log('check');
+    console.log('verificar check');
     console.log(check);
     const criptohash = check.replace(/0!0/g, '/');
-    console.log('criptoHash');
+    console.log('verificar criptoHash');
     console.log(criptohash);
     const decriptohash = this.decriptografarHash(criptohash);
-    console.log('decriptohash');
+    console.log('verificar decriptohash');
     console.log(decriptohash);
 
-    return await this.verificarHash(decriptohash, auth);
+    return this.verificarHash(decriptohash, auth);
   }
 }
 

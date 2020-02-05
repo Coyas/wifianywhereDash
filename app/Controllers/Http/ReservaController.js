@@ -1,4 +1,6 @@
-'use strict';
+// 'use strict';
+/* global use */
+
 const User = use('App/Models/User');
 const Book = use('App/Models/Booking');
 const Pay = use('App/Models/Payment');
@@ -15,7 +17,7 @@ const reservaDevice = use('App/Services/reservaDevice');
 const Hash = use('Hash');
 const Cloudinary = use('App/Services/Cloudinary');
 // const querystring = require('querystring')
-const randomString = require('random-string');
+// const randomString = require('random-string');
 
 class ReservaController {
   async lista({ view }) {
@@ -85,7 +87,7 @@ class ReservaController {
     return view.render('reserva.lista', {
       Table: dadosbook,
       Cards: cards,
-      config: config,
+      config,
     });
   }
 
@@ -210,7 +212,7 @@ class ReservaController {
 
     return view.render('reserva.info', {
       dados: info,
-      config: config,
+      config,
       Planos,
     });
   }
@@ -281,7 +283,7 @@ class ReservaController {
     // });
 
     const cripto = await Utils.generateCheck(auth);
-    // console.log(cripto)
+    console.log(cripto);
 
     return view.render('reserva.novo', {
       Lugar: 'Nova Reserva',
@@ -341,10 +343,15 @@ class ReservaController {
   async chooseplanos({ view, params, request, auth }) {
     // console.log("request check data: ");
     const { check } = request.get();
-    // console.log(request.get());
+    console.log('request.get()');
+    console.log(request.get());
+
+    console.log('Check');
+    console.log(check);
 
     const ok = await Utils.verificarCheck(check, auth);
     if (!ok) {
+      console.log('verificar check');
       return view.render('404');
     }
 
@@ -353,6 +360,7 @@ class ReservaController {
     const user = await User.find(params.id); // id pertence ao user
 
     if (!user) {
+      console.log('user not found');
       return view.render('404');
     }
 
