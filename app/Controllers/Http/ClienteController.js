@@ -89,6 +89,7 @@ class ClienteController {
       zip_code: user.zip_code,
       phone: user.phone,
       sobreme: user.sobreme,
+      isActive: user.is_active,
     };
 
     return view.render('cliente.info', {
