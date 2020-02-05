@@ -58,10 +58,13 @@ class ClienteController {
     const users = await User.find(params.id);
 
     // Activate user
-    if (request.get('activate')) {
+    const { activate } = request.get();
+    if (activate === 'true') {
       users.is_active = 1;
-      await users.save();
+    } else if (activate === 'false') {
+      users.is_active = 0;
     }
+    await users.save();
 
     const user = users.toJSON();
 
@@ -89,6 +92,7 @@ class ClienteController {
       zip_code: user.zip_code,
       phone: user.phone,
       sobreme: user.sobreme,
+      isActive: user.is_active,
     };
 
     return view.render('cliente.info', {
