@@ -21,7 +21,7 @@ class Booking extends Model {
   }
 
   plans() {
-    return this.belongsTo('App/Models/Plan');
+    return this.belongsTo('App/Models/Plan', 'plano_id');
   }
 
   devices() {
