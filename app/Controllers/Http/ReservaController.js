@@ -221,16 +221,12 @@ class ReservaController {
   }
 
   async pegar({ response, params }) {
-    console.log(params.id);
-
     const a = Momento().format('Y-M-D');
     const book = await Book.find(params.id);
     book.showup = a;
     await book.save();
 
-    //fazer recaregamento de saldo
-
-    response.redirect(`/reservas/info/${book.id}`);
+    return Sisp.recarregar(book, response);
   }
 
   async devolver({ response, params, request }) {
