@@ -28,6 +28,10 @@ class Booking extends Model {
     return this.belongsTo('App/Models/Device');
   }
 
+  payments() {
+    return this.hasMany('App/Models/Payment');
+  }
+
   static get incrementing() {
     return false;
   }
