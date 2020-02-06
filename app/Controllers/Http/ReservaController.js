@@ -228,7 +228,7 @@ class ReservaController {
     book.showup = a;
     await book.save();
 
-    //fazer recaregamento de saldo
+    // fazer recaregamento de saldo
 
     response.redirect(`/reservas/info/${book.id}`);
   }
@@ -271,35 +271,60 @@ class ReservaController {
    *
    * Inicio do proceso de reserva
    */
-  async novareserva({ view, params, auth }) {
+  async novareserva({ view, params, request }) {
     const config = await Config.first();
+    const { check } = request.get();
 
     if (!params.id) {
       return view.render('404');
     }
 
-    const user = await User.find(params.id);
+    // verificar se ha reserva
+    const books = await Book.findBy('check', check);
+    let book = null;
+    let { id } = params;
 
-    // console.log('randomString')
-    // const cripto = randomString({
-    //   length: 40
-    // });
+    if (books) {
+      book = books.toJSON();
+      id = book.user_id;
+    }
+    const user = await User.find(id);
 
-    const cripto = await Utils.generateCheck(auth);
-    console.log('cripto hash controller');
-    console.log(cripto);
+    // if (books) {
+    //   // pega os dados do user
+
+    // }
+
+    const UserData = {
+      id: user ? user.id : '',
+      firstName: user ? user.firstName : '',
+      lastName: user ? user.lastName : '',
+      phone: user ? user.phone : '',
+      email: user ? user.email : '',
+      street_address: user ? user.street_address : '',
+      biling_address: user ? user.biling_address : '',
+      city: user ? user.city : '',
+      zip_code: user ? user.zip_code : '',
+      sobreme: user ? user.sobreme : '',
+      country: user ? user.country : '',
+    };
 
     return view.render('reserva.novo', {
       Lugar: 'Nova Reserva',
       config,
-      User: user,
-      check: cripto,
+      User: UserData,
+      check,
     });
   }
 
   async guardareserva({ response, params, request, session }) {
-    console.log(request.all());
+    // console.log(request.all());
     // validar campos de formulario
+
+    if (!params.id || params.id === 'undefined') {
+      return response.redirect('/404');
+    }
+
     const validation = await validateAll(request.all(), {
       firstName: 'required',
       lastName: 'required',
@@ -348,11 +373,11 @@ class ReservaController {
   async chooseplanos({ view, params, request, auth }) {
     // console.log("request check data: ");
     const { check } = request.get();
-    console.log('request.get()');
-    console.log(request.get());
+    // console.log('request.get()');
+    // console.log(request.get());
 
-    console.log('Check');
-    console.log(check);
+    // console.log('Check');
+    // console.log(check);
 
     const ok = await Utils.verificarCheck(check, auth);
     if (!ok) {
@@ -446,7 +471,6 @@ class ReservaController {
 
     // } while (deviceLivre === false);
 
-    console.log(`device livre: ${deviceLivre}`);
     if (!deviceLivre) {
       return response.redirect('/404');
     }
@@ -471,8 +495,6 @@ class ReservaController {
       auth.user.id + Momento().format('YYYYMMDDHHmmss') + prevHash
     );
 
-    console.log('Criando o booking...');
-
     const book = new Book();
     book.pickupDate = pick;
     book.returnday = drop;
@@ -493,22 +515,13 @@ class ReservaController {
       return response.send('Nao foi possivel criar um book');
     }
 
-    // response.send('book criado com sucesso  ')
     return response.redirect(`/reservas/pagareserva/${book.id}?check=${check}`);
   }
 
   async pagareserva({ view, params, request }) {
-    console.log('request check data: ');
     const { check, paramsId } = request.get();
-    // const bookId = params.id
-    console.log(`${check}`);
 
-    // console.log("params.id:");
-    // console.log(params.id);
     const book = await Book.find(params.id);
-
-    console.log('book');
-    console.log(book.pickupdate);
 
     if (!book && !params.id) {
       return view.render('404');
@@ -584,21 +597,20 @@ class ReservaController {
       tipo: 'required',
     });
 
-    const { cve } = request.get();
-    console.log('pagamento valor');
-    console.log(cve);
+    // const { cve } = request.get();
 
     if (!params.id) return response.redirect('/404');
 
     if (validation.fails()) {
       session.withErrors(validation.messages());
-      // console.log('create user validation error: ')
-      // console.log(validation.messages())
       return response.redirect('back');
     }
 
-    if (request.input('valor') !== cve) {
-      return response.redirect('back');
+    const tipo = request.input('tipo');
+
+    let cve = null;
+    if (tipo === '10' || tipo === '11') {
+      cve = request.input('valor');
     }
 
     // define o booking como
@@ -629,26 +641,26 @@ class ReservaController {
     const merchantRef = `R${book.prevHash.substring(0, 14)}`;
 
     const pagamento = new Pay();
-    pagamento.merchantRespPurchaseAmount = request.input('valor');
-    pagamento.tipo = request.input('tipo');
+    pagamento.merchantRespPurchaseAmount = cve;
+    pagamento.tipo = tipo;
     pagamento.merchantRef = merchantRef;
     pagamento.booking_id = book.id;
     await pagamento.save();
 
     // codigo de pagamento para wifianywhere
-    if (pagamento.tipo !== '11') {
-      session.flash({
-        notification: {
-          type: 'warning',
-          message: 'Houve um erro no pagamento da reserva, tente mais tarde!',
-        },
-      });
+    // if (tipo !== '11' || tipo !== '10') {
+    //   session.flash({
+    //     notification: {
+    //       type: 'warning',
+    //       message: 'Houve um erro no pagamento da reserva, tente mais tarde!',
+    //     },
+    //   });
 
-      // return response.redirect(`/user/info/${auth.user.id}/book/${book.id}`);
-      return response.send(
-        'pagamento Houve um erro no pagamento da reserva, tente mais tarde!'
-      );
-    }
+    //   // return response.redirect(`/user/info/${auth.user.id}/book/${book.id}`);
+    //   return response.send(
+    //     'pagamento Houve um erro no pagamento da reserva, tente mais tarde!'
+    //   );
+    // }
 
     // dados para o email de confirmacao
     const config = await Config.first();

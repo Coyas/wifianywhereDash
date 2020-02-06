@@ -83,9 +83,9 @@
             </div>
           </div>
           <div id="" class="card-footer">
-            @if(dados.showup && dados.devolver)
+            @if(dados.showup && dados.devolver  && dados.total)
 
-            @elseif(dados.showup && !dados.devolver)
+            @elseif(dados.showup && !dados.devolver  && dados.total)
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#finalizar">
               Entregar Dispositivo
             </button>
@@ -128,7 +128,7 @@
               </div>
 
 
-            @elseif(!dados.showup && !dados.devolver)
+            @elseif(!dados.showup && !dados.devolver && dados.total)
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-levantar">Levantar Dispositivo</button>
               <div class="modal fade" id="modal-levantar" tabindex="-1" role="dialog" aria-labelledby="modal-levantar" aria-hidden="true">
@@ -193,9 +193,12 @@
                 </div>
               </div>
 
-
+            @elseif(!dados.showup && !dados.devolver && !dados.total)
+            <a  class="btn btn-success" >
+              Pagar Reserva
+            </a>
             @else
-              <a  class="btn btn-secondary" >
+              <a  class="btn btn-primary" >
                 Nao Apareceu
               </a>
             @endif
