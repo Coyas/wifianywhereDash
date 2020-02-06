@@ -96,7 +96,8 @@ class Utils {
 
   static decriptografarHash(criptohash) {
     console.log('decrypt url');
-    return Encryption.decrypt(criptohash);
+    const a = Encryption.decrypt(criptohash);
+    return a;
   }
 
   static async generateCheck(auth) {

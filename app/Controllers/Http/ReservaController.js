@@ -93,10 +93,16 @@ class ReservaController {
   }
 
   async listar({ view, params }) {
+    const { id } = params;
+
     const config = await Config.first();
     const book = await Book.query()
-      .where('user_id', params.id)
+      .where('user_id', id)
       .fetch();
+
+    if (!id || id === 'undefined') {
+      return view.render('404');
+    }
 
     if (!book) {
       return view.render('404');
@@ -126,7 +132,7 @@ class ReservaController {
      * objecto que contem as reservas
      */
 
-    const user = await User.find(params.id);
+    const user = await User.find(id);
     const users = user.toJSON();
 
     let dadosbook = [];
@@ -162,7 +168,7 @@ class ReservaController {
       User: users,
       Cards: cards,
       Table: dadosbook,
-      config: config,
+      config,
     });
   }
 
@@ -313,7 +319,7 @@ class ReservaController {
       Lugar: 'Nova Reserva',
       config,
       User: UserData,
-      check,
+      check: encodeURIComponent(check),
     });
   }
 
@@ -371,17 +377,14 @@ class ReservaController {
   }
 
   async chooseplanos({ view, params, request, auth }) {
-    // console.log("request check data: ");
     const { check } = request.get();
-    // console.log('request.get()');
-    // console.log(request.get());
-
-    // console.log('Check');
-    // console.log(check);
+    let { id } = params;
 
     const ok = await Utils.verificarCheck(check, auth);
     if (!ok) {
-      // console.log('verificar check');
+      return view.render('404');
+    }
+    if (!id || id === 'undefined') {
       return view.render('404');
     }
 
@@ -393,6 +396,24 @@ class ReservaController {
       // console.log('user not found');
       return view.render('404');
     }
+
+    const books = await Book.findBy('check', check);
+    let book = null;
+
+    if (books) {
+      book = books.toJSON();
+      id = book.user_id;
+    }
+
+    const bookData = {
+      pickupdate: book ? book.pickupdate : '',
+      returnday: book ? book.returnday : '',
+      flynumber: book ? book.flynumber : '',
+      powerbank: book ? book.powerbank : '',
+      picklocation: book ? book.pickuplocation_id : '',
+      droplocation: book ? book.returnlocation_id : '',
+      planoId: book ? book.plano_id : '',
+    };
 
     // dados
     // lista de planos
@@ -408,9 +429,10 @@ class ReservaController {
       Lugar: 'Ordem De Reserva',
       config,
       Plano: plano,
-      Cliente: params.id, // id do user
+      ClienteId: id, // id do user
+      bookData,
       Local: local,
-      check,
+      check: encodeURIComponent(check),
     });
   }
 
@@ -420,9 +442,10 @@ class ReservaController {
     // console.log('queryString do input:')
     // console.log(request.all())
     const { check } = request.all();
+    const { id } = params;
 
     const ok = await Utils.verificarCheck(check, auth);
-    if (!ok && !params.id && !check) {
+    if (!ok && !id && !check) {
       return response.redirect('/404');
     }
 
@@ -443,9 +466,9 @@ class ReservaController {
       return response.redirect('back');
     }
 
-    const user = await User.find(params.id);
+    const user = await User.find(id);
 
-    if (!user || !params.id) {
+    if (!user) {
       response.redirect('404');
     }
 
@@ -467,12 +490,6 @@ class ReservaController {
     const deviceLivre = await reservaDevice.getDeviceLivres();
     if (!deviceLivre) {
       return response.send('nao ha device livre');
-    }
-
-    // } while (deviceLivre === false);
-
-    if (!deviceLivre) {
-      return response.redirect('/404');
     }
 
     // const _lastbook = await Book.last() //nao funciona com uuid (sao gerados aleatoriamente)
@@ -503,7 +520,7 @@ class ReservaController {
     book.plano_id = request.input('plano_id');
     book.pickuplocation_id = request.input('pickuplocation_id');
     book.returnlocation_id = request.input('returnlocation_id');
-    book.user_id = params.id;
+    book.user_id = id;
     book.device_id = deviceLivre; // pegar um device livre ou q vai estar livre
     book.powerbank = 0;
     book.prevHash = prevHash;
@@ -519,11 +536,12 @@ class ReservaController {
   }
 
   async pagareserva({ view, params, request }) {
-    const { check, paramsId } = request.get();
+    const { check } = request.get();
+    const { id } = params;
 
-    const book = await Book.find(params.id);
+    const book = await Book.find(id);
 
-    if (!book && !params.id) {
+    if (!book && !id) {
       return view.render('404');
     }
 
@@ -544,10 +562,10 @@ class ReservaController {
     // tem de pegar este book do bd!!!!!!
     const configs = await Config.first();
     const config = configs.toJSON();
-    const txalugar = config.txaluguer;
+    const { txaluguer } = config;
 
     // formula para calcular dias = book.returnday - book.pickupdate
-    const subtotal = parseFloat((txalugar * numdays + plano.preco).toFixed(2));
+    const subtotal = parseFloat((txaluguer * numdays + plano.preco).toFixed(2));
 
     let caucao = null;
     let total = null;
@@ -561,8 +579,8 @@ class ReservaController {
 
     // get pagar reserva dados
     const pagaInfo = {
-      bookId: params.id,
-      cliente: paramsId,
+      bookId: id,
+      cliente: book.user_id,
       pickdate: Momento(book.pickupdate).format('DD/MM/YYYY'),
       dropdate: Momento(book.returnday).format('DD/MM/YYYY'),
       deviceid: book.device_id,
@@ -591,6 +609,7 @@ class ReservaController {
   async guardarpagar({ response, request, session, auth, params }) {
     // console.log(params);
     // console.log(request);
+    const { id } = params;
 
     const validation = await validateAll(request.all(), {
       valor: 'required',
@@ -599,7 +618,7 @@ class ReservaController {
 
     // const { cve } = request.get();
 
-    if (!params.id) return response.redirect('/404');
+    if (!id) return response.redirect('/404');
 
     if (validation.fails()) {
       session.withErrors(validation.messages());
@@ -608,10 +627,10 @@ class ReservaController {
 
     const tipo = request.input('tipo');
 
-    let cve = null;
-    if (tipo === '10' || tipo === '11') {
-      cve = request.input('valor');
-    }
+    // let cve = null;
+    // if (tipo === '10' || tipo === '11') {
+    //   cve = request.input('valor');
+    // }
 
     // define o booking como
     const book = await Book.find(params.id);
@@ -630,18 +649,22 @@ class ReservaController {
      * enviar qrcode para cloudnary
      */
     const conteudo = `${Env.get('BACK_URL')}/reservas/info/${book.id}`;
-    const ImageLink = await Cloudinary.sendQRcodeToCloudinary(
-      conteudo,
-      auth,
-      book.id,
-      session
-    );
+
+    let ImageLink = null;
+    if (tipo !== '01') {
+      ImageLink = await Cloudinary.sendQRcodeToCloudinary(
+        conteudo,
+        auth,
+        book.id,
+        session
+      );
+    }
 
     // fazer o pagamento( adicionar dados na tabela payment)
     const merchantRef = `R${book.prevHash.substring(0, 14)}`;
 
     const pagamento = new Pay();
-    pagamento.merchantRespPurchaseAmount = cve;
+    pagamento.merchantRespPurchaseAmount = request.input('valor');
     pagamento.tipo = tipo;
     pagamento.merchantRef = merchantRef;
     pagamento.booking_id = book.id;
@@ -695,7 +718,9 @@ class ReservaController {
     };
 
     // enviar o email de confirmacao de pagamento (usando events)
-    Event.fire('user::confirmBook', Confirmacao);
+    if (tipo !== '01') {
+      Event.fire('user::confirmBook', Confirmacao);
+    }
 
     // return response.send('...pagamento...efetuado com sucesso...');
     return response.redirect(`/reservas/info/${book.id}`);
