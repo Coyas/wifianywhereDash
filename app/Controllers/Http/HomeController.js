@@ -9,7 +9,6 @@ const Cat = use('App/Models/Category');
 const Config = use('App/Models/Config');
 const Device = use('App/Models/Device');
 const { validateAll } = use('Validator');
-const Category = use('App/Models/Category');
 const moment = use('moment');
 
 class HomeController {
