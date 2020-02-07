@@ -9,7 +9,6 @@ const Cat = use('App/Models/Category');
 const Config = use('App/Models/Config');
 const Device = use('App/Models/Device');
 const { validateAll } = use('Validator');
-const Category = use('App/Models/Category');
 const moment = use('moment');
 
 class HomeController {
@@ -26,7 +25,7 @@ class HomeController {
       reservas: books.length,
     };
 
-    const reservas = [];
+    const Reservas = [];
 
     for (let i = 0; i < books.length; i++) {
       const plano = await Plan.find(books[i].plano_id);
@@ -35,7 +34,7 @@ class HomeController {
       const data = moment(books[i].pickupdate).format('DD-MM-YYYY');
       const data2 = moment(books[i].returnday).format('DD-MM-YYYY');
 
-      reservas[i] = {
+      Reservas[i] = {
         id: books[i].id,
         plano: plano.nome,
         cliente: `${cliente.firstName} ${cliente.lastName}`,
@@ -44,12 +43,11 @@ class HomeController {
       };
     }
 
-    console.log(config);
     return view.render('home.welcome', {
       Lugar: 'Dashboard',
-      info: info,
-      Reservas: reservas,
-      config: config,
+      info,
+      Reservas,
+      config,
     });
   }
 
