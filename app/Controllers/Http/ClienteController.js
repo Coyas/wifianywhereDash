@@ -4,10 +4,11 @@ const Book = use('App/Models/Booking');
 const Pay = use('App/Models/Payment');
 const Config = use('App/Models/Config');
 const { validate, validateAll } = use('Validator');
-const randomString = require('random-string');
 const Mail = use('Mail');
 const Env = use('Env');
 const Event = use('Event');
+const Utils = use('App/Services/Utils');
+const randomString = require('random-string');
 
 class ClienteController {
   async lista({ view }) {
@@ -49,13 +50,14 @@ class ClienteController {
     return view.render('cliente.lista', {
       Lugar: 'Lista de Clientes',
       User: Users,
-      config: config,
+      config,
     });
   }
 
-  async info({ view, params, request }) {
+  async info({ view, params, request, auth }) {
     const config = await Config.first();
     const users = await User.find(params.id);
+    const cripto = await Utils.generateCheck(auth);
 
     // Activate user
     const { activate } = request.get();
@@ -99,6 +101,7 @@ class ClienteController {
       Lugar: `Cliente Username:  ${dados.username}`,
       User: dados,
       config: config,
+      cripto,
     });
   }
 

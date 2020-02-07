@@ -35,8 +35,8 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="{{'/reservas/guardarpagar/' + PagarData.bookId + '?cve=' + PagarData.cve}}" method="POST">
-                  {{ csrfField() }}
+              <form action="{{'/reservas/guardarpagar/' + PagarData.bookId + '?check=' + check }}" method="POST">
+                {{ csrfField() }}
 
                 <div class="pl-lg-4">
                   <div class="row">
@@ -68,19 +68,16 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-6">
-                      <div class="form-group {{ hasErrorFor('total') ? 'has-danger' : ''}}">
-                        <label class="form-control-label" for="input-first-name">Valor de Entrada </label>
-                        <input type="text" name="valor" id="valor" class="form-control {{ hasErrorFor('total') ? 'is-invalid' : 'form-control-alternative'}}" >
-                      </div>
-                    </div>
+                    Reserva
                     <div class="col-lg-6 pabaixo">
                       <div class="form-group {{ hasErrorFor('tipo') ? 'has-danger': ''}}">
-                          <label class="form-control-label" for="input-last-name"></label>
                         <input type="radio" name="tipo" id="tipo" class="" value="11" checked> Dinheiro
                         &nbsp;&nbsp;&nbsp;
                         <label class="form-control-label" for="input-pos"></label>
-                        <input type="radio" name="tipo" id="tipo" class=""  value="12"> POS
+                        <input type="radio" name="tipo" id="tipo" class=""  value="10"> POS
+                        &nbsp;&nbsp;&nbsp;
+                        <label class="form-control-label" for="input-pos"></label>
+                        <input type="radio" name="tipo" id="tipo" class=""  value="01"> Pre-reserva
                       </div>
                   </div>
                 </div>
@@ -93,6 +90,7 @@
                     <a href="/reservas/chooseplano/{{PagarData.cliente}}?check={{PagarData.check}}" class="btn btn-warning" style="width: 147.9px !important;"><< Voltar</a>
                     </div>
                     <input type="hidden" name="check" value="{{PagarData.check}}">
+                    <input type="hidden" name="valor" id="valor" value="{{PagarData.cve}}">
                     <div class="col-lg-6">
                         <input type="submit" class="btn btn-primary" value="Confirmar">
                     </div>
