@@ -217,6 +217,7 @@ class ReservaController {
       showup: books.showup,
       devolver: books.devolver,
       device: device ? device.numero : '--',
+      tipo: !!(pay.tipo == '10' || pay.tipo == '11'),
     };
 
     return view.render('reserva.info', {
