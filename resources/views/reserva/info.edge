@@ -28,6 +28,7 @@
 
 <div class="container-fluid mt--7">
     <!-- Table -->
+    @include('includes.notification')
     <div class="row">
       <div class="col">
         <div id="infore" class="card shadow">
@@ -196,9 +197,8 @@
               </div>
 
             @elseif(!dados.showup && !dados.devolver && !dados.tipo)
-            <a  class="btn btn-success" >
-              Pagar Reserva
-            </a>
+
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#pre-reserva">Pagar Reserva</button>
             @else
               <a  class="btn btn-primary" >
                 Nao Apareceu
@@ -212,6 +212,56 @@
 
     {{--  modal  --}}
     <!-- Button trigger modal -->
+
+    <!-- modal pagar pre-reserva -->
+    <div class="modal fade" id="pre-reserva" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-center" id="exampleModalLongTitle">Confirmacao do Pagamento da Pre-reserva</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="/reservas/pagarprereserva/{{dados.payId}}" method="POST">
+            {{ csrfField() }}
+            <div class="modal-body">
+              <div class="form-group">
+                <p>Nome: {{dados.nome}}</p>
+                <p>Pickup Date: {{dados.pickupDate}}</p>
+                <p>Return Date: {{dados.returnDate}}</p>
+                <p>Numero do Despositivo: {{dados.device}}</p>
+                <p>Valor: {{dados.total}}$00</p>
+              </div>
+
+               <!-- checkboxs para cobrar extorno -->
+              <div class="storno">
+                <!-- devolver extorno -->
+                <div class="custom-control custom-control-alternative custom-checkbox">
+                  <input name="tipo" class="custom-control-input" id="dinheiro" type="radio" value="11" checked>
+                  <label class="custom-control-label" for="dinheiro">
+                    <span class="text-muted">Pago Com Dinheiro vivo</span>
+                  </label>
+                </div>
+                <!-- cobrar extorno -->
+                <div class="custom-control custom-control-alternative custom-checkbox">
+                  <input name="tipo" class="custom-control-input" id="pos" type="radio" value="10">
+                  <label class="custom-control-label" for="pos">
+                    <span class="text-muted">Pago atraves de POS</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p class="mr-7 mt-3">(Por {{dados.dias}} dias)</p>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button id="devolver" type="submit" class="btn btn-primary">Pagar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
 
 
 <!-- Modal finalizar reserva -->

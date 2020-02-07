@@ -202,6 +202,15 @@ class ReservaController {
     const data = Momento(books.pickupdate).format('DD-MM-YYYY');
     const data2 = Momento(books.returnday).format('DD-MM-YYYY');
 
+    /**
+     * pegar a deferenca dos dias
+     */
+    const x = new Momento(books.pickupdate);
+    const y = new Momento(books.returnday);
+
+    // var duration = Momento.duration(x.diff(y, 'days'))
+    const dias = y.diff(x, 'days');
+
     const info = {
       id: books.id,
       nome: `${users.firstName} ${users.lastName}`,
@@ -218,6 +227,8 @@ class ReservaController {
       devolver: books.devolver,
       device: device ? device.numero : '--',
       tipo: !!(pay.tipo == '10' || pay.tipo == '11'),
+      payId: pay ? pay.id : '',
+      dias,
     };
 
     return view.render('reserva.info', {
@@ -668,7 +679,7 @@ class ReservaController {
     /**
      * enviar qrcode para cloudnary
      */
-    const conteudo = `${Env.get('BACK_URL')}/reservas/info/${book.id}`;
+    const conteudo = `${Env.get('APP_URL')}/reservas/info/${book.id}`;
 
     let ImageLink = null;
     if (tipo !== '01') {
@@ -713,16 +724,19 @@ class ReservaController {
     const PL = await Plan.find(book.plano_id);
     const Pl = await Place.find(book.pickuplocation_id);
     const R = await Place.find(book.returnlocation_id);
+    const user = await User.find(book.user_id);
 
     const Confirmacao = {
       cliente: {
-        nome: `${auth.user.firstName} ${auth.user.lastName}`,
-        email: auth.user.email,
-        phone: auth.user.phone,
+        nome: `${user.firstName} ${user.lastName}`,
+        email: user.email,
+        phone: user.phone,
       },
       book: {
         id: params.id,
-        preco: pagamento.merchantRespPurchaseAmount / Number(config.txcambio),
+        preco: Math.ceil(
+          Number(pagamento.merchantRespPurchaseAmount) / Number(config.txcambio)
+        ),
         pickupdate: Momento(book.pickupdate).format('DD/MM/YYYY'),
         dropoffdate: Momento(book.returnday).format('DD/MM/YYYY'),
         image: ImageLink,
@@ -739,15 +753,103 @@ class ReservaController {
 
     // enviar o email de confirmacao de pagamento (usando events)
     if (tipo !== '01') {
-      Event.fire('user::confirmBook', Confirmacao);
+      Event.fire('cliente::confirmBook', Confirmacao);
     }
 
     // return response.send('...pagamento...efetuado com sucesso...');
     return response.redirect(`/reservas/info/${book.id}`);
   }
 
-  async getRecarregarAmount({ view, params, request }) {
-    return view.render('reserva.pagar');
+  async pagarPreReserva({ response, request, params, auth, session }) {
+    const { tipo } = request.all();
+    const { payid } = params;
+
+    if (!payid || payid === 'undefined' || !tipo) {
+      // flash message
+      session.withErrors('id do pagameto nao existe');
+      return response.redirect('back');
+    }
+
+    const validation = await validateAll(request.all(), {
+      tipo: 'required',
+    });
+
+    if (validation.fails()) {
+      session.withErrors(validation.messages());
+      return response.redirect('back');
+    }
+
+    // get payment and booking data
+    const payment = await Pay.find(payid);
+
+    if (payment.tipo == tipo) {
+      session.withErrors('Erro ao tentar pagar a Pre-reserva');
+      return response.redirect('back');
+    }
+
+    const book = await Book.find(payment.booking_id);
+
+    // mudar o tipo de pagamento
+    payment.tipo = tipo;
+    await payment.save();
+
+    // create qr-code
+    /**
+     * enviar qrcode para cloudnary
+     */
+    const conteudo = `${Env.get('APP_URL')}/reservas/info/${book.id}`;
+
+    let ImageLink = null;
+
+    ImageLink = await Cloudinary.sendQRcodeToCloudinary(
+      conteudo,
+      auth,
+      book.id,
+      session
+    );
+
+    // send confirmation email
+
+    // dados para o email de confirmacao
+    const config = await Config.first();
+
+    // const config = configs.toJSON();
+
+    const PL = await Plan.find(book.plano_id);
+    const Pl = await Place.find(book.pickuplocation_id);
+    const R = await Place.find(book.returnlocation_id);
+    const user = await User.find(book.user_id);
+
+    const Confirmacao = {
+      cliente: {
+        nome: `${user.firstName} ${user.lastName}`,
+        email: user.email,
+        phone: user.phone,
+      },
+      book: {
+        id: params.id,
+        preco: Math.ceil(
+          Number(payment.merchantRespPurchaseAmount) / Number(config.txcambio)
+        ),
+        pickupdate: Momento(book.pickupdate).format('DD/MM/YYYY'),
+        dropoffdate: Momento(book.returnday).format('DD/MM/YYYY'),
+        image: ImageLink,
+      },
+      plano: {
+        nome: PL.nome,
+        megas: PL.megas,
+      },
+      place: {
+        pickup: Pl.nome,
+        dropoff: R.nome,
+      },
+    };
+
+    // enviar o email de confirmacao de pagamento (usando events)
+
+    Event.fire('cliente::confirmBook', Confirmacao);
+
+    return response.redirect('back');
   }
 
   async recarregar({ response, request, params }) {
