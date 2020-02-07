@@ -319,7 +319,7 @@ class ReservaController {
       Lugar: 'Nova Reserva',
       config,
       User: UserData,
-      check: encodeURIComponent(check),
+      check,
     });
   }
 
@@ -405,14 +405,20 @@ class ReservaController {
       id = book.user_id;
     }
 
+    const pickupdate = book
+      ? Momento(book.pickupdate).format('DD/MM/YYYY')
+      : '';
+    const returnday = book ? Momento(book.returnday).format('DD/MM/YYYY') : '';
+
     const bookData = {
-      pickupdate: book ? book.pickupdate : '',
-      returnday: book ? book.returnday : '',
+      pickupdate: pickupdate,
+      returnday: returnday,
       flynumber: book ? book.flynumber : '',
       powerbank: book ? book.powerbank : '',
       picklocation: book ? book.pickuplocation_id : '',
       droplocation: book ? book.returnlocation_id : '',
       planoId: book ? book.plano_id : '',
+      check,
     };
 
     // dados
@@ -432,15 +438,11 @@ class ReservaController {
       ClienteId: id, // id do user
       bookData,
       Local: local,
-      check: encodeURIComponent(check),
+      check,
     });
   }
 
   async guardarplanos({ response, request, params, session, auth }) {
-    // console.log('params id(cliente id): ')
-    // console.log(params.id)
-    // console.log('queryString do input:')
-    // console.log(request.all())
     const { check } = request.all();
     const { id } = params;
 
@@ -449,7 +451,6 @@ class ReservaController {
       return response.redirect('/404');
     }
 
-    // console.log(request.all());
     // validar campos de formulario
     const validation = await validateAll(request.all(), {
       pickupdate: 'required',
@@ -461,8 +462,6 @@ class ReservaController {
 
     if (validation.fails()) {
       session.withErrors(validation.messages());
-      // console.log('create user validation error: ')
-      // console.log(validation.messages())
       return response.redirect('back');
     }
 
@@ -476,16 +475,12 @@ class ReservaController {
     const rt = request.input('returnday');
 
     const p = pk.split('/');
-    const pickdate = `${p[2]}/${p[0]}/${p[1]}`;
+    const pickdate = `${p[2]}/${p[1]}/${p[1]}`;
     const d = rt.split('/');
-    const dropdate = `${d[2]}/${d[0]}/${d[1]}`;
+    const dropdate = `${d[2]}/${d[1]}/${d[1]}`;
 
     const pick = Momento(new Date(pickdate)).format('YYYY-MM-DD');
     const drop = Momento(new Date(dropdate)).format('YYYY-MM-DD');
-
-    // get device livre
-    // let deviceLivre = any;
-    // do {
 
     const deviceLivre = await reservaDevice.getDeviceLivres();
     if (!deviceLivre) {
@@ -512,27 +507,55 @@ class ReservaController {
       auth.user.id + Momento().format('YYYYMMDDHHmmss') + prevHash
     );
 
-    const book = new Book();
-    book.pickupDate = pick;
-    book.returnday = drop;
-    book.flynumber = request.input('flynumber');
-    book.check = check;
-    book.plano_id = request.input('plano_id');
-    book.pickuplocation_id = request.input('pickuplocation_id');
-    book.returnlocation_id = request.input('returnlocation_id');
-    book.user_id = id;
-    book.device_id = deviceLivre; // pegar um device livre ou q vai estar livre
-    book.powerbank = 0;
-    book.prevHash = prevHash;
-    book.curentHash = curentHash;
+    const book = await Book.findBy('check', check);
+    let okbook = null;
+    let newBook = null;
+    let bookId = null;
 
-    const okbook = await book.save();
+    if (book) {
+      // atualiza dados
+      book.pickupDate = pick;
+      book.returnday = drop;
+      book.flynumber = request.input('flynumber');
+      book.check = check;
+      book.plano_id = request.input('plano_id');
+      book.pickuplocation_id = request.input('pickuplocation_id');
+      book.returnlocation_id = request.input('returnlocation_id');
+      book.user_id = id;
+      book.device_id = deviceLivre; // pegar um device livre ou q vai estar livre
+      book.powerbank = 0;
+      book.prevHash = prevHash;
+      book.curentHash = curentHash;
+
+      okbook = await book.save();
+
+      bookId = book.id;
+    } else {
+      // cria novo
+      newBook = new Book();
+      newBook.pickupDate = pick;
+      newBook.returnday = drop;
+      newBook.flynumber = request.input('flynumber');
+      newBook.check = check;
+      newBook.plano_id = request.input('plano_id');
+      newBook.pickuplocation_id = request.input('pickuplocation_id');
+      newBook.returnlocation_id = request.input('returnlocation_id');
+      newBook.user_id = id;
+      newBook.device_id = deviceLivre; // pegar um device livre ou q vai estar livre
+      newBook.powerbank = 0;
+      newBook.prevHash = prevHash;
+      newBook.curentHash = curentHash;
+
+      okbook = await newBook.save();
+
+      bookId = newBook.id;
+    }
 
     if (!okbook) {
       return response.send('Nao foi possivel criar um book');
     }
 
-    return response.redirect(`/reservas/pagareserva/${book.id}?check=${check}`);
+    return response.redirect(`/reservas/pagareserva/${bookId}?check=${check}`);
   }
 
   async pagareserva({ view, params, request }) {
@@ -601,7 +624,7 @@ class ReservaController {
       config, // permite faze o switch de online para offline do frontend
       // bookId,
       // Cliente: paramsId,
-      // check,
+      check,
       PagarData: pagaInfo,
     });
   }

@@ -35,7 +35,7 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="{{'/reservas/guardarpagar/' + PagarData.bookId + '?check=' + PagarData.check }}" method="POST">
+              <form action="{{'/reservas/guardarpagar/' + PagarData.bookId + '?check=' + check }}" method="POST">
                 {{ csrfField() }}
 
                 <div class="pl-lg-4">

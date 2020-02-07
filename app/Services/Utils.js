@@ -90,47 +90,28 @@ class Utils {
   }
 
   static criptografarHash(hash) {
-    console.log('encrypt url');
-    return Encryption.encrypt(hash);
+    // return Encryption.encrypt(hash);
+    return Buffer.from(hash, 'utf8').toString('hex');
   }
 
   static decriptografarHash(criptohash) {
-    console.log('decrypt url');
-    const a = Encryption.decrypt(criptohash);
-    return a;
+    // const a = Encryption.decrypt(criptohash);
+    return Buffer.from(criptohash, 'hex').toString('utf8');
   }
 
   static async generateCheck(auth) {
     const hash = await this.generateHash(auth);
-    console.log('generate Hash');
-    console.log(hash);
-    let criptoHash = await this.criptografarHash(hash);
-    console.log('generate criptoHash');
-    console.log(criptoHash);
-    // se houver um '/' no hash substitui pelo '0!0'
-    console.log('replace / por 0!0');
-    console.log('uri encode: ' + criptoHash);
 
-    criptoHash = encodeURIComponent(criptoHash);
+    const criptoHash = await this.criptografarHash(hash);
 
     return criptoHash; // .replace(/\//g, '0!0');
   }
 
   static async verificarCheck(check, auth) {
-    console.log('pegar check');
-    console.log(check);
-    // console.log('replace 0!0 por /');
-    // let criptohash = check.replace(/0!0/g, '/');
-    // console.log('pegar criptoHash');
-    // console.log(criptohash);
-    console.log('decriptografar criptohash');
-
     const criptohash = decodeURIComponent(check);
 
     const decriptohash = this.decriptografarHash(criptohash);
-    console.log('pegar decriptohash');
-    console.log(decriptohash);
-    console.log('send decriptohash boolean value');
+
     return this.verificarHash(decriptohash, auth);
   }
 }

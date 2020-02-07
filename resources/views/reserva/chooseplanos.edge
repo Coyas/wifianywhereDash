@@ -35,7 +35,7 @@
               </div>
             </div>
             <div class="card-body">
-              <form action="{{'/reservas/guardarplanos/' + ClienteId + '?j=' + check}}" method="POST">
+              <form action="{{'/reservas/guardarplanos/' + ClienteId + '?check=' + check}}" method="POST">
                   {{ csrfField() }}
                 <h6 class="heading-small text-muted mb-4">Informaçao da reserva</h6>
                 <div class="pl-lg-4">
@@ -74,10 +74,11 @@
                             <option value="" selected>Escolha...</option>
                             @each(local in Local)
                               @if(local.id == bookData.picklocation)
-                              <p>ola</p>
                               <option value="{{local.id}}" selected>{{local.nome}}</option>
-                              @endif
+                              @else
                               <option value="{{local.id}}" >{{local.nome}}</option>
+                              @endif
+
                             @endeach
                           </select>
 
@@ -93,9 +94,9 @@
                             @each(local in Local)
                               @if(local.id == bookData.droplocation)
                                 <option value="{{local.id}}" selected>{{local.nome}}</option>
+                              @else
+                                <option value="{{local.id}}" >{{local.nome}}</option>
                               @endif
-                              <option value="{{local.id}}" >{{local.nome}}</option>
-
                             @endeach
                           </select>
                         </div>
@@ -104,21 +105,20 @@
                   </div>
 
                 <hr class="my-4" />
-                <h6 class="heading-small text-muted mb-4">Planos Desponiveis</h6>
+                <h6 class="heading-small text-muted mb-4">{{bookData.planoId}} Planos Desponiveis</h6>
                 <div class="pl-lg-4">
                   <div class="row">
                       <div class="col-lg-6">
                         <div class="form-group {{ hasErrorFor('plano_id') ? 'has-danger' : ''}}">
                           <label class="form-control-label" for="input-username">Escolha Um Plano</label>
                           <select id="changePlano" name="plano_id" class="form-control {{ hasErrorFor('plano_id') ? 'is-invalid' : 'form-control-alternative'}}">
-                              <option value="0" selected>Escolha seu plano...</option>
+                              {{--  <option value="0" selected>Escolha seu plano...</option>  --}}
                               @each(plan in Plano)
-
-                                @if(book.planoId == plan.id)
+                                @if(bookData.planoId == plan.id)
                                 <option value="{{plan.id}}" selected>{{plan.nome}} ({{plan.megas}} MB)</option>
-                                @endif
+                                @else
                                 <option value="{{plan.id}}" >{{plan.nome}} ({{plan.megas}} MB)</option>
-
+                                @endif
                               @endeach
                           </select>
                       </div>
