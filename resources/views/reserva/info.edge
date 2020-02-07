@@ -9,13 +9,15 @@
   <div class="container-fluid d-flex align-items-center">
     <div class="row">
       <div class="col-lg-7 col-md-10">
-        @if(dados.showup && dados.devolver)
+        @if(dados.showup && dados.devolver && dados.tipo)
           <a class="btn btn-secondary">Finalizado</a>
-        @elseif(dados.showup && !dados.devolver)
+        @elseif(dados.showup && !dados.devolver && dados.tipo)
          <!-- data-toggle="modal" data-target="#exampleModalCenter"-->
           <a href="" class="devolver btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter">Por Devolver</a>
-        @elseif(!dados.showup && !dados.devolver)
+        @elseif(!dados.showup && !dados.devolver && dados.tipo)
           <a href="" class="btn btn-primary">Aguardando cliente...</a>
+        @elseif(!dados.showup && !dados.devolver && !dados.tipo)
+          <a href="" class="btn btn-primary">Aguardando pagamento...</a>
         @else
           <a href="" class="btn btn-primary">No showup</a>
         @endif
