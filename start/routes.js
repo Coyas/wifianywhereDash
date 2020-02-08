@@ -1,4 +1,5 @@
-'use strict';
+// 'use strict';
+/* global use */
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +21,22 @@ const User = use('App/Models/User');
 const fs = require('fs');
 
 Route.group(() => {
-  Route.get('/', 'HomeController.index');
-  Route.get('/subscrito', 'HomeController.subscrito');
-  Route.get('/apagasubscrito/:id', 'HomeController.apagasubscrito');
-  Route.get('/faqs', 'HomeController.faqs');
-  Route.get('/faqs/novo', 'HomeController.novofaqs');
-  Route.post('/faqs/novo', 'HomeController.guardarfaqs');
-  Route.get('/faqs/view/:id', 'HomeController.viewfaqs');
-  Route.get('/faqs/update/:id', 'HomeController.updatefaqs');
+  Route.get('/', 'HomeController.index').middleware(['bookings']);
+  Route.get('/subscrito', 'HomeController.subscrito').middleware(['bookings']);
+  Route.get('/apagasubscrito/:id', 'HomeController.apagasubscrito').middleware([
+    'bookings',
+  ]);
+  Route.get('/faqs', 'HomeController.faqs').middleware(['bookings']);
+  Route.get('/faqs/novo', 'HomeController.novofaqs').middleware(['bookings']);
+  Route.post('/faqs/novo', 'HomeController.guardarfaqs').middleware([
+    'bookings',
+  ]);
+  Route.get('/faqs/view/:id', 'HomeController.viewfaqs').middleware([
+    'bookings',
+  ]);
+  Route.get('/faqs/update/:id', 'HomeController.updatefaqs').middleware([
+    'bookings',
+  ]);
   Route.put('/faqs/update/:id', 'HomeController.updatefaq');
   Route.get('/faqs/apagar/:id', 'HomeController.apagarfaqs');
 
@@ -80,15 +89,19 @@ Route.group(() => {
     response.redirect('back');
   });
 
-  //routas de ajax
+  // routas de ajax
   Route.get('/getcategoria', 'HomeController.getcategoria');
   Route.get('/siteconfig', 'HomeController.siteconfig');
   Route.get('/getdados', 'HomeController.getdados');
 
   // rota para clientes
-  Route.get('/clientes', 'ClienteController.lista'); //listar todos os clientes
-  Route.get('/cliente/novo', 'ClienteController.newcliente'); // rota para criar novo cliente
-  Route.get('/clientes/info/:id', 'ClienteController.info'); //ver o perfil do cliente savecliente
+  Route.get('/clientes', 'ClienteController.lista').middleware(['bookings']); // listar todos os clientes
+  Route.get('/cliente/novo', 'ClienteController.newcliente').middleware([
+    'bookings',
+  ]); // rota para criar novo cliente
+  Route.get('/clientes/info/:id', 'ClienteController.info').middleware([
+    'bookings',
+  ]); // ver o perfil do cliente savecliente
   Route.post('/clientes/novo', 'ClienteController.savecliente');
 
   // rotas para reservas
@@ -124,18 +137,24 @@ Route.group(() => {
   // ----------------------------------------------------------------------------
 
   // rotas para usuarios
-  Route.get('/user/:id', 'UserController.index');
-  Route.put('/user/:id', 'UserController.editar');
-  Route.get('/user/logs/:id', 'UserController.logs');
-  Route.get('/user/senha/:id', 'UserController.mudarsenha');
-  Route.post('/user/senha/:id', 'UserController.guardarsenha');
+  Route.get('/user/:id', 'UserController.index').middleware(['bookings']);
+  Route.put('/user/:id', 'UserController.editar').middleware(['bookings']);
+  Route.get('/user/logs/:id', 'UserController.logs').middleware(['bookings']);
+  Route.get('/user/senha/:id', 'UserController.mudarsenha').middleware([
+    'bookings',
+  ]);
+  Route.post('/user/senha/:id', 'UserController.guardarsenha').middleware([
+    'bookings',
+  ]);
 
   // rotas de  signup
-  Route.get('/auth/register', 'Auth/RegisterController.showform');
+  Route.get('/auth/register', 'Auth/RegisterController.showform').middleware([
+    'bookings',
+  ]);
 
   Route.post('/auth/register', 'Auth/RegisterController.register');
 
-  Route.get('/usuarios', 'UsuarioController.index');
+  Route.get('/usuarios', 'UsuarioController.index').middleware(['bookings']);
 
   // logout
   Route.get('logout', 'Auth/AuthenticatedController.logout');
