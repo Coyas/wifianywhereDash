@@ -482,10 +482,7 @@ class ReservaController {
     const pk = request.input('pickupdate');
     const rt = request.input('returnday');
 
-    const p = pk.split('/');
-    const pickdate = `${p[2]}/${p[1]}/${p[1]}`;
-
-    const pick = Momento(new Date(pickdate)).format('YYYY-MM-DD');
+    const pick = Momento(pk).format('YYYY-MM-DD');
     const drop = Momento(rt).format('YYYY-MM-DD');
 
     const deviceLivre = await reservaDevice.getDeviceLivres();
