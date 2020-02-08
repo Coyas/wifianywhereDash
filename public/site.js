@@ -362,6 +362,7 @@ class PowerBank extends HTMLElement {
   }
 
   connectedCallback() {
+    if (this.getAttribute('value') === '1') this.checked = true;
     if (!this.rendered) {
       this.render();
       this.rendered = true;
