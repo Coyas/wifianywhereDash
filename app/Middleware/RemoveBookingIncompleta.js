@@ -37,7 +37,7 @@ class RemoveBookingIncompleta {
       // }
 
       // const book =
-      const ok = await Book.query()
+      await Book.query()
         .whereNotNull('check')
         .where('createdBy', auth.user.username)
         // .fetch()
