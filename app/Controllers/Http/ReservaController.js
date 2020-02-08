@@ -414,13 +414,15 @@ class ReservaController {
     }
 
     const pickupdate = book
-      ? Momento(book.pickupdate).format('DD/MM/YYYY')
+      ? Momento(book.pickupdate, 'YYYY-MM-DD').format('MM/DD/YYYY')
       : '';
-    const returnday = book ? Momento(book.returnday).format('DD/MM/YYYY') : '';
+    const returnday = book
+      ? Momento(book.returnday, 'YYYY-MM-DD').format('MM/DD/YYYY')
+      : '';
 
     const bookData = {
-      pickupdate: pickupdate,
-      returnday: returnday,
+      pickupdate,
+      returnday,
       flynumber: book ? book.flynumber : '',
       powerbank: book ? book.powerbank : '',
       picklocation: book ? book.pickuplocation_id : '',
@@ -482,8 +484,8 @@ class ReservaController {
     const pk = request.input('pickupdate');
     const rt = request.input('returnday');
 
-    const pick = Momento(pk).format('YYYY-MM-DD');
-    const drop = Momento(rt).format('YYYY-MM-DD');
+    const pick = Momento(pk, 'MM/DD/YYYY').format('YYYY-MM-DD');
+    const drop = Momento(rt, 'MM/DD/YYYY').format('YYYY-MM-DD');
 
     const deviceLivre = await reservaDevice.getDeviceLivres();
     if (!deviceLivre) {
