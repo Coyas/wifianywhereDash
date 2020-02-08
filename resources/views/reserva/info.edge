@@ -182,15 +182,18 @@
                             <div class="py-3 text-center">
                                 <i class="ni ni-bell-55 ni-3x"></i>
                                 <h4 class="heading mt-4">Atenção</h4>
-                                <p>Canselar uma reserva pode ou nao ter custos, dependendo da data do cancelamento</p>
+                                <p>Cancelar uma reserva pode ou nao ter custos, dependendo da data do cancelamento</p>
                             </div>
 
                         </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-link text-white ml-auto">Sim</button>
+                        <form action="" method="post">
+                          {{ csrfField() }}
+                          <div class="modal-footer">
+                            <button type="submit" class="btn btn-link text-white ml-auto">Sim</button>
                             <button type="button" class="btn btn-white" data-dismiss="modal">Nao</button>
-                        </div>
+                          </div>
+                        </form>
 
                     </div>
                 </div>
@@ -201,7 +204,7 @@
             <button class="btn btn-success" type="button" data-toggle="modal" data-target="#pre-reserva">Pagar Reserva</button>
             @else
               <a  class="btn btn-primary" >
-                Nao Apareceu
+                Ainda Nao Apareceu
               </a>
             @endif
 

@@ -226,7 +226,7 @@ class ReservaController {
       showup: books.showup,
       devolver: books.devolver,
       device: device ? device.numero : '--',
-      tipo: !!(pay.tipo == '10' || pay.tipo == '11'),
+      tipo: pay.tipo == '10' || pay.tipo == '11' ? true : false, // !!(pay.tipo == '10' || pay.tipo == '11'),
       payId: pay ? pay.id : '',
       dias,
     };
@@ -241,33 +241,30 @@ class ReservaController {
   async pegar({ response, params }) {
     const a = Momento().format('Y-M-D');
     const book = await Book.find(params.id);
-    book.showup = a;
-    await book.save();
 
     return Sisp.recarregar(book, response);
   }
 
   async devolver({ response, params, request }) {
     const dados = request.all();
-    console.log(request.all());
 
     const a = Momento().format('Y-M-D');
     const book = await Book.find(params.id);
 
     if (book.device_id !== dados.device_id) {
       // recarregar a pagina
-      console.log('device...nao...existe');
+
       return response.redirect('back');
     }
 
+    // isso aqui tem de ficar apos o estorno ser concluido
     book.devolver = a;
 
     await book.save();
-    console.log('device existe');
 
     // caso houver um azarde força devolver estorno
     const storno = dados ? dados.Storno : '0';
-    console.log(storno);
+    // console.log(storno);
     // processar o estorno
     switch (Number(storno)) {
       case 0: // devolver estorno
@@ -279,6 +276,8 @@ class ReservaController {
       default:
         console.log('aconteceu algum erro');
     }
+
+    return response.redirect('back');
   }
 
   /**
@@ -414,9 +413,9 @@ class ReservaController {
     }
 
     const pickupdate = book
-      ? Momento(book.pickupdate).format('DD/MM/YYYY')
+      ? Momento(book.pickupdate).format('YYYY/MM/DD')
       : '';
-    const returnday = book ? Momento(book.returnday).format('DD/MM/YYYY') : '';
+    const returnday = book ? Momento(book.returnday).format('YYYY/MM/DD') : '';
 
     const bookData = {
       pickupdate: pickupdate,
@@ -482,13 +481,13 @@ class ReservaController {
     const pk = request.input('pickupdate');
     const rt = request.input('returnday');
 
-    const p = pk.split('/');
-    const pickdate = `${p[2]}/${p[1]}/${p[1]}`;
-    const d = rt.split('/');
-    const dropdate = `${d[2]}/${d[1]}/${d[1]}`;
+    // const p = pk.split('/');
+    // const pickdate = `${p[2]}/${p[1]}/${p[0]}`;
+    // const d = rt.split('/');
+    // const dropdate = `${d[2]}/${d[1]}/${d[0]}`;
 
-    const pick = Momento(new Date(pickdate)).format('YYYY-MM-DD');
-    const drop = Momento(new Date(dropdate)).format('YYYY-MM-DD');
+    const pick = Momento(new Date(pk)).format('YYYY-MM-DD');
+    const drop = Momento(new Date(rt)).format('YYYY-MM-DD');
 
     const deviceLivre = await reservaDevice.getDeviceLivres();
     if (!deviceLivre) {
@@ -534,6 +533,7 @@ class ReservaController {
       book.powerbank = 0;
       book.prevHash = prevHash;
       book.curentHash = curentHash;
+      book.createdBy = auth.user.username;
 
       okbook = await book.save();
 
@@ -553,6 +553,7 @@ class ReservaController {
       newBook.powerbank = 0;
       newBook.prevHash = prevHash;
       newBook.curentHash = curentHash;
+      newBook.createdBy = auth.user.username;
 
       okbook = await newBook.save();
 
@@ -852,105 +853,84 @@ class ReservaController {
     return response.redirect('back');
   }
 
-  async recarregar({ response, request, params }) {
-    const dados = request.all();
-    const plan = await Plan.find(dados.plano_id);
+  async recarregar({ response, params }) {
+    const book = await Book.find(params.bookid);
 
-    // get config
-    const configs = await Config.first();
-    // console.log(configs)
-    const config = configs.toJSON();
-
-    // criando o formulario de envio para o sisp
-
-    // CONFIGURACOES wifianywhere
-    // var posID = "90000063"
-    // var posAutCode = "WNLzClRHixeJUAsx"
-    // CONFIGURACOES teste
-    // var posID = "90051"
-    // var posAutCode = "123456789A"
-
-    // OBTER DADOS DE PAGAMENTO
-    var amount = parseInt(
-      Number(plan.preco) * Number(config.txcambio),
-      10
-    ).toString();
-    console.log(amount);
-    // return
-
-    const merchantRef = `R${Momento().format('YYYYMMDDHHmmss')}`;
-    const merchantSession = `S${Momento().format('YYYYMMDDHHmmss')}`;
-    const dateTime = Momento().format('YYYY-MM-DD HH:mm:ss');
-
-    // url de callback  https://mc.vinti4net.cv/VbV_Merchant_Example_v2/merchantResp.jsp
-    // var responseUrl = 'https://mc.vinti4net.cv/VbV_Merchant_Example_v2/merchantResp.jsp'
-    const responseUrl = `${Env.get('APP_URL')}/reservas/recargaCallback`;
-
-    // pegar o numero do device
-    const books = await Book.find(params.bookid);
-    const book = books.toJSON();
-    console.log('book id:');
-    console.log(book);
-    const DeviceNumeros = await Device.find(book.device_id);
-    const DeviceNumero = DeviceNumeros.toJSON();
-    console.log('Device numero:');
-    console.log(DeviceNumero.numero);
-
-    // return
-    // tem que bai Modulo sisp
-    const formData = {
-      transactionCode: '3', // opcao 3 para recarregamento
-      posID: Env.get('posId'),
-
-      merchantRef,
-      merchantSession,
-
-      amount,
-      currency: '132',
-
-      is3DSec: '1',
-      urlMerchantResponse: responseUrl, // tambem conhecido como meu url de callback
-
-      languageMessages: 'pt',
-      timeStamp: dateTime,
-
-      fingerprintversion: '1',
-
-      entityCode: Env.get('CvmovelEntityCode'), // code para cvmovel (obrigatorio), ver com a sisp
-      referenceNumber: DeviceNumero.numero.toString(), // numero a ser recarregado (obrigatorio)
-    };
-
-    // criando o objecto fingerprint baseado no formData
-    formData.fingerprint = Sisp.GerarFingerPrintEnvio(
-      Env.get('posAutoCode'),
-      formData.timeStamp,
-      formData.amount,
-      formData.merchantRef,
-      formData.merchantSession,
-      formData.posID,
-      formData.currency,
-      formData.transactionCode,
-      formData.entityCode,
-      formData.referenceNumber
-    );
-
-    // console.log("formData out");
-    // console.log(formData);
-
-    // gerar o formulario de envio
-    const formHtml = Sisp.autoPost(formData);
-
-    console.log('formHtml');
-    console.log(formHtml);
-
-    // enviar a requisicao para o sisp
-    console.log('formHtml enviando para o sisp');
-    response.send(formHtml);
-    // response.send(request.all() + ' || ' + formHtml)
+    return Sisp.recarregar(book, response);
   }
 
-  async recargaCallback({ response, request }) {
-    response.send(request.all());
+  async recargaCallback({ response, request, session }) {
+    // let pay = null;
+
+    try {
+      const sisp = request.all();
+
+      const pay = await Pay.findBy('merchantRef', sisp.merchantRespMerchantRef);
+      if (!pay) {
+        session.flash({
+          notification: {
+            type: 'warning',
+            message: 'Recarga not found',
+          },
+        });
+        return response.redirect('back/');
+      }
+
+      pay.messageType = sisp.messageType;
+      pay.merchantRespCP = sisp.merchantRespCP;
+      pay.merchantRespTid = sisp.merchantRespTid;
+      pay.merchantRespMerchantRef = sisp.merchantRespMerchantRef;
+      pay.merchantRespMerchantSession = sisp.merchantRespMerchantSession;
+      pay.merchantRespPurchaseAmount = sisp.merchantRespPurchaseAmount;
+      pay.merchantRespMessageID = sisp.merchantRespMessageID;
+      pay.merchantRespPan = sisp.merchantRespPan;
+      pay.merchantResp = sisp.merchantResp;
+      pay.merchantRespErrorCode = sisp.merchantRespErrorCode;
+      pay.merchantRespErrorDescription = sisp.merchantRespErrorDescription;
+      pay.merchantRespErrorDetail = sisp.merchantRespErrorDetail;
+      pay.languageMessages = sisp.languageMessages;
+      pay.merchantRespTimeStamp = sisp.merchantRespTimeStamp;
+      pay.merchantRespReferenceNumber = sisp.merchantRespReferenceNumber;
+      pay.merchantRespEntityCode = sisp.merchantRespEntityCode;
+      pay.merchantRespClientReceipt = sisp.merchantRespClientReceipt;
+      pay.merchantRespAdditionalErrorMessage =
+        sisp.merchantRespAdditionalErrorMessage;
+      pay.merchantRespReloadCode = sisp.merchantRespReloadCode;
+      pay.resultFingerPrint = sisp.resultFingerPrint;
+      pay.resultFingerPrintVersion = sisp.resultFingerPrintVersion;
+      pay.merchantRespScreenError = sisp.merchantRespScreenError;
+
+      const payOk = await pay.save();
+
+      if (!payOk) {
+        // add flash message
+        session.flash({
+          notification: {
+            type: 'danger',
+            message:
+              'sorry but this reservation cannot be recharged, <a id="why" href="#porque?">why!</a>',
+          },
+        });
+      }
+
+      // if (sisp.messageType == 'M' || sisp.messageType == null) {
+      //   session.flash({
+      //     notification: {
+      //       type: 'warning',
+      //       message: 'Houve um erro no pagamento da reserva, tente mais tarde!',
+      //     },
+      //   });
+
+      //   return response.redirect('back');
+      //   // return response.send(sisp);
+      // }
+
+      // send confirmation email of recarga
+
+      return response.redirect(`/reservas/info/${pay.booking_id}`);
+    } catch (error) {
+      return response.redirect(`/reservas/info/${pay.booking_id}`);
+    }
   }
 }
 

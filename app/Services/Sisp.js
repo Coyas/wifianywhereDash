@@ -1,3 +1,4 @@
+const Pay = use('App/Models/Payment');
 const sha512 = require('js-sha512');
 const btoa = require('btoa');
 const moment = require('moment');
@@ -139,8 +140,18 @@ class Sisp {
       responseURL: `${Env.get('APP_URL')}/reservas/recargaCallback`,
     });
 
+    const pay = new Pay();
+    pay.merchantRef = formData.merchantRef;
+    pay.booking_id = book.id;
+    pay.tipo = 3;
+    const ok = await pay.save();
+
+    if (!ok) {
+      return response.redirect('back');
+    }
+
     const formHtml = Sisp.autoPost(formData);
-    response.send(formHtml);
+    return response.send(formHtml);
   }
 
   /**
