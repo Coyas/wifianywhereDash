@@ -54,10 +54,14 @@ class ClienteController {
     });
   }
 
-  async info({ view, params, request, auth }) {
+  async info({ view, params, request, auth, response }) {
     const config = await Config.first();
     const users = await User.find(params.id);
     const cripto = await Utils.generateCheck(auth);
+
+    if (!users) {
+      return response.redirect('/404');
+    }
 
     // Activate user
     const { activate } = request.get();
