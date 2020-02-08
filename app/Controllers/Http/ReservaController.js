@@ -484,11 +484,9 @@ class ReservaController {
 
     const p = pk.split('/');
     const pickdate = `${p[2]}/${p[1]}/${p[1]}`;
-    const d = rt.split('/');
-    const dropdate = `${d[2]}/${d[1]}/${d[1]}`;
 
     const pick = Momento(new Date(pickdate)).format('YYYY-MM-DD');
-    const drop = Momento(new Date(dropdate)).format('YYYY-MM-DD');
+    const drop = Momento(rt).format('YYYY-MM-DD');
 
     const deviceLivre = await reservaDevice.getDeviceLivres();
     if (!deviceLivre) {
@@ -531,7 +529,7 @@ class ReservaController {
       book.returnlocation_id = request.input('returnlocation_id');
       book.user_id = id;
       book.device_id = deviceLivre; // pegar um device livre ou q vai estar livre
-      book.powerbank = 0;
+      book.powerbank = request.input('powerbank') ? 1 : 0;
       book.prevHash = prevHash;
       book.curentHash = curentHash;
 
@@ -550,7 +548,7 @@ class ReservaController {
       newBook.returnlocation_id = request.input('returnlocation_id');
       newBook.user_id = id;
       newBook.device_id = deviceLivre; // pegar um device livre ou q vai estar livre
-      newBook.powerbank = 0;
+      newBook.powerbank = request.input('powerbank') ? 1 : 0;
       newBook.prevHash = prevHash;
       newBook.curentHash = curentHash;
 
