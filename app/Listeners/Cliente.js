@@ -25,7 +25,7 @@ Cliente.confirmBook = async Confirmacao => {
       message
         .to(Confirmacao.cliente.email)
         .from(Env.get('MAIL_USERNAME'))
-        .subject(`Wifianywhere Online Booking ID:${Confirmacao.book.id}`);
+        .subject('Wifianywhere Online Booking');
     });
   } catch (error) {
     console.log('erro ao enviar o email');

@@ -64,7 +64,7 @@ class Sisp {
     reloadCode
   ) {
     // EFETUAR O CALCULO CONFORME A DOCUMENTAÇÃO
-    var toHash =
+    const toHash =
       this.GenerateSHA512StringToBase64(posAutCode) +
       messageType +
       clearingPeriod +
@@ -82,7 +82,7 @@ class Sisp {
       additionalErrorMessage.trim() +
       reloadCode.trim();
 
-    return GenerateSHA512StringToBase64(toHash);
+    return this.GenerateSHA512StringToBase64(toHash);
   }
 
   static autoPost(formData) {

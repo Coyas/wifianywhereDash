@@ -9,13 +9,15 @@
   <div class="container-fluid d-flex align-items-center">
     <div class="row">
       <div class="col-lg-7 col-md-10">
-        @if(dados.showup && dados.devolver)
+        @if(dados.showup && dados.devolver && dados.tipo)
           <a class="btn btn-secondary">Finalizado</a>
-        @elseif(dados.showup && !dados.devolver)
+        @elseif(dados.showup && !dados.devolver && dados.tipo)
          <!-- data-toggle="modal" data-target="#exampleModalCenter"-->
           <a href="" class="devolver btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter">Por Devolver</a>
-        @elseif(!dados.showup && !dados.devolver)
+        @elseif(!dados.showup && !dados.devolver && dados.tipo)
           <a href="" class="btn btn-primary">Aguardando cliente...</a>
+        @elseif(!dados.showup && !dados.devolver && !dados.tipo)
+          <a href="" class="btn btn-primary">Aguardando pagamento...</a>
         @else
           <a href="" class="btn btn-primary">No showup</a>
         @endif
@@ -26,6 +28,7 @@
 
 <div class="container-fluid mt--7">
     <!-- Table -->
+    @include('includes.notification')
     <div class="row">
       <div class="col">
         <div id="infore" class="card shadow">
@@ -83,9 +86,9 @@
             </div>
           </div>
           <div id="" class="card-footer">
-            @if(dados.showup && dados.devolver  && dados.total)
+            @if(dados.showup && dados.devolver  && dados.tipo)
 
-            @elseif(dados.showup && !dados.devolver  && dados.total)
+            @elseif(dados.showup && !dados.devolver  && dados.tipo)
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#finalizar">
               Entregar Dispositivo
             </button>
@@ -128,7 +131,7 @@
               </div>
 
 
-            @elseif(!dados.showup && !dados.devolver && dados.total)
+            @elseif(!dados.showup && !dados.devolver && dados.tipo)
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-levantar">Levantar Dispositivo</button>
               <div class="modal fade" id="modal-levantar" tabindex="-1" role="dialog" aria-labelledby="modal-levantar" aria-hidden="true">
@@ -193,10 +196,9 @@
                 </div>
               </div>
 
-            @elseif(!dados.showup && !dados.devolver && dados.total == )
-            <a  class="btn btn-success" >
-              Pagar Reserva
-            </a>
+            @elseif(!dados.showup && !dados.devolver && !dados.tipo)
+
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#pre-reserva">Pagar Reserva</button>
             @else
               <a  class="btn btn-primary" >
                 Nao Apareceu
@@ -210,6 +212,56 @@
 
     {{--  modal  --}}
     <!-- Button trigger modal -->
+
+    <!-- modal pagar pre-reserva -->
+    <div class="modal fade" id="pre-reserva" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-center" id="exampleModalLongTitle">Confirmacao do Pagamento da Pre-reserva</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="/reservas/pagarprereserva/{{dados.payId}}" method="POST">
+            {{ csrfField() }}
+            <div class="modal-body">
+              <div class="form-group">
+                <p>Nome: {{dados.nome}}</p>
+                <p>Pickup Date: {{dados.pickupDate}}</p>
+                <p>Return Date: {{dados.returnDate}}</p>
+                <p>Numero do Despositivo: {{dados.device}}</p>
+                <p>Valor: {{dados.total}}$00</p>
+              </div>
+
+               <!-- checkboxs para cobrar extorno -->
+              <div class="storno">
+                <!-- devolver extorno -->
+                <div class="custom-control custom-control-alternative custom-checkbox">
+                  <input name="tipo" class="custom-control-input" id="dinheiro" type="radio" value="11" checked>
+                  <label class="custom-control-label" for="dinheiro">
+                    <span class="text-muted">Pago Com Dinheiro vivo</span>
+                  </label>
+                </div>
+                <!-- cobrar extorno -->
+                <div class="custom-control custom-control-alternative custom-checkbox">
+                  <input name="tipo" class="custom-control-input" id="pos" type="radio" value="10">
+                  <label class="custom-control-label" for="pos">
+                    <span class="text-muted">Pago atraves de POS</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <p class="mr-7 mt-3">(Por {{dados.dias}} dias)</p>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button id="devolver" type="submit" class="btn btn-primary">Pagar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
 
 
 <!-- Modal finalizar reserva -->
