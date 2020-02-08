@@ -174,7 +174,9 @@
                   <input
                     type='checkbox'
                     name='powerbank'
-                    checked='{{ bookData.powerbank }}'
+                    @if(bookData.powerbank === 1)
+                    checked
+                    @endif
                   >
                 </div>
               </div>
