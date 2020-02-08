@@ -1,10 +1,98 @@
-<p style="">
-    Hello {{firstName}} {{lastName}}, welcome to wifianywhere's portal, please confirm your account below
-</p>
-<p>
-    Your password: {{password}}
-</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Book confirm</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
 
-<p>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-    <a href="{{backUrl('register/confirm/' + confirmation_token)}}">confirm your account here</a>
+
+    .item1, .item2, .item5 {
+      text-align: center;
+    }
+
+    .item1 img {
+      width: 100%;
+    }
+    h1 {
+      color: #0d315b;
+      font-weight: bold;
+    }
+    .item1 {
+      margin-bottom: 2%;
+    }
+    .item2{
+      margin-bottom: 5%;
+    }
+
+    figure {
+      text-align: center;
+    }
+    a {
+      /* position: absolute; */
+      /* margin: 0 0 0 22%; */
+      color:#1e2432 !important;
+      background-color:#01f6fb;
+      border-color:#01f6fb;
+      font-size: 0.9em;
+      font-weight: bold;
+      -webkit-border-radius: 500px;
+      -moz-border-radius: 500px;
+      border-radius: 500px;
+      border: 1px solid #01f6fb;
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding: .375rem .75rem;
+      line-height: 1.5;
+      transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      text-decoration: none;
+      margin-bottom: 5%;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+    span {
+      /* display: flex; */
+      color:cadetblue;
+      word-wrap: break-word;
+      width: 50%;
+      max-width: 50%;
+    }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="item item1">
+      <img src="https://res.cloudinary.com/coyas/image/upload/v1579805290/site/emailsHeader/header2_woik7q.jpg" alt="qrcode">
+    </div>
+    <div class="item item2"><h1>ACCOUNT CONFIRMATION</h1></div>
+    <p>
+      An account was created with this email, use the button below to proceed with the account confirmation
+    </p>
+
+    <p>
+      Your password: {{password}}
+    </p>
+
+    <a href="{{backUrl('register/confirm/' + confirmation_token)}}"> confirm your account here</a>
+
+    <h6>if for any reason the button does not work copy the link below and paste in a browser</h6>
+    <span>{{backUrl('register/confirm/' + confirmation_token)}}</span>
+  </div>
+</body>
+</html>
+
+<p>
+  Your password: {{password}}
 </p>
