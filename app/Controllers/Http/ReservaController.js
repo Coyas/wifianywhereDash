@@ -414,13 +414,15 @@ class ReservaController {
     }
 
     const pickupdate = book
-      ? Momento(book.pickupdate).format('DD/MM/YYYY')
+      ? Momento(book.pickupdate, 'YYYY-MM-DD').format('MM/DD/YYYY')
       : '';
-    const returnday = book ? Momento(book.returnday).format('DD/MM/YYYY') : '';
+    const returnday = book
+      ? Momento(book.returnday, 'YYYY-MM-DD').format('MM/DD/YYYY')
+      : '';
 
     const bookData = {
-      pickupdate: pickupdate,
-      returnday: returnday,
+      pickupdate,
+      returnday,
       flynumber: book ? book.flynumber : '',
       powerbank: book ? book.powerbank : '',
       picklocation: book ? book.pickuplocation_id : '',
@@ -482,13 +484,8 @@ class ReservaController {
     const pk = request.input('pickupdate');
     const rt = request.input('returnday');
 
-    const p = pk.split('/');
-    const pickdate = `${p[2]}/${p[1]}/${p[1]}`;
-    const d = rt.split('/');
-    const dropdate = `${d[2]}/${d[1]}/${d[1]}`;
-
-    const pick = Momento(new Date(pickdate)).format('YYYY-MM-DD');
-    const drop = Momento(new Date(dropdate)).format('YYYY-MM-DD');
+    const pick = Momento(pk, 'MM/DD/YYYY').format('YYYY-MM-DD');
+    const drop = Momento(rt, 'MM/DD/YYYY').format('YYYY-MM-DD');
 
     const deviceLivre = await reservaDevice.getDeviceLivres();
     if (!deviceLivre) {
@@ -531,7 +528,7 @@ class ReservaController {
       book.returnlocation_id = request.input('returnlocation_id');
       book.user_id = id;
       book.device_id = deviceLivre; // pegar um device livre ou q vai estar livre
-      book.powerbank = 0;
+      book.powerbank = request.input('powerbank') ? 1 : 0;
       book.prevHash = prevHash;
       book.curentHash = curentHash;
 
@@ -550,7 +547,7 @@ class ReservaController {
       newBook.returnlocation_id = request.input('returnlocation_id');
       newBook.user_id = id;
       newBook.device_id = deviceLivre; // pegar um device livre ou q vai estar livre
-      newBook.powerbank = 0;
+      newBook.powerbank = request.input('powerbank') ? 1 : 0;
       newBook.prevHash = prevHash;
       newBook.curentHash = curentHash;
 
