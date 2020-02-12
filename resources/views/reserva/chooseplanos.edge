@@ -171,12 +171,13 @@
               <div class="row">
                 <div class="form-group col-md-12">
                   <label>Include Powerbank</label>
-                  <power-bank
+                  <input
+                    type='checkbox'
                     name='powerbank'
-                    value='{{ bookData.powerbank }}'
-                    checked-text='Included'
-                    unchecked-text='Not incluided'
-                  ></power-bank>
+                    @if(bookData.powerbank === 1)
+                    checked
+                    @endif
+                  >
                 </div>
               </div>
             </div>
