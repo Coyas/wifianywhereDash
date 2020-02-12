@@ -10,6 +10,7 @@ const Config = use('App/Models/Config');
 const Device = use('App/Models/Device');
 const { validateAll } = use('Validator');
 const moment = use('moment');
+const Deviceproperty = use('App/Models/Deviceproperty');
 
 class HomeController {
   async index({ view }) {
@@ -90,8 +91,19 @@ class HomeController {
   async faqs({ view }) {
     const config = await Config.first();
 
+    // const faq = await Faq.all();
+    // const Table = await faq.categories().fetch();
+    // const Table = await Faq.query()
+    //   .with('categories')
+    //   .fetch();
+
+    const Table = await Faq.query()
+      .with('categories')
+      .fetch();
+
     return view.render('faqs.index', {
       config,
+      Table: Table.toJSON(),
     });
   }
 
@@ -100,13 +112,12 @@ class HomeController {
 
     return view.render('faqs.novo', {
       config,
-      config,
     });
   }
 
   async guardarfaqs({ request, session, response, auth }) {
     if (auth.user.access < 3) {
-      return view.render('404');
+      return response.render('404');
     }
 
     const dados = request.all();
@@ -130,7 +141,7 @@ class HomeController {
     faq.category_id = dados.category;
     await faq.save();
 
-    response.redirect('/faqs');
+    return response.redirect('/faqs');
   }
 
   async updatefaqs({ view, auth, params }) {
@@ -148,10 +159,12 @@ class HomeController {
       config: config,
     });
   }
+
   async updatefaq({ response, request, params, session, auth }) {
     if (auth.user.access < 3) {
       return view.render('404');
     }
+
     const dados = request.all();
     console.log('update faq');
     // validar campos de formulario
@@ -178,25 +191,26 @@ class HomeController {
 
   async viewfaqs({ view, params }) {
     const config = await Config.first();
-    console.log('params.id: ' + params.id);
-    console.log(typeof params.id);
-    console.log('Number: ');
-    console.log(typeof Number());
-    console.log(typeof params.id === typeof Number());
+    // console.log('params.id: ' + params.id);
+    // console.log(typeof params.id);
+    // console.log('Number: ');
+    // console.log(typeof Number());
+    // console.log(typeof params.id === typeof Number());
+
     if (typeof params.id == typeof String()) {
       //tem de ficar integer
-
-      const faq = await Faq.find(params.id);
-      const faqs = faq.toJSON();
-      // console.log(faqs.nome)
-      return view.render('faqs.view', {
-        Data: faqs,
-        config: config,
-      });
-    } else {
       return view.render('404');
     }
+
+    const faq = await Faq.find(params.id);
+    const faqs = faq.toJSON();
+    // console.log(faqs.nome)
+    return view.render('faqs.view', {
+      Data: faqs,
+      config: config,
+    });
   }
+  // }
 
   async apagarfaqs({ params, auth, response }) {
     if (auth.user.access < 3) {
@@ -206,7 +220,7 @@ class HomeController {
     const faq = await Faq.find(params.id);
     await faq.delete();
 
-    response.redirect('/faqs');
+    return response.redirect('/faqs');
   }
 
   async getcategoria({ request, response }) {
