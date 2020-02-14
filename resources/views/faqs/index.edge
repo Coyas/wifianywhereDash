@@ -39,15 +39,15 @@
               </thead>
               <tbody>
                 @each(dados in Table)
+
                   <td>
-                    # {{dados.id}}
+                    # {{ $loop.index }}
                   </td>
                   <td>
                     {{{dados.title}}}
                   </td>
-                  <td>
-                    {{dados.categories[0].nome}}
-                  </td>
+
+                  <td>{{dados.categoria}}</td>
 
                   <td>
                     {{dados.lang}}

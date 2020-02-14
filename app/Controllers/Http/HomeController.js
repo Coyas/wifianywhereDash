@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 // 'use strict';
 /* global use */
 const User = use('App/Models/User');
@@ -5,12 +6,13 @@ const Book = use('App/Models/Booking');
 const Plan = use('App/Models/Plan');
 const Subs = use('App/Models/Subscribe');
 const Faq = use('App/Models/Faq');
-const Cat = use('App/Models/Category');
+const Category = use('App/Models/Category');
 const Config = use('App/Models/Config');
 const Device = use('App/Models/Device');
 const { validateAll } = use('Validator');
 const moment = use('moment');
 const Deviceproperty = use('App/Models/Deviceproperty');
+const Database = use('Database');
 
 class HomeController {
   async index({ view }) {
@@ -97,13 +99,49 @@ class HomeController {
     //   .with('categories')
     //   .fetch();
 
-    const Table = await Faq.query()
-      .with('categories')
-      .fetch();
+    // const Tables = await Faq.query()
+    //   .with('categories')
+    //   .fetch();
+
+    const Table = [];
+    // const a = Tables.toJSON();
+
+    /**
+     * title
+     * categoria
+     * lang
+     * descricao
+     */
+
+    // let catego = [];
+    // select faqs.title, categories.nome, categories.lang, faqs.lang from faqs, categories inner join category_faq where faqs.id=faq_id and categories.id=category_id;
+    const ab = await Database.raw(
+      'select faqs.id as id, faqs.title as title, categories.nome as categoria, faqs.lang as lang, faqs.descricao as descricao from faqs, categories inner join category_faq where faqs.id=faq_id and categories.id=category_id'
+    );
+
+    if (ab[0].length <= 0) {
+      Table[0] = {
+        id: '',
+        title: 'sem faqs disponivel',
+        lang: '',
+        categoria: '',
+        descricao: '',
+      };
+    } else {
+      for (let i = 0; i < ab[0].length; i++) {
+        Table[i] = {
+          id: ab ? ab[0][i].id : null,
+          title: ab[0][i].title,
+          lang: ab[0][i].lang,
+          categoria: ab[0][i].categoria,
+          descricao: `${ab[0][i].descricao.substring(0, 50)}...`,
+        };
+      }
+    }
 
     return view.render('faqs.index', {
       config,
-      Table: Table.toJSON(),
+      Table,
     });
   }
 
@@ -121,7 +159,6 @@ class HomeController {
     }
 
     const dados = request.all();
-    console.log(dados);
     // validar campos de formulario
     const validation = await validateAll(request.all(), {
       title: 'required',
@@ -138,8 +175,17 @@ class HomeController {
     faq.title = dados.title;
     faq.descricao = dados.descricao;
     faq.lang = dados.lang;
-    faq.category_id = dados.category;
     await faq.save();
+
+    await faq.categories().attach([dados.category]);
+
+    // const User = use('App/Models/User');
+    // const Car = use('App/Models/Car');
+
+    // const mercedes = await Car.findBy('reg_no', '39020103');
+    // const user = await User.find(1);
+
+    // await user.cars().attach([mercedes.id]);
 
     return response.redirect('/faqs');
   }
@@ -152,72 +198,84 @@ class HomeController {
 
     const faq = await Faq.find(params.id);
     const faqs = faq.toJSON();
-    console.log(faqs);
 
     return view.render('faqs.update', {
       dados: faqs,
-      config: config,
+      config,
     });
   }
 
   async updatefaq({ response, request, params, session, auth }) {
     if (auth.user.access < 3) {
-      return view.render('404');
+      return response.render('404');
     }
 
     const dados = request.all();
-    console.log('update faq');
+    // console.log('update faq');
     // validar campos de formulario
     const validation = await validateAll(request.all(), {
       title: 'required',
       descricao: 'required',
     });
 
-    console.log('update faq validation');
+    // console.log('update faq validation');
     if (validation.fails()) {
       session.withErrors(validation.messages());
-      console.log('update faq validation error');
+      // console.log('update faq validation error');
       return response.redirect('back');
     }
 
-    console.log('find faq');
+    // console.log('find faq');
     const faq = await Faq.find(params.id);
     faq.title = dados.title;
     faq.descricao = dados.descricao;
     await faq.save();
 
-    response.redirect(`/faqs/view/${params.id}`);
+    return response.redirect(`/faqs/view/${params.id}`);
   }
 
   async viewfaqs({ view, params }) {
     const config = await Config.first();
-    // console.log('params.id: ' + params.id);
-    // console.log(typeof params.id);
-    // console.log('Number: ');
-    // console.log(typeof Number());
-    // console.log(typeof params.id === typeof Number());
 
-    if (typeof params.id == typeof String()) {
-      //tem de ficar integer
+    const faq = await Faq.find(params.id);
+
+    if (!faq) {
       return view.render('404');
     }
 
-    const faq = await Faq.find(params.id);
     const faqs = faq.toJSON();
-    // console.log(faqs.nome)
+
     return view.render('faqs.view', {
       Data: faqs,
-      config: config,
+      config,
     });
   }
-  // }
 
   async apagarfaqs({ params, auth, response }) {
     if (auth.user.access < 3) {
-      return view.render('404');
+      return response.redirect('/404');
     }
 
-    const faq = await Faq.find(params.id);
+    const faqId = params.id;
+
+    // select faqs.id, categories.id from faqs, categories inner join category_faq where faqs.id=faq_id and categories.id=category_id;
+    const rst = await Database.raw(
+      'select faqs.id as faqId, categories.id as categoriaId from faqs, categories inner join category_faq where faqs.id=category_faq.faq_id and categories.id=category_faq.category_id and faqs.id=?',
+      [faqId]
+    );
+
+    // rst[0][0].faqId
+    // rst[0][0].categoriaId
+
+    const id = rst[0][0].categoriaId;
+
+    const faq = await Faq.find(faqId);
+    const faqCatego = await Category.findBy('id', id);
+    if (!faqCatego) return response.redirect('/404');
+
+    const s = await faq.categories().detach([faqCatego.id]);
+    if (!s) return response.redirect('/404');
+
     await faq.delete();
 
     return response.redirect('/faqs');
@@ -225,9 +283,9 @@ class HomeController {
 
   async getcategoria({ request, response }) {
     const dados = request.all();
-    console.log(dados.lang);
+    // console.log(dados.lang);
 
-    const catego = await Cat.query()
+    const catego = await Category.query()
       .where('lang', dados.lang)
       .fetch();
     // console.log(catego)
@@ -250,8 +308,8 @@ class HomeController {
    */
   async getdados({ response, request }) {
     const dados = request.all();
-    console.log(`dados:`);
-    console.log(dados);
+    // console.log(`dados:`);
+    // console.log(dados);
 
     if (!dados) {
       response.json({
