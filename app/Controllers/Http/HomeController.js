@@ -34,6 +34,9 @@ class HomeController {
       const plano = await Plan.find(books[i].plano_id);
       const cliente = await User.find(books[i].user_id);
 
+      if (!cliente) view.render('404');
+      if (!plano) view.render('404');
+
       const data = moment(books[i].pickupdate).format('DD-MM-YYYY');
       const data2 = moment(books[i].returnday).format('DD-MM-YYYY');
 
