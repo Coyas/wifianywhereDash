@@ -17,6 +17,9 @@
     <!-- CSS Files -->
     <link href="/assets/css/argon-dashboard.css?v=1.1.0" rel="stylesheet" />
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <!--  <link href="/slick-1.8.1/slick/slick.css" rel="stylesheet">  -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link href="/slick-1.8.1/slick/slick-theme.css" rel="stylesheet">
 
     <title>wifianywhere Dashboard</title>
 
@@ -198,14 +201,7 @@
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   {{ script('/site.js') }}
-  <!--<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>-->
-  <!--  <script>
-    window.TrackJS &&
-      TrackJS.install({
-        token: "ee6fab19c5a04ac1a32a645abde4613a",
-        application: "argon-dashboard-free"
-      });
-  </script>  -->
-
+  {{--  {{ script('/slick-1.8.1/slick/slick.min.js') }}  --}}
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 </body>
 </html>

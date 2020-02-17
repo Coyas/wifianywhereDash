@@ -1,0 +1,89 @@
+@layout('layouts.main')
+@section('content')
+<!-- Header -->
+<div
+  class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+  style=" background-image: url(../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;"
+>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7 mb-8">
+  <div class="row">
+    <div class="col-xl-12 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Banners</h3>
+            </div>
+            <div class="col-4 text-right">
+              <!--  <a href="#" class="btn btn-sm btn-warning">Atualizar</a>-->
+            </div>
+          </div>
+        </div>
+        <div class="card-body" id="banners">
+          <!--<div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="../../assets/img/theme/team-1-800x800.jpg" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <a href="#" class="btn btn-primary">Mudar</a>
+            </div>
+          </div>-->
+          <div class="slide-banners">
+            @each(item in Website)
+              <div>
+                <h3 class="">{{item.title}}</h3>
+                <p>
+                  <img class="card-img-top" src="{{item.image}}" alt="Card image cap">
+                </p>
+                <form id="mudar" action="/post" method="POST" enctype="multipart/form-data">
+                  {{ csrfField() }}
+                  <input type="hidden" name="websiteId" value="{{item.id}}">
+                  <input type="hidden" name="pasta" value="banners">
+                  <input type="file" name="profile_pic" />
+                  <button type="submit" class="btn btn-outline-info">Mudar</button>
+                </form>
+
+              </div>
+            @endeach
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Page content -->
+<div class="container-fluid mt--7 mb-8">
+  <div class="row">
+    <div class="col-xl-12 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">Icons</h3>
+            </div>
+            <div class="col-4 text-right">
+              <!--  <a href="#" class="btn btn-sm btn-warning">Atualizar</a>-->
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card" style="width: 8rem;">
+            <img class="card-img-top" src="../../assets/img/theme/team-1-800x800.jpg" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <a href="#" class="btn btn-primary">Mudar</a>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@endsection
+

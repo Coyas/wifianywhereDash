@@ -40,55 +40,6 @@ Route.group(() => {
   Route.put('/faqs/update/:id', 'HomeController.updatefaq');
   Route.get('/faqs/apagar/:id', 'HomeController.apagarfaqs');
 
-  Route.post('/upload', async ({ request, response, auth }) => {
-    console.log('fazendo upload');
-    const profilePic = request.file('profile_pic', {
-      types: ['image'],
-      size: '10mb',
-    });
-
-    // {
-    //   name: 'custom-name.jpg',
-    //   overwrite: true
-    // }
-    const upload = '/upload/' + auth.user.username;
-
-    // iniciar class user
-    const user = await User.find(auth.user.id);
-
-    console.log('movendo a pasta upload');
-    if (user.avatar) {
-      console.log(Helpers.publicPath(user.avatar));
-
-      fs.unlink(Helpers.publicPath(user.avatar), err => {
-        if (err) {
-          console.log(err);
-          throw err;
-        }
-        console.log('successfully deleted /tmp/hello');
-      });
-    } else {
-      console.log('vazia');
-    }
-
-    await profilePic.move(Helpers.publicPath(upload));
-
-    if (!profilePic.moved()) {
-      console.log('nao foi movido');
-      return profilePic.error();
-    }
-    // console.log('file name.ext: ')
-    // console.log(profilePic.fileName)
-    // console.log(profilePic.extname)
-
-    // continuacao da class user
-    user.avatar = upload + '/' + profilePic.fileName;
-    await user.save();
-
-    console.log('movendo a pasta upload com sucesso');
-    response.redirect('back');
-  });
-
   // routas de ajax
   Route.get('/getcategoria', 'HomeController.getcategoria');
   Route.get('/siteconfig', 'HomeController.siteconfig');
@@ -160,6 +111,12 @@ Route.group(() => {
   Route.get('logout', 'Auth/AuthenticatedController.logout');
   Route.get('/usuarios/isactive/:id', 'UsuarioController.isactive');
   Route.get('/usuarios/isdesativo/:id', 'UsuarioController.isdesativo');
+
+  // website routes
+  Route.get('/website', 'WebsiteController.index');
+
+  // rota para aploud
+  Route.post('/upload', 'WebsiteController.upload');
 }).middleware(['auth']);
 
 Route.group(() => {

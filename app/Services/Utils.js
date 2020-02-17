@@ -6,7 +6,7 @@
 
 const Hash = use('Hash');
 // const moment = use('moment');
-const Encryption = use('Encryption');
+// const Encryption = use('Encryption');
 const Env = use('Env');
 const Social = use('App/Models/Rsocial');
 const Contact = use('App/Models/Wifianywhere');

@@ -316,3 +316,11 @@ function planos(ok, dada) {
       );
   }
 }
+
+$(document).ready(function() {
+  $('.slide-banners').slick({
+    infinite: true,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+  });
+});
