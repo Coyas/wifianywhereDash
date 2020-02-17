@@ -43,7 +43,7 @@ class HomeController {
       Reservas[i] = {
         id: books[i].id,
         plano: plano.nome,
-        cliente: `${cliente.firstName} ${cliente.lastName}`,
+        cliente: cliente ? `${cliente.firstName} ${cliente.lastName}` : 'null',
         pickupDate: data,
         returnDate: data2,
       };
