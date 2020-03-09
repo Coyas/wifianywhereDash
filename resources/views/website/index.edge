@@ -14,7 +14,10 @@
         <div class="card-header bg-white border-0">
           <div class="row align-items-center">
             <div class="col-8">
-              <h3 class="mb-0">Banners</h3>
+              <h3 class="mb-0">
+                <a href="/website/banners" class="btn btn-primary">Adicionar</a>
+                Banners
+              </h3>
             </div>
             <div class="col-4 text-right">
               <!--  <a href="#" class="btn btn-sm btn-warning">Atualizar</a>-->
@@ -30,22 +33,24 @@
             </div>
           </div>-->
           <div class="slide-banners">
-            @each(item in Website)
-              <div>
-                <h3 class="">{{item.title}}</h3>
-                <p>
-                  <img class="card-img-top" src="{{item.image}}" alt="Card image cap">
-                </p>
-                <form id="mudar" action="/post" method="POST" enctype="multipart/form-data">
-                  {{ csrfField() }}
-                  <input type="hidden" name="websiteId" value="{{item.id}}">
-                  <input type="hidden" name="pasta" value="banners">
-                  <input type="file" name="profile_pic" />
-                  <button type="submit" class="btn btn-outline-info">Mudar</button>
-                </form>
 
-              </div>
-            @endeach
+              @each(item in Website)
+                <div>
+                  <h3 class="">{{item.title}}</h3>
+                  <p>
+                    <img class="card-img-top" src="{{item.image}}" alt="Card image cap">
+                  </p>
+                  <!--<form id="mudar" action="/website/upload" method="POST" enctype="multipart/form-data">
+                    { csrfField() }}
+                    <input type="hidden" name="websiteId" value="{item.id}}">
+                    <input type="hidden" name="pasta" value="banners">
+                    <input type="file" name="profile_pic" />
+                    <button type="submit" class="btn btn-outline-info">Mudar</button>
+                  </form>-->
+
+                </div>
+              @endeach
+
           </div>
         </div>
       </div>

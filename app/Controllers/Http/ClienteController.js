@@ -1,11 +1,12 @@
-'use strict';
+// 'use strict';
+/* global use */
 const User = use('App/Models/User');
 const Book = use('App/Models/Booking');
-const Pay = use('App/Models/Payment');
+// const Pay = use('App/Models/Payment');
 const Config = use('App/Models/Config');
-const { validate, validateAll } = use('Validator');
-const Mail = use('Mail');
-const Env = use('Env');
+const { validateAll } = use('Validator');
+// const Mail = use('Mail');
+// const Env = use('Env');
 const Event = use('Event');
 const Utils = use('App/Services/Utils');
 const randomString = require('random-string');
@@ -16,10 +17,17 @@ class ClienteController {
     const user = await User.query()
       .where('access', '=', 1)
       .fetch(); // um usuario de nivel maior que 1 pode ser um cliente?
+
+    if (!user) view.render('404');
+
     const users = user.toJSON();
 
-    const book = await Book.all();
-    const books = book.toJSON();
+    // const book = await Book.query().where('user_id', users[i].id)
+    // const books = book.toJSON();
+
+    // await Book.query()
+    //   .where('user_id', users[i].id)
+    //   .fetch();
 
     /**
      * objeto para listar clientes
@@ -33,15 +41,21 @@ class ClienteController {
         username = users[i].firstName + ' ' + users[i].lastName;
       }
 
+      const { id } = users[i];
+      // eslint-disable-next-line no-await-in-loop
+      const bookCount = await Book.query()
+        .where('user_id', id)
+        .count('id as id');
+
       Users[i] = {
-        id: users[i].id,
-        avatar: users[i].avatar,
+        id: user ? users[i].id : 'null',
+        avatar: user ? users[i].avatar : 'null',
         nome: username,
         estado:
           users[i].is_active == 1
             ? '<i class="bg-success"></i> ativo'
             : '<i class="bg-danger"></i> inativo',
-        reservas: '00',
+        reservas: bookCount[0].id,
         recargas: '00',
         completo: '00',
       };
@@ -78,7 +92,7 @@ class ClienteController {
       .where('user_id', user.id)
       .fetch();
     const book = books.toJSON();
-    console.log(book);
+    // console.log(book);
 
     const dados = {
       id: user.id,
@@ -104,7 +118,7 @@ class ClienteController {
     return view.render('cliente.info', {
       Lugar: `Cliente Username:  ${dados.username}`,
       User: dados,
-      config: config,
+      config,
       cripto,
     });
   }
@@ -114,7 +128,7 @@ class ClienteController {
 
     return view.render('cliente.novo', {
       Lugar: `Novo CLiente`,
-      config: config,
+      config,
       pass: randomString({
         length: 10,
       }),
@@ -161,34 +175,34 @@ class ClienteController {
       confirmation_token: randomString({
         length: 40,
       }),
+      phone: request.input('phone'),
     };
 
-    console.log(userData);
+    // console.log(userData);
 
-    response.send('create cliente');
+    // response.send('create cliente');
     // save and get instance back
     const user = await User.create(userData);
 
-    if (user) {
-      //enviar email de confirmacao
-      console.log('sending email...');
-
-      Event.fire('new::cliente', userData);
-
-      console.log('flashing messages...');
-      session.flash({
-        notification: {
-          type: 'success',
-          message:
-            'successful registration! an email has been sent to your email address',
-        },
-      });
-
-      //redirecionar para a pagina clientes
-      response.redirect('/clientes');
-    } else {
+    if (!user) {
       response.redirect('back');
     }
+    // enviar email de confirmacao
+    // console.log('sending email...');
+
+    Event.fire('new::cliente', userData);
+
+    // console.log('flashing messages...');
+    session.flash({
+      notification: {
+        type: 'success',
+        message:
+          'successful registration! an email has been sent to your email address',
+      },
+    });
+
+    // redirecionar para a pagina clientes
+    return response.redirect('/clientes');
   }
 }
 

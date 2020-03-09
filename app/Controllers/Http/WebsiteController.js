@@ -14,12 +14,14 @@ class WebsiteController {
     const siteimages = siteimage.toJSON();
 
     const Website = [];
-    for (let i = 0; i < siteimages.length; i++) {
-      Website[i] = {
-        id: siteimages[i].id,
-        title: siteimages[i].nome,
-        image: siteimages[i].image,
-      };
+    if (siteimages.length > 0) {
+      for (let i = 0; i < siteimages.length; i++) {
+        Website[i] = {
+          id: siteimages[i].id,
+          title: siteimages[i].nome,
+          image: siteimages[i].image,
+        };
+      }
     }
 
     return view.render('website.index', {
@@ -28,11 +30,26 @@ class WebsiteController {
     });
   }
 
-  // users/' + auth.user.username + '_' + new Date()
-  async upload({ request, response, auth, session }) {
-    const dados = request.all();
+  async banners({ view, params }) {
+    const { pasta } = params;
+    console.log(pasta);
+    return view.render('website.banners', {
+      pasta,
+    });
+  }
 
-    const imageName = `site/pages/banners/${auth.user.username}${new Date()}`;
+  // auth.user.username + '_' + new Date()
+  async upload({ request, response, auth, session, params }) {
+    const { pasta } = params;
+
+    console.log('pasta');
+    console.log(pasta);
+    let cloudPasta = null;
+    if (pasta === 1) {
+      cloudPasta = 'site/pages/';
+    }
+
+    const imageName = `${cloudPasta}${auth.user.username}${new Date()}`;
 
     request.multipart.file('profile_pic', {}, async file => {
       const Upload = await Cloudinary.sendUserIMGToCloudnary(
@@ -48,7 +65,6 @@ class WebsiteController {
 
     await request.multipart.process();
 
-    const a = null;
     return response.redirect('back');
   }
 }

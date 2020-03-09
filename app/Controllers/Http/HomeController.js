@@ -11,7 +11,7 @@ const Config = use('App/Models/Config');
 const Device = use('App/Models/Device');
 const { validateAll } = use('Validator');
 const moment = use('moment');
-const Deviceproperty = use('App/Models/Deviceproperty');
+// const Deviceproperty = use('App/Models/Deviceproperty');
 const Database = use('Database');
 
 class HomeController {
@@ -22,6 +22,9 @@ class HomeController {
 
     const user = await User.query().fetch();
     const users = user.toJSON();
+
+    if (!book) view.render('404');
+    if (!user) view.render('404');
 
     const info = {
       users: users.length,
@@ -34,14 +37,11 @@ class HomeController {
       const plano = await Plan.find(books[i].plano_id);
       const cliente = await User.find(books[i].user_id);
 
-      if (!cliente) view.render('404');
-      if (!plano) view.render('404');
-
       const data = moment(books[i].pickupdate).format('DD-MM-YYYY');
       const data2 = moment(books[i].returnday).format('DD-MM-YYYY');
 
       Reservas[i] = {
-        id: books[i].id,
+        id: book ? books[i].id : 'null',
         plano: plano.nome,
         cliente: cliente ? `${cliente.firstName} ${cliente.lastName}` : 'null',
         pickupDate: data,
@@ -74,11 +74,11 @@ class HomeController {
       };
     }
 
-    console.log(table);
+    // console.log(table);
     return view.render('home.subscrito', {
       Lugar: 'Subscritos',
       Table: table,
-      config: config,
+      config,
     });
   }
 
@@ -87,10 +87,10 @@ class HomeController {
       const sub = await Subs.find(params.id);
       await sub.delete();
 
-      response.redirect('back');
-    } else {
-      return view.render('404');
+      return response.redirect('back');
     }
+
+    return view.render('404');
   }
 
   async faqs({ view }) {

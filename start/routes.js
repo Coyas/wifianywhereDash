@@ -65,15 +65,15 @@ Route.group(() => {
 
   // nova reserva ---------------------------------------------------------------
   Route.get('/reservas/novareserva/:id', 'ReservaController.novareserva'); // id pertence ao user
-  Route.put('/reservas/guardareserva/:id', 'ReservaController.guardareserva'); //id pertence ao user
+  Route.put('/reservas/guardareserva/:id', 'ReservaController.guardareserva'); // id pertence ao user
 
   // choose plano
-  Route.get('/reservas/chooseplano/:id', 'ReservaController.chooseplanos'); //id do user
-  Route.post('/reservas/guardarplanos/:id', 'ReservaController.guardarplanos'); //id do user
+  Route.get('/reservas/chooseplano/:id', 'ReservaController.chooseplanos'); // id do user
+  Route.post('/reservas/guardarplanos/:id', 'ReservaController.guardarplanos'); // id do user
 
   // pagar reserva
-  Route.get('/reservas/pagareserva/:id', 'ReservaController.pagareserva'); //id do booking
-  Route.post('/reservas/guardarpagar/:id', 'ReservaController.guardarpagar'); //id do booking
+  Route.get('/reservas/pagareserva/:id', 'ReservaController.pagareserva'); // id do booking
+  Route.post('/reservas/guardarpagar/:id', 'ReservaController.guardarpagar'); // id do booking
 
   Route.post(
     '/reservas/getRecarregarAmount/:bookid',
@@ -114,9 +114,10 @@ Route.group(() => {
 
   // website routes
   Route.get('/website', 'WebsiteController.index');
+  Route.get('/website/banners/', 'WebsiteController.banners');
 
   // rota para aploud
-  Route.post('/upload', 'WebsiteController.upload');
+  Route.post('/website/upload/', 'WebsiteController.upload');
 }).middleware(['auth']);
 
 Route.group(() => {

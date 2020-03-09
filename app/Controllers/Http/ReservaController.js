@@ -50,12 +50,12 @@ class ReservaController {
       const user = await User.find(books[a].user_id);
       const users = user.toJSON();
 
-      let plan = await Plan.find(books[a].plano_id);
-      let plano = plan.toJSON();
-      let picklocations = await Place.find(books[a].pickuplocation_id);
-      let picklocation = picklocations.toJSON();
-      let returnlocations = await Place.find(books[a].returnlocation_id);
-      let returnlocation = returnlocations.toJSON();
+      const plan = await Plan.find(books[a].plano_id);
+      const plano = plan.toJSON();
+      const picklocations = await Place.find(books[a].pickuplocation_id);
+      const picklocation = picklocations.toJSON();
+      const returnlocations = await Place.find(books[a].returnlocation_id);
+      const returnlocation = returnlocations.toJSON();
 
       const data = Momento(books[a].pickupdate).format('DD-MM-YYYY');
       const data2 = Momento(books[a].returnday).format('DD-MM-YYYY');
@@ -239,7 +239,7 @@ class ReservaController {
   }
 
   async pegar({ response, params }) {
-    const a = Momento().format('Y-M-D');
+    // const a = Momento().format('Y-M-D');
     const book = await Book.find(params.id);
 
     return Sisp.recarregar(book, response);
@@ -624,6 +624,9 @@ class ReservaController {
       total,
       cve: (total * Number(config.txcambio)).toFixed(0),
       check,
+      caucao: book.powerbank
+        ? Number(config.caucao) + 20
+        : Number(config.caucao),
     };
 
     return view.render('reserva.pagar', {

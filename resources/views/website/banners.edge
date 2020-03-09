@@ -1,0 +1,39 @@
+@layout('layouts.main')
+@section('content')
+<!-- Header -->
+<div
+  class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+  style=" background-image: url(/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;"
+>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--7 mb-8">
+  <div class="row">
+    <div class="col-xl-12 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">
+                Adicionar Banners
+              </h3>
+            </div>
+            <div class="col-4 text-right">
+              <!--  <a href="#" class="btn btn-sm btn-warning">Atualizar</a>-->
+            </div>
+          </div>
+        </div>
+        <div class="card-body" id="banners">
+          <form action="/website/upload/" method="post" enctype="multipart/form-data">
+            {{ csrfField() }}
+            <input type="file" name="profile_pic" />
+            <input type="submit" value="guardar">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@endsection
+

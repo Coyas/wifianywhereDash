@@ -18,7 +18,7 @@ class Cloudinary {
     this.opcao = {
       tags: ['wifianywhere', 'qrcode', 'iMedia'],
       // folder: 'qrcode',
-      type: 'authenticated', //para que a url nao seja compartilhada
+      type: 'authenticated', // para que a url nao seja compartilhada
     };
   }
 

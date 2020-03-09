@@ -29,6 +29,13 @@ class Utils {
     });
 
     if (!google.data.success && google.data.score < 0.6) {
+      session.flash({
+        notification: {
+          type: 'danger',
+          message: 'google recaptcha Fail, try again',
+        },
+      });
+
       return false;
     }
 
@@ -40,12 +47,6 @@ class Utils {
     //   console.log('Login: voce nao é humano');
     //   console.log(google.data.success);
     //   console.log(google.data.score);
-    session.flash({
-      notification: {
-        type: 'danger',
-        message: 'google recaptcha Fail, try again',
-      },
-    });
 
     return true;
   }

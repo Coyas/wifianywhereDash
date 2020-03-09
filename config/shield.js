@@ -133,7 +133,7 @@ module.exports = {
   csrf: {
     enable: true,
     methods: ['POST', 'PUT', 'DELETE'],
-    filterUris: ['/reservas/recargaCallback', '/upload'],
+    filterUris: ['/reservas/recargaCallback', '/website/upload'],
     cookieOptions: {
       httpOnly: false,
       sameSite: true,
