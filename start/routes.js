@@ -118,6 +118,15 @@ Route.group(() => {
 
   // rota para aploud
   Route.post('/website/upload/', 'WebsiteController.upload');
+
+  // post routes
+  Route.get('/post', 'BlogController.index');
+  Route.get('/post/new', 'BlogController.novo');
+  Route.post('/post/newsave', 'BlogController.novoSave');
+  Route.get('/post/view/:id', 'BlogController.view');
+  Route.get('/post/update/:id', 'BlogController.update');
+  Route.post('/post/delete/:id', 'BlogController.delete');
+  Route.post('/post/upload/:id', 'BlogController.upload');
 }).middleware(['auth']);
 
 Route.group(() => {

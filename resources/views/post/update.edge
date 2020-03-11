@@ -1,0 +1,85 @@
+@layout('layouts.main')
+
+@section('content')
+<!-- Header -->
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url(../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+      <!-- Mask -->
+      <span class="mask bg-gradient-default opacity-8"></span>
+      <!-- Header container -->
+      <div class="container-fluid d-flex align-items-center">
+        <div class="row">
+          <div class="col-lg-7 col-md-10">
+            <a href="/post" class="btn btn-info">Voltar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+            <div class="row justify-content-center">
+
+              <div class="col-md-8 order-xl-1">
+                <div class="card bg-secondary shadow">
+                  <div class="card-header bg-white border-0">
+                    <div class="row align-items-center">
+                      <div class="col-8">
+                        <h3 class="mb-0">Novo Post</h3>
+                      </div>
+                      <div class="col-4 text-right">
+
+                      <!--  <a href="#" class="btn btn-sm btn-warning">Atualizar</a>-->
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <form action="/post/newsave" method="POST">
+                      {{ csrfField() }}
+                      <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                  <label class="form-control-label" for="input-email">Lingua</label>
+                                  <select name="lang" id="lang" class="form-control form-control-alternative">
+                                    <option value="">Escolhe uma lingua</option>
+                                      <option value="pt">Portugues</option>
+                                      <option value="en">Ingles</option>
+                                      <option value="fr">Frances</option>
+                                  </select>
+                                </div>
+                              </div>
+
+
+                        </div>
+                      </div>
+                      <hr class="my-4" />
+                      <!-- title -->
+
+                      <div class="pl-lg-4">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="form-group">
+                              <label class="form-control-label" for="input-address">Titulo</label>
+                              <input type="text" id="input-username" name="title" value="{{ old('title', '') }}" class="form-control form-control-alternative  {{ hasErrorFor('title') ? 'alert-danger' : ''}}" placeholder="titulo">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <hr class="my-4" />
+                      <!-- conteudpo -->
+                      <div class="pl-lg-4">
+                        <div class="form-group">
+                          <label>Conteudo</label>
+                          <textarea name="content" rows="4" class="form-control form-control-alternative  {{ hasErrorFor('title') ? 'alert-danger' : ''}}" placeholder="Algumas palavras sobre esta questao ...">{{ old('descricao', '')}}</textarea>
+                        </div>
+                      </div>
+                      <input type="submit" class="btn btn-primary" value="Criar">
+                    </form>
+                  </div>
+                </div>
+
+            </div>
+            </div>
+@endsection

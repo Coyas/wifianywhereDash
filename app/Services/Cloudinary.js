@@ -53,7 +53,7 @@ class Cloudinary {
       console.log('* ' + Upload.secure_url);
 
       // add qrcode to booking table
-      const atualizabooks = await Book.find(bookid); //estava bookid e troquei pelo
+      const atualizabooks = await Book.find(bookid); // estava bookid e troquei pelo
       atualizabooks.qrcode = Upload.secure_url;
       const ok = await atualizabooks.save();
       if (!ok) {
@@ -70,7 +70,7 @@ class Cloudinary {
     }
   }
 
-  static async sendUserIMGToCloudnary(profilePic, auth, session, imageName) {
+  static async sendUserIMGToCloudnary(profilePic, imageName) {
     try {
       console.log(profilePic);
       // // const fileStream = fs.createReadStream(profilePic)
@@ -98,15 +98,6 @@ class Cloudinary {
       console.log('* ' + Upload.public_id);
       console.log('* ' + Upload.url);
       console.log('* ' + Upload.secure_url);
-
-      // save url to database
-
-      const ok = true;
-      if (ok) {
-        session.flash({
-          bookcloudnary: 'Error on qrcode saving',
-        });
-      }
 
       return Upload.secure_url;
     } catch (error) {

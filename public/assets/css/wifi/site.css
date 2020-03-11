@@ -67,6 +67,13 @@ p#detal {
   font-weight: bold;
 }
 
+#infore figure {
+  width: 100%;
+}
+#infore figure img {
+  width: 100%;
+}
+
 #detalhesR .loader-wrapper {
   font-family: "Source Sans Pro", sans-serif;
   position: absolute;

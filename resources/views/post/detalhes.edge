@@ -1,0 +1,57 @@
+@layout('layouts.main')
+
+@section('content')
+<!-- Header -->
+<div id="idiot" class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url(/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+  <!-- Mask -->
+  <span class="mask bg-gradient-default opacity-8"></span>
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row">
+      @if(auth.user.access >= 3)
+      <div class="col-lg-6 col-md-6">
+        <a href="/post/apagar/{{Post.id}}" class="devolver btn btn-warning">Apagar</a>
+      </div>
+      <div class="col-lg-6 col-md-6">
+          <a href="/post/update/{{Post.id}}" class="btn btn-primary">Atualizar</a>
+      </div>
+      @endif
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div id="infore" class="card shadow">
+          <div class="card-header border-0">
+            <form action="/post/upload/{{Post.id}}" method="post" enctype="multipart/form-data">
+              <input type="file" name="capa" id="">
+              <input type="submit" value="Adicionar Capa">
+            </form>
+
+            @if(Post.capa)
+            <figure class="mt-4">
+              <!--https://res.cloudinary.com/wifianywhere-cv/image/upload/v1581444584/site/pages/MKT-01_z51v6b.png-->
+              <img src="{{Post.capa}}" alt="">
+            </figure>
+            @endif
+          </div>
+
+          <div id="reservainfo" class="card-body">
+            <div class="row">
+              <div class="col-md-12"><h1>{{Post.title}}</h1></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                  {{{Post.content}}}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+@endsection

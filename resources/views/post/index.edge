@@ -1,0 +1,79 @@
+@layout('layouts.main')
+
+@section('content')
+<!-- Header -->
+<div id="idiot" class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 600px; background-image: url(/assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+  <!-- Mask -->
+  <span class="mask bg-gradient-default opacity-8"></span>
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row">
+      <div class="col-lg-7 col-md-10">
+        @if(auth.user.access >= 3)
+        <a href="/post/new" class="btn btn-info">Novo Post</a>
+        @endif
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <!-- Table -->
+    <div class="row">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header border-0">
+            <h3 class="mb-0">Lista de Posts</h3>
+          </div>
+          <div class="table-responsive">
+            <table id="myreservas" class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">####</th>
+                  <th scope="col">Titulo</th>
+                  <th scope="col">autor</th>
+                  <th scope="col">Lingua</th>
+                  <th scope="col">Conteudo</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @each(dados in table)
+
+                  <td>
+                    # {{ $loop.index }}
+                  </td>
+                  <td>
+                    {{{dados.title}}}
+                  </td>
+
+                  <td>{{dados.author.firstName}}</td>
+
+                  <td>
+                    {{dados.lang}}
+                  </td>
+                  <td>
+                    {{dados.conteudo}}
+                  </td>
+
+
+                  <td class="text-right">
+                    <a href="/post/view/{{dados.slug}}" id="clienteLista" class="btn btn-sm btn-primary">detalhes</a>
+
+                    <div class="dropdown">
+                      <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </a>
+                    </div>
+                  </td>
+
+                </tr>
+                @endeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+@endsection
