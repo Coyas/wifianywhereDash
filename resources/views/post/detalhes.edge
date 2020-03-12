@@ -10,10 +10,13 @@
     <div class="row">
       @if(auth.user.access >= 3)
       <div class="col-lg-6 col-md-6">
-        <a href="/post/apagar/{{Post.id}}" class="devolver btn btn-danger">Apagar</a>
+        <form action="/post/delete/{{Post.id}}" method="post">
+          {{ csrfField() }}
+          <input type="submit" value="Apagar" class="devolver btn btn-danger">
+        </form>
       </div>
       <div class="col-lg-6 col-md-6">
-          <a href="/post/update/{{Post.id}}" class="btn btn-primary">Atualizar</a>
+          <a href="/post/update/{{Post.id}}" class="btn btn-primary" method="post">Atualizar</a>
       </div>
       @endif
     </div>

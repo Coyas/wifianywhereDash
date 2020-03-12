@@ -70,6 +70,9 @@ class BlogController {
     const { id } = params;
 
     const post = await Blog.findBy('slug', id);
+
+    if (!post) return view.render('404', { config });
+
     const Post = post.toJSON();
 
     return view.render('post.detalhes', {
@@ -91,6 +94,7 @@ class BlogController {
       );
 
       post = await Blog.find(id);
+      if (!post) return response.redirect('404');
       post.capa = capalink;
       await post.save();
     });
@@ -106,6 +110,7 @@ class BlogController {
     const { id } = params;
 
     const post = await Blog.find(id);
+    if (!post) return view.render('/404', { config });
 
     const lingua = {
       pt: 'Portugues',
@@ -135,6 +140,7 @@ class BlogController {
     const { id } = params;
 
     const post = await Blog.find(id);
+    if (!post) return response.redirect('/404');
     post.title = request.input('title');
     post.content = request.input('content');
     await post.save();
@@ -143,7 +149,28 @@ class BlogController {
     return response.redirect(`/post/view/${post.slug}`);
   }
 
-  async delete({ view }) {}
+  async delete({ response, request, session, params }) {
+    const validation = await validateAll(request.all(), {
+      _csrf: 'required',
+    });
+
+    if (validation.fails()) {
+      session.withErrors(validation.messages());
+
+      return response.redirect('back');
+    }
+
+    const { id } = params;
+
+    const post = await Blog.find(id);
+
+    if (!post) return response.redirect('/404');
+
+    await post.delete();
+
+    // return response.send('deleted');
+    return response.redirect('/post');
+  }
 }
 
 module.exports = BlogController;
