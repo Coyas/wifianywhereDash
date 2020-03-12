@@ -41,7 +41,11 @@
                 @each(dados in table)
 
                   <td>
+                    @if($loop.index == 0)
+                    #{{$loop.index}} <span class="badge badge-danger">Ultimo</span>
+                    @else
                     # {{ $loop.index }}
+                    @endif
                   </td>
                   <td>
                     {{{dados.title}}}
@@ -53,7 +57,7 @@
                     {{dados.lang}}
                   </td>
                   <td>
-                    {{dados.conteudo}}
+                    {{{dados.conteudo}}}
                   </td>
 
 

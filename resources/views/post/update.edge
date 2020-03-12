@@ -75,7 +75,7 @@
                       <div class="pl-lg-4">
                         <div class="form-group">
                           <label>Conteudo</label>
-                          <textarea name="content" rows="4" class="form-control form-control-alternative  {{ hasErrorFor('title') ? 'alert-danger' : ''}}" placeholder="Algumas palavras sobre esta questao ...">{{ old('content', Post.content)}}</textarea>
+                          <textarea id="update" name="content" rows="4" class="form-control form-control-alternative  {{ hasErrorFor('title') ? 'alert-danger' : ''}}" placeholder="Algumas palavras sobre esta questao ...">{{ old('content', Post.content)}}</textarea>
                         </div>
                       </div>
                       <input type="submit" class="btn btn-primary" value="Atualizar">
@@ -85,4 +85,9 @@
 
             </div>
             </div>
+
+            <!-- Initialize the editor. -->
+		<script>
+			new FroalaEditor('#update');
+		</script>
 @endsection

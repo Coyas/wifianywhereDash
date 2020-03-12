@@ -23,16 +23,19 @@
 
     <title>wifianywhere Dashboard</title>
 
+     <!-- Include Editor style. -->
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@3.1.0/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
     <link href='/fullcalendar-4.3.1/packages/core/main.css' rel='stylesheet' />
-  <link href='/fullcalendar-4.3.1/packages/daygrid/main.css' rel='stylesheet' />
-  <link href='/fullcalendar-4.3.1/packages/timegrid/main.css' rel='stylesheet' />
-  <link href='/fullcalendar-4.3.1/packages/list/main.css' rel='stylesheet' />
-  <script src='/fullcalendar-4.3.1/packages/core/main.js'></script>
-  <script src='/fullcalendar-4.3.1/packages/interaction/main.js'></script>
-  <script src='/fullcalendar-4.3.1/packages/daygrid/main.js'></script>
-  <script src='/fullcalendar-4.3.1/packages/timegrid/main.js'></script>
-  <script src='/fullcalendar-4.3.1/packages/list/main.js'></script>
-  <script>
+    <link href='/fullcalendar-4.3.1/packages/daygrid/main.css' rel='stylesheet' />
+    <link href='/fullcalendar-4.3.1/packages/timegrid/main.css' rel='stylesheet' />
+    <link href='/fullcalendar-4.3.1/packages/list/main.css' rel='stylesheet' />
+    <script src='/fullcalendar-4.3.1/packages/core/main.js'></script>
+    <script src='/fullcalendar-4.3.1/packages/interaction/main.js'></script>
+    <script src='/fullcalendar-4.3.1/packages/daygrid/main.js'></script>
+    <script src='/fullcalendar-4.3.1/packages/timegrid/main.js'></script>
+    <script src='/fullcalendar-4.3.1/packages/list/main.js'></script>
+    <script>
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -106,20 +109,22 @@
         calendar.render();
       });
 
-    </script>
+      </script>
 
 </head>
 <body class="">
+  <!-- Include Editor JS files. -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@3.1.0/js/froala_editor.pkgd.min.js"></script>
 
-@include('partes/navbar')
+  @include('partes/navbar')
 
-<div class="main-content">
- <!-- Navbar -->
- <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
-    <div class="container-fluid">
-      <!-- Brand -->
-      <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="/">{{Lugar}}</a>
-      <!-- Form -->
+  <div class="main-content">
+    <!-- Navbar -->
+    <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+      <div class="container-fluid">
+        <!-- Brand -->
+        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="/">{{Lugar}}</a>
+        <!-- Form -->
       <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
         <div class="form-group mb-0">
           <div class="input-group input-group-alternative">
@@ -178,23 +183,23 @@
   <!-- End Navbar -->
 
 
-    @!section('content')
+  @!section('content')
 
-    @include('partes/footer')
+  @include('partes/footer')
 
-  </div>
+</div>
 </div>
 
 
-    <!--   Core   -->
-  <script src="/assets/js/plugins/jquery/dist/jquery.min.js"></script>
-  <script src="/assets/js/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <!--   Optional JS   -->
-  <script src="/assets/js/plugins/chart.js/dist/Chart.min.js"></script>
-  <script src="/assets/js/plugins/chart.js/dist/Chart.extension.js"></script>
-  <script src="/assets/js/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-  <!--   Argon JS   -->
-  <!--<script src="/assets/js/argon-dashboard.min.js?v=1.1.0"></script>-->
+<!--   Core   -->
+<script src="/assets/js/plugins/jquery/dist/jquery.min.js"></script>
+<script src="/assets/js/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!--   Optional JS   -->
+<script src="/assets/js/plugins/chart.js/dist/Chart.min.js"></script>
+<script src="/assets/js/plugins/chart.js/dist/Chart.extension.js"></script>
+<script src="/assets/js/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!--   Argon JS   -->
+  <!-- <script src="/assets/js/argon-dashboard.min.js?v=1.1.0"></script> -->
   <script src="/assets/js/argon-dashboard.js"></script>
 
   {{ script('//cdn.datatables.net/v/dt/dt-1.10.18/r-2.2.2/datatables.min.js') }}
@@ -203,5 +208,7 @@
   {{ script('/site.js') }}
   {{--  {{ script('/slick-1.8.1/slick/slick.min.js') }}  --}}
   <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
 </body>
 </html>

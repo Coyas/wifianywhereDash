@@ -9,15 +9,30 @@
   <div class="container-fluid d-flex align-items-center">
     <div class="row">
       @if(auth.user.access >= 3)
-      <div class="col-lg-6 col-md-6">
+      <div class="col-lg-4 col-md-4">
         <form action="/post/delete/{{Post.id}}" method="post">
           {{ csrfField() }}
           <input type="submit" value="Apagar" class="devolver btn btn-danger">
         </form>
       </div>
-      <div class="col-lg-6 col-md-6">
-          <a href="/post/update/{{Post.id}}" class="btn btn-primary" method="post">Atualizar</a>
+      <div class="col-lg-4 col-md-4">
+          <a href="/post/update/{{Post.id}}" class="btn btn-primary">Atualizar</a>
       </div>
+      @if(Post.status == 0)
+        <div class="col-lg-4 col-md-4">
+          <form action="/post/publicar/{{Post.id}}" method="post">
+            {{ csrfField() }}
+            <input type="submit" value="Make Online" class="devolver btn btn-primary">
+          </form>
+        </div>
+      @else
+        <div class="col-lg-4 col-md-4">
+          <form action="/post/publicar/{{Post.id}}" method="post">
+            {{ csrfField() }}
+            <input type="submit" value="Make Offline" class="devolver btn btn-warning">
+          </form>
+        </div>
+      @endif
       @endif
     </div>
   </div>

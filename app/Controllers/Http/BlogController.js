@@ -10,7 +10,9 @@ const Cloudinary = use('App/Services/Cloudinary');
 class BlogController {
   async index({ view }) {
     const config = await Config.first();
-    const listaPosts = await Blog.all();
+    const listaPosts = await Blog.query()
+      .orderBy('created_at', 'DESC')
+      .fetch();
     const lista = listaPosts.toJSON();
 
     const table = [];
@@ -21,7 +23,7 @@ class BlogController {
         title: lista[a].title,
         // eslint-disable-next-line no-await-in-loop
         author: (await User.find(lista[a].author_id)).toJSON(),
-        conteudo: `${lista[a].content.substring(0, 40)}...`,
+        conteudo: `${lista[a].content.substring(0, 40)}`,
         lang: lista[a].lang,
       };
     }
@@ -197,6 +199,33 @@ class BlogController {
 
     // return response.send('deleted');
     return response.redirect('/post');
+  }
+
+  async publicar({ response, request, session, params }) {
+    const validation = await validateAll(request.all(), {
+      _csrf: 'required',
+    });
+
+    if (validation.fails()) {
+      session.withErrors(validation.messages());
+
+      return response.redirect('back');
+    }
+
+    const { id } = params;
+    const post = await Blog.find(id);
+
+    if (!post) return response.redirect('/404');
+
+    if (post.status == 0) {
+      post.status = 1;
+    } else {
+      post.status = 0;
+    }
+
+    await post.save();
+
+    return response.redirect('back');
   }
 }
 
