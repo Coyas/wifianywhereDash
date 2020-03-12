@@ -39,7 +39,6 @@ class BlogController {
   }
 
   async novoSave({ request, response, auth, session }) {
-    const dados = request.all();
     const validation = await validateAll(request.all(), {
       lang: 'required',
       title: 'required',
@@ -79,9 +78,10 @@ class BlogController {
     });
   }
 
-  async upload({ request, response, auth, session, params }) {
+  async upload({ request, response, auth, params }) {
     const { id } = params;
 
+    let post = null;
     request.multipart.file('capa', {}, async file => {
       // await Drive.disk('s3').put(file.clientName, file.stream)
       // send capa to cloudinary
@@ -90,21 +90,59 @@ class BlogController {
         `site/posts/${auth.user.username}${new Date()}`
       );
 
-      const post = await Blog.find(id);
+      post = await Blog.find(id);
       post.capa = capalink;
       await post.save();
     });
 
     await request.multipart.process();
 
-    return response.send('capa foi enviado para o cloudinary');
+    // return response.send('capa foi enviado para o cloudinary');
+    return response.redirect(`/post/view/${post.slug}`);
   }
 
-  async update({ view, params, response }) {
+  async update({ view, params }) {
+    const config = await Config.first();
     const { id } = params;
 
-    return view.render('post.update');
+    const post = await Blog.find(id);
+
+    const lingua = {
+      pt: 'Portugues',
+      en: 'Ingles',
+      fr: 'Frances',
+    };
+
+    return view.render('post.update', {
+      config,
+      Post: post.toJSON(),
+      lingua,
+    });
   }
+
+  async updateSave({ request, response, session, params }) {
+    const validation = await validateAll(request.all(), {
+      title: 'required',
+      content: 'required',
+    });
+
+    if (validation.fails()) {
+      session.withErrors(validation.messages());
+
+      return response.redirect('back');
+    }
+
+    const { id } = params;
+
+    const post = await Blog.find(id);
+    post.title = request.input('title');
+    post.content = request.input('content');
+    await post.save();
+
+    // return response.send('update post');
+    return response.redirect(`/post/view/${post.slug}`);
+  }
+
   async delete({ view }) {}
 }
 
