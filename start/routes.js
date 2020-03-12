@@ -127,6 +127,7 @@ Route.group(() => {
   Route.get('/post/update/:id', 'BlogController.update');
   Route.put('/post/update/:id', 'BlogController.updateSave');
   Route.post('/post/delete/:id', 'BlogController.delete');
+  Route.post('/post/upload/:id', 'BlogController.upload');
 }).middleware(['auth']);
 
 Route.group(() => {

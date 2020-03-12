@@ -99,12 +99,25 @@ class Cloudinary {
       console.log('* ' + Upload.url);
       console.log('* ' + Upload.secure_url);
 
-      return Upload.secure_url;
+      const image = {
+        public_id: Upload.public_id,
+        secure_url: Upload.secure_url,
+      };
+
+      return image;
     } catch (error) {
       console.log();
       console.log('** File Upload (Promise error)');
       console.warn(error);
     }
+  }
+
+  // cloudinary.v2.api.delete_resources(public_ids, options, callback);
+  static async deleteUserIMGFromCloudinary(publicId) {
+    // site/posts/h7Xn@qsdsh_jhklhkjThu Mar 12 2020 11:22:37 GMT-0100 (Cape Verde Standard Time)
+    const deleted = cloudinary.uploader.destroy(publicId, { invalidate: true });
+
+    return deleted;
   }
 }
 

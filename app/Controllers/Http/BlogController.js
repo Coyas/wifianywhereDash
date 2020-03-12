@@ -1,4 +1,5 @@
 'use strict';
+/* global use */
 
 const Config = use('App/Models/Config');
 const Blog = use('App/Models/Blog');
@@ -81,7 +82,17 @@ class BlogController {
     });
   }
 
-  async upload({ request, response, auth, params }) {
+  async upload({ request, response, auth, params, session }) {
+    // const validation = await validateAll(request.all(), {
+    //   capa: 'required',
+    // });
+
+    // if (validation.fails()) {
+    //   session.withErrors(validation.messages());
+
+    //   return response.redirect('back');
+    // }
+
     const { id } = params;
 
     let post = null;
@@ -95,7 +106,16 @@ class BlogController {
 
       post = await Blog.find(id);
       if (!post) return response.redirect('404');
-      post.capa = capalink;
+
+      if (post.capa_public_id) {
+        const deleted = await Cloudinary.deleteUserIMGFromCloudinary(
+          post.capa_public_id
+        );
+        console.log(deleted);
+      }
+
+      post.capa = capalink.secure_url;
+      post.capa_public_id = capalink.public_id;
       await post.save();
     });
 
@@ -166,7 +186,14 @@ class BlogController {
 
     if (!post) return response.redirect('/404');
 
-    await post.delete();
+    const deleted = await Cloudinary.deleteUserIMGFromCloudinary(
+      post.capa_public_id
+    );
+
+    // console.log('deleted');
+    // console.log(deleted);
+
+    if (deleted.result === 'ok') await post.delete();
 
     // return response.send('deleted');
     return response.redirect('/post');

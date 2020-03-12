@@ -110,7 +110,7 @@ $('#lang').change(function() {
   var id = $(this)
     .children(':selected')
     .val();
-  alert(id);
+  // alert(id);
   let data = {
     lang: id,
   };
